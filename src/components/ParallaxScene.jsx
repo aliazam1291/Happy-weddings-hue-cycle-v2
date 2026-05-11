@@ -74,6 +74,8 @@ export default function ParallaxScene() {
   const mainArchRef    = useRef(null)       // z:8 — the arch
   const leftFrontRef   = useRef(null)       // z:9 — FRONTMOST
   const midgroundRef   = useRef(null)       // Shared wrapper for gazebo & fence
+  const swanLeftRef    = useRef(null)       // z:7 — left swan
+  const swanRightRef   = useRef(null)       // z:7 — right swan
 
   useEffect(() => {
     let ctx
@@ -97,56 +99,33 @@ export default function ParallaxScene() {
         // ── DESKTOP ≥ 768px ─────────────────────────────────────────────
         mm.add('(min-width: 768px)', () => {
 
-          // z:1 · Background — barely moves
-          gsap.fromTo(backgroundRef.current,
-            { y: 0, scale: 1 },
-            { y: -50, scale: 1.15, transformOrigin: '50% 50%',
-              ease: 'none', scrollTrigger: st }
-          )
+          const st = {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true,
+          }
+          const tl = gsap.timeline({ scrollTrigger: st })
 
-          // z:3 · Right Back Palm — spreads right
-          gsap.fromTo(rightBackRef.current,
-            { x: 0, y: 0 },
-            { x: 200, y: -60, ease: 'none', scrollTrigger: st }
-          )
+          // PHASE 1: Swans swim to center
+          tl.fromTo(swanLeftRef.current, { x: '-10vw', y: 0, scale: 1 }, { x: 0, y: 0, scale: 1, ease: 'power1.out', duration: 1 }, 0)
+          tl.fromTo(swanRightRef.current, { x: '10vw', y: 0, scale: 1 }, { x: 0, y: 0, scale: 1, ease: 'power1.out', duration: 1 }, 0)
 
-          // z:4 · Left Back Palm — spreads left
-          gsap.fromTo(leftBackRef.current,
-            { x: 0, y: 0 },
-            { x: -200, y: -60, ease: 'none', scrollTrigger: st }
-          )
+          // PHASE 2: Entire scene parallax
+          const pStart = 1
+          const pDur = 2
 
-          // z:5 & z:7 · MIDGROUND WRAPPER (Fence + Gazebo)
-          // Scales together to guarantee the stairs stay perfectly aligned with the balustrade
-          gsap.fromTo(midgroundRef.current,
-            { scale: 1, y: 0 },
-            { scale: 1.6, y: '5vh', transformOrigin: '50% 50%', ease: 'none', scrollTrigger: st }
-          )
+          tl.to(swanLeftRef.current, { y: '150vh', scale: 4.5, transformOrigin: '50% 50%', ease: 'none', duration: pDur }, pStart)
+          tl.to(swanRightRef.current, { y: '150vh', scale: 4.5, transformOrigin: '50% 50%', ease: 'none', duration: pDur }, pStart)
 
-          // z:6 · Right Front — clears the screen completely
-          gsap.fromTo(rightFrontRef.current,
-            { x: 0, y: 0 },
-            { x: '30vw', y: '20vh', ease: 'none', scrollTrigger: st }
-          )
-
-          // z:8 · MAIN ARCH — zooms exactly enough to clear the screen
-          gsap.fromTo(mainArchRef.current,
-            { scale: 1, y: 0 },
-            { scale: 4.5, y: 0, transformOrigin: '50% 50%',
-              ease: 'none', scrollTrigger: st }
-          )
-
-          // z:9 · Left Front — clears the screen completely
-          gsap.fromTo(leftFrontRef.current,
-            { x: 0, y: 0 },
-            { x: '-30vw', y: '20vh', ease: 'none', scrollTrigger: st }
-          )
-
-          // z:2 · Footer / Lawn — exits downward to reveal pool
-          gsap.fromTo(footerRef.current,
-            { y: 0 },
-            { y: '20vh', ease: 'none', scrollTrigger: st }
-          )
+          tl.fromTo(backgroundRef.current, { y: 0, scale: 1 }, { y: -50, scale: 1.15, transformOrigin: '50% 50%', ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(rightBackRef.current, { x: 0, y: 0 }, { x: 200, y: -60, ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(leftBackRef.current, { x: 0, y: 0 }, { x: -200, y: -60, ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(midgroundRef.current, { scale: 1, y: 0 }, { scale: 1.6, y: '5vh', transformOrigin: '50% 50%', ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(rightFrontRef.current, { x: 0, y: 0 }, { x: '30vw', y: '20vh', ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(mainArchRef.current, { scale: 1, y: 0 }, { scale: 4.5, y: 0, transformOrigin: '50% 50%', ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(leftFrontRef.current, { x: 0, y: 0 }, { x: '-30vw', y: '20vh', ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(footerRef.current, { y: 0 }, { y: '20vh', ease: 'none', duration: pDur }, pStart)
 
           ScrollTrigger.refresh()
         })
@@ -154,25 +133,33 @@ export default function ParallaxScene() {
         // ── MOBILE < 768px ───────────────────────────────────────────────
         mm.add('(max-width: 767px)', () => {
 
-          gsap.fromTo(backgroundRef.current,
-            { y: 0, scale: 1 },
-            { y: -25, scale: 1.08, transformOrigin: '50% 50%',
-              ease: 'none', scrollTrigger: st }
-          )
-          gsap.fromTo(rightBackRef.current,  { x: 0, y: 0 }, { x: 50, y: -20, ease: 'none', scrollTrigger: st })
-          gsap.fromTo(leftBackRef.current,   { x: 0, y: 0 }, { x: -50, y: -20, ease: 'none', scrollTrigger: st })
-          gsap.fromTo(midgroundRef.current,
-            { scale: 1, y: 0 },
-            { scale: 1.4, y: '5vh', transformOrigin: '50% 50%', ease: 'none', scrollTrigger: st }
-          )
-          gsap.fromTo(rightFrontRef.current, { x: 0, y: 0 }, { x: '30vw', y: '20vh', ease: 'none', scrollTrigger: st })
-          gsap.fromTo(mainArchRef.current,
-            { scale: 1, y: 0 },
-            { scale: 4.5, y: 0, transformOrigin: '50% 50%',
-              ease: 'none', scrollTrigger: st }
-          )
-          gsap.fromTo(leftFrontRef.current,  { x: 0, y: 0 }, { x: '-30vw', y: '20vh', ease: 'none', scrollTrigger: st })
-          gsap.fromTo(footerRef.current,     { y: 0 }, { y: '10vh', ease: 'none', scrollTrigger: st })
+          const st = {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true,
+          }
+          const tl = gsap.timeline({ scrollTrigger: st })
+
+          // PHASE 1: Swans swim to center
+          tl.fromTo(swanLeftRef.current, { x: '-40vw', y: 0, scale: 1 }, { x: 0, y: 0, scale: 1, ease: 'power1.out', duration: 1 }, 0)
+          tl.fromTo(swanRightRef.current, { x: '40vw', y: 0, scale: 1 }, { x: 0, y: 0, scale: 1, ease: 'power1.out', duration: 1 }, 0)
+
+          // PHASE 2: Entire scene parallax
+          const pStart = 1
+          const pDur = 2
+
+          tl.to(swanLeftRef.current, { y: '150vh', scale: 4.5, transformOrigin: '50% 50%', ease: 'none', duration: pDur }, pStart)
+          tl.to(swanRightRef.current, { y: '150vh', scale: 4.5, transformOrigin: '50% 50%', ease: 'none', duration: pDur }, pStart)
+
+          tl.fromTo(backgroundRef.current, { y: 0, scale: 1 }, { y: -25, scale: 1.08, transformOrigin: '50% 50%', ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(rightBackRef.current, { x: 0, y: 0 }, { x: 50, y: -20, ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(leftBackRef.current, { x: 0, y: 0 }, { x: -50, y: -20, ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(midgroundRef.current, { scale: 1, y: 0 }, { scale: 1.4, y: '5vh', transformOrigin: '50% 50%', ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(rightFrontRef.current, { x: 0, y: 0 }, { x: '30vw', y: '20vh', ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(mainArchRef.current, { scale: 1, y: 0 }, { scale: 4.5, y: 0, transformOrigin: '50% 50%', ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(leftFrontRef.current, { x: 0, y: 0 }, { x: '-30vw', y: '20vh', ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(footerRef.current, { y: 0 }, { y: '10vh', ease: 'none', duration: pDur }, pStart)
 
           ScrollTrigger.refresh()
         })
@@ -274,7 +261,7 @@ export default function ParallaxScene() {
               left      : '-4%',
               width     : '108%',
               height    : 'auto',
-              zIndex    : 2,
+              zIndex    : 8,
               display   : 'block',
               userSelect: 'none',
               willChange: 'transform',
@@ -383,6 +370,43 @@ export default function ParallaxScene() {
               willChange: 'transform',
             }}
           />
+
+          {/* ── z:10 · SWANS (Visible above the main arch) ── */}
+          <div
+            ref={swanLeftRef}
+            style={{
+              position  : 'absolute',
+              bottom    : '10%',
+              left      : '50%',
+              marginLeft: '-4.6%',
+              width     : '5%',
+              height    : 'auto',
+              display   : 'block',
+              zIndex    : 10,
+              willChange: 'transform',
+            }}
+          >
+            {/* Left Swan faces right */}
+            <img src="/svgs/swan.svg" alt="" style={{ width: '100%', height: 'auto', display: 'block', transform: 'scaleX(-1)' }} draggable={false} />
+          </div>
+
+          <div
+            ref={swanRightRef}
+            style={{
+              position  : 'absolute',
+              bottom    : '10%',
+              left      : '50%',
+              marginLeft: '-0.4%', // Overlap for beaks
+              width     : '5%',
+              height    : 'auto',
+              display   : 'block',
+              zIndex    : 10,
+              willChange: 'transform',
+            }}
+          >
+            {/* Right Swan faces left */}
+            <img src="/svgs/swan.svg" alt="" style={{ width: '100%', height: 'auto', display: 'block' }} draggable={false} />
+          </div>
 
           {/* ── z:8 · MAIN ARCH ★★★ (1064×1078) ────────────────────────
               55.4% wide (1064/1920). Bottom-anchored — base grounded.
