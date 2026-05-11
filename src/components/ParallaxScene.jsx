@@ -73,6 +73,7 @@ export default function ParallaxScene() {
   const mainElementRef = useRef(null)       // z:7 — gazebo/mandap
   const mainArchRef    = useRef(null)       // z:8 — the arch
   const leftFrontRef   = useRef(null)       // z:9 — FRONTMOST
+  const midgroundRef   = useRef(null)       // Shared wrapper for gazebo & fence
 
   useEffect(() => {
     let ctx
@@ -115,23 +116,17 @@ export default function ParallaxScene() {
             { x: -200, y: -60, ease: 'none', scrollTrigger: st }
           )
 
-          // z:5 · Fence / Pool — scales slightly to match the scene
-          gsap.fromTo(fenceRef.current,
+          // z:5 & z:7 · MIDGROUND WRAPPER (Fence + Gazebo)
+          // Scales together to guarantee the stairs stay perfectly aligned with the balustrade
+          gsap.fromTo(midgroundRef.current,
             { scale: 1, y: 0 },
-            { scale: 1.1, y: '5vh', transformOrigin: '50% 100%', ease: 'none', scrollTrigger: st }
+            { scale: 1.6, y: '5vh', transformOrigin: '50% 50%', ease: 'none', scrollTrigger: st }
           )
 
           // z:6 · Right Front — clears the screen completely
           gsap.fromTo(rightFrontRef.current,
             { x: 0, y: 0 },
             { x: '30vw', y: '20vh', ease: 'none', scrollTrigger: st }
-          )
-
-          // z:7 · Gazebo/Mandap — perfectly framed and rests on the balustrade
-          gsap.fromTo(mainElementRef.current,
-            { scale: 1, y: 0 },
-            { scale: 1.3, y: '10vh', transformOrigin: '50% 50%',
-              ease: 'none', scrollTrigger: st }
           )
 
           // z:8 · MAIN ARCH — zooms exactly enough to clear the screen
@@ -166,13 +161,11 @@ export default function ParallaxScene() {
           )
           gsap.fromTo(rightBackRef.current,  { x: 0, y: 0 }, { x: 50, y: -20, ease: 'none', scrollTrigger: st })
           gsap.fromTo(leftBackRef.current,   { x: 0, y: 0 }, { x: -50, y: -20, ease: 'none', scrollTrigger: st })
-          gsap.fromTo(fenceRef.current,      { scale: 1, y: 0 }, { scale: 1.05, y: '5vh', transformOrigin: '50% 100%', ease: 'none', scrollTrigger: st })
-          gsap.fromTo(rightFrontRef.current, { x: 0, y: 0 }, { x: '30vw', y: '20vh', ease: 'none', scrollTrigger: st })
-          gsap.fromTo(mainElementRef.current,
+          gsap.fromTo(midgroundRef.current,
             { scale: 1, y: 0 },
-            { scale: 1.2, y: '5vh', transformOrigin: '50% 50%',
-              ease: 'none', scrollTrigger: st }
+            { scale: 1.4, y: '5vh', transformOrigin: '50% 50%', ease: 'none', scrollTrigger: st }
           )
+          gsap.fromTo(rightFrontRef.current, { x: 0, y: 0 }, { x: '30vw', y: '20vh', ease: 'none', scrollTrigger: st })
           gsap.fromTo(mainArchRef.current,
             { scale: 1, y: 0 },
             { scale: 4.5, y: 0, transformOrigin: '50% 50%',
@@ -328,26 +321,47 @@ export default function ParallaxScene() {
             }}
           />
 
-          {/* ── z:5 · FENCE / BALUSTRADE / POOL (1920×228) ──────────────
-              Full-width strip. bottom:20% = sits above the lawn.
-              Pool with swans visible here.                           */}
-          <img
-            ref={fenceRef}
-            src="/svgs/fence.svg"
-            alt=""
-            draggable={false}
-            style={{
-              position  : 'absolute',
-              bottom    : '14%',
-              left      : 0,
-              width     : '100%',
-              height    : 'auto',
-              zIndex    : 5,
-              display   : 'block',
-              userSelect: 'none',
-              willChange: 'transform',
-            }}
-          />
+          {/* ── MIDGROUND GROUP (Fence & Gazebo) ──
+              Wrapped together so they zoom as a single locked unit,
+              preventing the stairs from sliding off the balustrade.  */}
+          <div ref={midgroundRef} style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 5, willChange: 'transform' }}>
+            
+            {/* z:5 · Fence / Pool */}
+            <img
+              ref={fenceRef}
+              src="/svgs/fence.svg"
+              alt=""
+              draggable={false}
+              style={{
+                position  : 'absolute',
+                bottom    : '14%',
+                left      : 0,
+                width     : '100%',
+                height    : 'auto',
+                display   : 'block',
+                userSelect: 'none',
+              }}
+            />
+
+            {/* z:7 · Gazebo/Mandap 
+                Initial bottom: 24% perfectly sits the stairs ON the balustrade */}
+            <img
+              ref={mainElementRef}
+              src="/svgs/main-element.svg"
+              alt=""
+              draggable={false}
+              style={{
+                position  : 'absolute',
+                bottom    : '20%',
+                left      : '50%',
+                marginLeft: '-17.5%',
+                width     : '35%',
+                height    : 'auto',
+                display   : 'block',
+                userSelect: 'none',
+              }}
+            />
+          </div>
 
           {/* ── z:6 · RIGHT FRONT FOLIAGE (518×762) ─────────────────────
               Behind arch but in front of fence.
@@ -359,32 +373,11 @@ export default function ParallaxScene() {
             draggable={false}
             style={{
               position  : 'absolute',
-              bottom    : '-5%',
+              bottom    : '-8%',
               right     : '-2%',
               width     : '32%',
               height    : 'auto',
               zIndex    : 6,
-              display   : 'block',
-              userSelect: 'none',
-              willChange: 'transform',
-            }}
-          />
-
-          {/* ── z:7 · GAZEBO / MANDAP (604×412) ─────────────────────────
-              35% wide. Sits BEHIND the arch.                         */}
-          <img
-            ref={mainElementRef}
-            src="/svgs/main-element.svg"
-            alt=""
-            draggable={false}
-            style={{
-              position  : 'absolute',
-              top       : '20%',
-              left      : '50%',
-              marginLeft: '-17.5%',
-              width     : '35%',
-              height    : 'auto',
-              zIndex    : 7,
               display   : 'block',
               userSelect: 'none',
               willChange: 'transform',
