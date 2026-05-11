@@ -115,22 +115,22 @@ export default function ParallaxScene() {
             { x: -200, y: -60, ease: 'none', scrollTrigger: st }
           )
 
-          // z:5 · Fence / Pool — barely scales to keep original proportion
+          // z:5 · Fence / Pool — scales slightly to match the scene
           gsap.fromTo(fenceRef.current,
             { scale: 1, y: 0 },
-            { scale: 1.05, y: 0, transformOrigin: '50% 100%', ease: 'none', scrollTrigger: st }
+            { scale: 1.1, y: '5vh', transformOrigin: '50% 100%', ease: 'none', scrollTrigger: st }
           )
 
-          // z:6 · Right Front — stays visible in the corner
+          // z:6 · Right Front — clears the screen completely
           gsap.fromTo(rightFrontRef.current,
-            { scale: 1, x: 0, y: 0 },
-            { scale: 1.1, x: '8vw', y: '5vh', transformOrigin: '100% 100%', ease: 'none', scrollTrigger: st }
+            { x: 0, y: 0 },
+            { x: '30vw', y: '20vh', ease: 'none', scrollTrigger: st }
           )
 
-          // z:7 · Gazebo/Mandap — gentle zoom, no Y push
+          // z:7 · Gazebo/Mandap — perfectly framed and rests on the balustrade
           gsap.fromTo(mainElementRef.current,
             { scale: 1, y: 0 },
-            { scale: 1.3, y: 0, transformOrigin: '50% 50%',
+            { scale: 1.3, y: '10vh', transformOrigin: '50% 50%',
               ease: 'none', scrollTrigger: st }
           )
 
@@ -141,16 +141,16 @@ export default function ParallaxScene() {
               ease: 'none', scrollTrigger: st }
           )
 
-          // z:9 · Left Front — stays visible in the corner
+          // z:9 · Left Front — clears the screen completely
           gsap.fromTo(leftFrontRef.current,
-            { scale: 1, x: 0, y: 0 },
-            { scale: 1.1, x: '-8vw', y: '5vh', transformOrigin: '0% 100%', ease: 'none', scrollTrigger: st }
+            { x: 0, y: 0 },
+            { x: '-30vw', y: '20vh', ease: 'none', scrollTrigger: st }
           )
 
-          // z:2 · Footer / Lawn — gentle drop
+          // z:2 · Footer / Lawn — exits downward to reveal pool
           gsap.fromTo(footerRef.current,
             { y: 0 },
-            { y: '5vh', ease: 'none', scrollTrigger: st }
+            { y: '20vh', ease: 'none', scrollTrigger: st }
           )
 
           ScrollTrigger.refresh()
@@ -164,13 +164,13 @@ export default function ParallaxScene() {
             { y: -25, scale: 1.08, transformOrigin: '50% 50%',
               ease: 'none', scrollTrigger: st }
           )
-          gsap.fromTo(rightBackRef.current,  { x: 0, y: 0 }, { x: 20, y: -10, ease: 'none', scrollTrigger: st })
-          gsap.fromTo(leftBackRef.current,   { x: 0, y: 0 }, { x: -20, y: -10, ease: 'none', scrollTrigger: st })
-          gsap.fromTo(fenceRef.current,      { scale: 1, y: 0 }, { scale: 1.05, y: 0, transformOrigin: '50% 100%', ease: 'none', scrollTrigger: st })
-          gsap.fromTo(rightFrontRef.current, { scale: 1, x: 0, y: 0 }, { scale: 1.1, x: '8vw', y: '5vh', transformOrigin: '100% 100%', ease: 'none', scrollTrigger: st })
+          gsap.fromTo(rightBackRef.current,  { x: 0, y: 0 }, { x: 50, y: -20, ease: 'none', scrollTrigger: st })
+          gsap.fromTo(leftBackRef.current,   { x: 0, y: 0 }, { x: -50, y: -20, ease: 'none', scrollTrigger: st })
+          gsap.fromTo(fenceRef.current,      { scale: 1, y: 0 }, { scale: 1.05, y: '5vh', transformOrigin: '50% 100%', ease: 'none', scrollTrigger: st })
+          gsap.fromTo(rightFrontRef.current, { x: 0, y: 0 }, { x: '30vw', y: '20vh', ease: 'none', scrollTrigger: st })
           gsap.fromTo(mainElementRef.current,
             { scale: 1, y: 0 },
-            { scale: 1.3, y: 0, transformOrigin: '50% 50%',
+            { scale: 1.2, y: '5vh', transformOrigin: '50% 50%',
               ease: 'none', scrollTrigger: st }
           )
           gsap.fromTo(mainArchRef.current,
@@ -178,8 +178,8 @@ export default function ParallaxScene() {
             { scale: 4.5, y: 0, transformOrigin: '50% 50%',
               ease: 'none', scrollTrigger: st }
           )
-          gsap.fromTo(leftFrontRef.current,  { scale: 1, x: 0, y: 0 }, { scale: 1.1, x: '-8vw', y: '5vh', transformOrigin: '0% 100%', ease: 'none', scrollTrigger: st })
-          gsap.fromTo(footerRef.current,     { y: 0 }, { y: '5vh', ease: 'none', scrollTrigger: st })
+          gsap.fromTo(leftFrontRef.current,  { x: 0, y: 0 }, { x: '-30vw', y: '20vh', ease: 'none', scrollTrigger: st })
+          gsap.fromTo(footerRef.current,     { y: 0 }, { y: '10vh', ease: 'none', scrollTrigger: st })
 
           ScrollTrigger.refresh()
         })
