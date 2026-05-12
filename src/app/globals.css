@@ -2,15 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --cream: #faf6f0;
-  --blush: #f0d9d0;
-  --sage: #8fa882;
-  --dusty-rose: #c4857a;
-  --gold: #c9a96e;
-  --warm-white: #fdfaf6;
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Josefin+Slab:wght@300;400;600&family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
+/* ========================================
+   1. THE HERITAGE WARM VARIABLE ENGINE
+   ======================================== */
+@layer base {
+  :root {
+    /* Primary Canvas - Heritage Warm Palette */
+    --background: 44 43% 94%;    /* Paper #F8F4E9 */
+    --foreground: 240 10% 4%;    /* Ink #0E0E10 */
+    
+    /* Brand Accents */
+    --primary: 38 48% 60%;       /* Champagne #C9A66B */
+    --primary-dark: 38 42% 38%;  /* Champagne DK #8A6F3A */
+    --primary-light: 41 55% 78%; /* Champagne LT #E5D2A6 */
+    
+    /* Surface Elements */
+    --muted: 42 22% 91%;         /* Bone #F5F1E8 */
+    --card: 42 22% 91%;          /* Bone #F5F1E8 */
+    --popover: 40 40% 97%;       /* Cream #FAF7F0 */
+    
+    /* Text Hierarchy */
+    --text-body: 240 6% 24%;     /* Graphite #3A3A42 */
+    --text-charcoal: 240 7% 13%; /* Charcoal #1F1F24 */
+
+    /* Typography Foundations */
+    --font-display: 'EB Garamond', serif;
+    --font-body: 'Josefin Slab', serif;
+    --font-ui: 'Source Sans Pro', sans-serif;
+  }
 }
 
+/* ========================================
+   2. PREMIUM GLOBAL RESET & MICRO-INTERACTIONS
+   ======================================== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -19,11 +45,183 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background-color: var(--warm-white);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
   overflow-x: hidden;
+  font-family: var(--font-body);
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&display=swap');
+/* Custom Selection - Replace default blue with brand accent */
+::selection {
+  background-color: hsl(var(--primary) / 0.2); /* Subtle Champagne */
+  color: hsl(var(--foreground)); /* Ink */
+}
+
+/* Premium Focus States */
+:focus-visible {
+  outline: 2px solid hsl(var(--primary-dark));
+  outline-offset: 2px;
+}
+
+/* ========================================
+   3. UTILITY CLASSES FOR "EDITORIAL MOMENTS"
+   ======================================== */
+@layer components {
+  /* Editorial Header - Apply to H1 and H2 tags */
+  .text-editorial {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: hsl(var(--foreground));
+  }
+
+  /* Narrative Prose - For long-form descriptions */
+  .text-narrative {
+    font-family: var(--font-body);
+    line-height: 1.6;
+    color: hsl(var(--text-body));
+  }
+
+  /* Premium Glassmorphism - For navigation and cards */
+  .glass-premium {
+    background: hsl(var(--muted) / 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--primary-light) / 0.2);
+  }
+
+  /* Glassmorphism navigation support */
+  .glass-nav {
+    background: transparent;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: background-color 400ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .glass-nav.scrolled {
+    background: hsl(var(--muted) / 0.9);
+    border-color: hsl(var(--primary-light) / 0.15);
+  }
+
+  /* UI Typography - For navigation and UI elements */
+  .text-ui {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Scroll progress indicator */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--scroll-progress, 0%);
+    height: 4px;
+    z-index: 9999;
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--primary-dark)));
+    box-shadow: 0 0 18px rgba(201, 166, 107, 0.22);
+    transition: width 160ms ease-out;
+  }
+
+  /* Staggered reveal support */
+  .lazy-reveal {
+    opacity: 0;
+    transform: translateY(1.5rem) scale(0.98);
+    transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+
+  .lazy-reveal.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* Text fill scroll support */
+  .text-fill {
+    background-image: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--foreground)));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    transition: background-position 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .text-fill.active {
+    background-position: 100% 50%;
+  }
+
+  /* Scroll snap utilities */
+  .snap-container {
+    scroll-snap-type: y mandatory;
+  }
+
+  .snap-child {
+    scroll-snap-align: start;
+  }
+
+  .horizontal-scroll-lock {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .horizontal-scroll-child {
+    scroll-snap-align: center;
+  }
+}
+
+/* ========================================
+   4. TRANSITION & MOTION BASELINE
+   ======================================== */
+@layer utilities {
+  /* Primary luxury transition - Quintic Out easing */
+  .transition-luxury {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transition-duration: 600ms;
+  }
+
+  /* Page entry animation timing */
+  .transition-page-entry {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    transition-duration: 1200ms;
+  }
+
+  /* Hover effects - Snappy & Responsive */
+  .transition-hover {
+    transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+    transition-duration: 300ms;
+  }
+
+  /* Section scroll transitions - Fluid & Effortless */
+  .transition-scroll {
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transition-duration: 800ms;
+  }
+
+  /* Modal/Drawer transitions - Weighty & Premium */
+  .transition-modal {
+    transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+    transition-duration: 500ms;
+  }
+
+  /* Hover spring effect */
+  .hover-spring {
+    transition: transform 300ms cubic-bezier(0.33, 1, 0.68, 1),
+      box-shadow 300ms cubic-bezier(0.33, 1, 0.68, 1),
+      border-color 300ms cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .hover-spring:hover {
+    transform: translateY(-8px);
+  }
+}
