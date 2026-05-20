@@ -82,7 +82,7 @@ export default function BrandStorySection() {
     if (relative === 0) {
       return {
         opacity: 1,
-        scale: 1,
+        scale: 0.96,
         x: '0%',
         y: '0%',
         zIndex: 30,
@@ -96,9 +96,9 @@ export default function BrandStorySection() {
     if (relative === -1) {
       return {
         opacity: 1,
-        scale: 0.28,
-        x: '-44%',
-        y: '-44%',
+        scale: 0.22,
+        x: '-40%',
+        y: '-40%',
         zIndex: 10,
       };
     }
@@ -109,9 +109,9 @@ export default function BrandStorySection() {
 
     return {
       opacity: 1,
-      scale: 0.28,
-      x: '44%',
-      y: '44%',
+      scale: 0.22,
+      x: '40%',
+      y: '40%',
       zIndex: 20,
     };
   };
@@ -130,7 +130,7 @@ export default function BrandStorySection() {
         
         {/* LABELS */}
 
-        <div className="absolute top-[10%] left-[8%] z-[100]">
+        <div className="absolute top-[8%] left-[calc(50%-36vw)] z-[100] max-w-[28rem]">
           <div className="flex items-center gap-4">
             <div className="w-14 h-px bg-[#B7A38B]" />
 
@@ -147,8 +147,8 @@ export default function BrandStorySection() {
           </div>
         </div>
 
-        <div className="absolute bottom-[10%] right-[8%] z-[100]">
-          <div className="flex items-center gap-4">
+        <div className="absolute bottom-[8%] left-[calc(50%+36vw)] z-[100] max-w-[28rem] text-right">
+          <div className="flex items-center gap-4 justify-end">
             <p
               className="
                 text-[#8D7B68]
@@ -166,7 +166,7 @@ export default function BrandStorySection() {
 
         {/* LEFT NAV */}
 
-        <div className="absolute left-8 top-1/2 -translate-y-1/2 z-[100]">
+        <div className="absolute left-[calc(50%-36vw)] top-1/2 -translate-y-1/2 z-[100]">
           <div className="flex flex-col gap-4">
             {scenes.map((scene, i) => (
               <div
@@ -218,8 +218,8 @@ export default function BrandStorySection() {
                 <div
                   className="
                     relative
-                    w-[82vw]
-                    max-w-6xl
+                    w-[70vw]
+                    max-w-5xl
                     aspect-[16/9]
                     overflow-hidden
                     rounded-[20px]
