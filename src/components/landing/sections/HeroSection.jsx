@@ -17,10 +17,7 @@ export default function HeroSection() {
             </span>
           ))}
         </h1>
-        <p className={styles.heroCopy}>
-          We design layered, emotionally precise celebrations across intimate estates, destination weekends,
-          and high-stakes brand occasions.
-        </p>
+
       </div>
     </section>
   )

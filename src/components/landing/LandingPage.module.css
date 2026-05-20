@@ -104,14 +104,24 @@
 
 .experienceOverlay {
   position: absolute;
-  top: 16vh;
-  left: 7vw;
+.experienceOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 20;
-  width: min(42vw, 680px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 6vh;
   pointer-events: none;
-  color: var(--cream);
+  color: hsl(var(--foreground));
   text-shadow: 0 18px 50px rgba(14, 14, 16, 0.32);
   animation: pageEnter 1200ms var(--page-ease) both;
+}
 }
 
 .experienceOverlay h1 {

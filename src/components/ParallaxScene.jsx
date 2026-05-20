@@ -70,9 +70,10 @@ export default function ParallaxScene() {
   const leftBackRef    = useRef(null)       // z:4
   const fenceRef       = useRef(null)       // z:5
   const rightFrontRef  = useRef(null)       // z:6
+  const leftFrontRef   = useRef(null)       // z:9 — left front foliage (fastest exit)
   const mainElementRef = useRef(null)       // z:7 — gazebo/mandap
   const mainArchRef    = useRef(null)       // z:8 — the arch
-  const leftFrontRef   = useRef(null)       // z:9 — FRONTMOST
+  const overlayRef   = useRef(null) // text overlay for final frame
   const midgroundRef   = useRef(null)       // Shared wrapper for gazebo & fence
   const swanLeftRef    = useRef(null)       // z:7 — left swan
   const swanRightRef   = useRef(null)       // z:7 — right swan
@@ -126,6 +127,7 @@ export default function ParallaxScene() {
           tl.fromTo(mainArchRef.current, { scale: 1, y: 0 }, { scale: 4.5, y: 0, transformOrigin: '50% 50%', ease: 'none', duration: pDur }, pStart)
           tl.fromTo(leftFrontRef.current, { x: 0, y: 0 }, { x: '-30vw', y: '20vh', ease: 'none', duration: pDur }, pStart)
           tl.fromTo(footerRef.current, { y: 0 }, { y: '20vh', ease: 'none', duration: pDur }, pStart)
+          tl.fromTo(overlayRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, ease: 'power1.out', duration: 0.6 }, pStart + 0.2)
 
           ScrollTrigger.refresh()
         })
@@ -460,7 +462,16 @@ export default function ParallaxScene() {
           />
 
         </div>
-        {/* ── end scene container ── */}
+          {/* ── Text Overlay for final frame ────────────────────── */}
+          <div ref={overlayRef} className="parallax-text-overlay">
+            <p className="overlay-kicker">Happy Weddings</p>
+            <h1>
+              Designed like a destination.<span>Remembered like home.</span>
+            </h1>
+            <p className="overlay-sub">
+              Immersive wedding production, heritage hospitality, and event architecture for celebrations that move with intention.
+            </p>
+          </div>
 
       </div>
       {/* ── end sticky ── */}
