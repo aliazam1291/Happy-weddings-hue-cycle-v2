@@ -14,7 +14,7 @@ const StackCard = ({ service, index, progress, range, targetScale }) => {
           scale,
           // Cards are stacked with a tighter vertical offset
           top: `calc(10% + ${index * 20}px)`, 
-          backgroundColor: "#F5F1E8", // Bone
+          backgroundColor: "#F8F4E9", // Paper
         }}
         className="relative w-full max-w-5xl h-[550px] border border-[#C9A66B]/20 shadow-2xl p-10 md:p-16 flex flex-col md:flex-row gap-10 origin-top"
       >

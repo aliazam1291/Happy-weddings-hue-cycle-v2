@@ -3,6 +3,9 @@ import './globals.css'
 export const metadata = {
   title: 'Happy Weddings - Premium Event Planning',
   description: 'Crafting unforgettable celebrations with timeless elegance.',
+  icons: {
+    icon: '/logo.svg',
+  },
 }
 
 export default function RootLayout({ children }) {

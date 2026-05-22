@@ -49,7 +49,7 @@ function ExperienceCard({ exp, index, progress, range, targetScale }) {
           scale,
           top: `calc(8% + ${index * 28}px)`,
         }}
-        className="relative w-full max-w-6xl h-[520px] md:h-[560px] bg-[#F5F1E8] border border-[#C9A66B]/15 shadow-[0_12px_60px_rgba(0,0,0,0.08)] origin-top overflow-hidden flex"
+        className="relative w-full max-w-6xl h-[520px] md:h-[560px] bg-[#F8F4E9] border border-[#C9A66B]/15 shadow-[0_12px_60px_rgba(0,0,0,0.08)] origin-top overflow-hidden flex"
       >
         {/* ── LEFT: Counter + Question + Answer ─────────────────── */}
         <div className="w-full lg:w-[55%] h-full flex flex-col justify-between p-8 md:p-12 lg:p-14 relative z-10">
@@ -86,7 +86,7 @@ function ExperienceCard({ exp, index, progress, range, targetScale }) {
           <div
             className="absolute inset-0 z-10 pointer-events-none"
             style={{
-              background: 'linear-gradient(105deg, #F5F1E8 2%, transparent 18%)',
+              background: 'linear-gradient(105deg, #F8F4E9 2%, transparent 18%)',
             }}
           />
           <img

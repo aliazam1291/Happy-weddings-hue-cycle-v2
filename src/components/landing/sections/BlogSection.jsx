@@ -64,7 +64,7 @@ function BlogCard({ post }) {
 
   return (
     <div ref={cardRef} className="group cursor-pointer space-y-6">
-      <div className="aspect-[4/5] md:aspect-[4/3] w-full overflow-hidden rounded-[4px] bg-[#F5F1E8] relative">
+      <div className="aspect-[4/5] md:aspect-[4/3] w-full overflow-hidden rounded-[4px] bg-[#F8F4E9] relative">
         {/* Subtle overlay on hover */}
         <div className="absolute inset-0 bg-[#0E0E10]/0 group-hover:bg-[#0E0E10]/15 transition-colors duration-500 z-10 pointer-events-none" />
         
