@@ -282,7 +282,7 @@ body {
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background: hsl(240 10% 5%);
+  background: hsl(var(--background));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -296,7 +296,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 70% 60% at 50% 60%, hsl(38 48% 20% / 0.18) 0%, transparent 70%);
+  background: radial-gradient(ellipse 70% 60% at 50% 60%, hsl(var(--primary) / 0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -320,14 +320,14 @@ body {
 .vg-title {
   font-size: clamp(2.4rem, 5vw, 5.5rem);
   font-weight: 400;
-  color: hsl(42 22% 91%);
+  color: hsl(var(--foreground));
   line-height: 1;
   margin: 0 0 1.2rem;
 }
 
 .vg-sub {
   font-size: clamp(0.9rem, 1.1vw, 1.1rem);
-  color: hsl(42 22% 91% / 0.5);
+  color: hsl(var(--text-body));
   font-weight: 300;
 }
 
@@ -367,8 +367,8 @@ body {
   border-radius: 1.2rem;
   overflow: hidden;
   cursor: pointer;
-  background: #0e0e10;
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.55);
+  background: hsl(var(--muted));
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
   transition: box-shadow 0.3s ease;
   backface-visibility: hidden;
 }
@@ -392,7 +392,7 @@ body {
 .vg-card__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(10, 8, 5, 0.92) 0%, rgba(10, 8, 5, 0.1) 55%, transparent 100%);
+  background: linear-gradient(to top, hsl(var(--background) / 0.92) 0%, hsl(var(--background) / 0.1) 55%, transparent 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -417,8 +417,8 @@ body {
 
 .vg-card__title {
   font-size: 1rem;
-  font-weight: 400;
-  color: hsl(42 22% 91%);
+  font-weight: 600;
+  color: hsl(var(--foreground));
   text-align: center;
 }
 
@@ -437,7 +437,7 @@ body {
   font-size: 0.7rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: hsl(42 22% 91% / 0.3);
+  color: hsl(var(--foreground) / 0.3);
   animation: vg-bounce 2s ease-in-out infinite;
 }
 
@@ -452,7 +452,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: rgba(6, 5, 3, 0.88);
+  background: hsl(var(--background) / 0.88);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   display: flex;
@@ -496,7 +496,7 @@ body {
   transform: rotateX(6deg);
   box-shadow:
     0 0 0 2px hsl(var(--primary) / 0.25),
-    0 32px 80px rgba(0, 0, 0, 0.7),
+    0 32px 80px rgba(0, 0, 0, 0.15),
     inset 0 0 60px rgba(201, 166, 107, 0.04);
 }
 
@@ -505,7 +505,7 @@ body {
   display: block;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  background: #000;
+  background: hsl(var(--muted));
 }
 
 /* Info row */
@@ -527,7 +527,7 @@ body {
 .vg-modal__title {
   font-size: clamp(1.6rem, 3vw, 2.8rem);
   font-weight: 400;
-  color: hsl(42 22% 91%);
+  color: hsl(var(--foreground));
   margin: 0;
 }
 
@@ -561,11 +561,11 @@ body {
   top: -3rem;
   right: 0;
   background: none;
-  border: 1px solid hsl(42 22% 91% / 0.18);
+  border: 1px solid hsl(var(--foreground) / 0.18);
   border-radius: 50%;
   width: 2.4rem;
   height: 2.4rem;
-  color: hsl(42 22% 91% / 0.55);
+  color: hsl(var(--foreground) / 0.55);
   font-size: 0.85rem;
   cursor: pointer;
   display: flex;
@@ -575,9 +575,9 @@ body {
 }
 
 .vg-modal__close:hover {
-  color: hsl(42 22% 91%);
-  border-color: hsl(42 22% 91% / 0.5);
-  background: hsl(42 22% 91% / 0.06);
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--foreground) / 0.5);
+  background: hsl(var(--foreground) / 0.06);
 }
 
 /* ══════════════════════════════════════════════════════════════

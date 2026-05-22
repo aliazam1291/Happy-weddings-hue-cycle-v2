@@ -40,8 +40,13 @@ export default function LandingNav() {
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
-      <a className="font-display text-2xl md:text-3xl text-[#0E0E10] tracking-tight hover:text-[#C9A66B] transition-colors duration-300" href="#top" aria-label="Happy Weddings home">
-        Happy Weddings
+      <a href="#top" aria-label="Happy Weddings home" className="flex items-center">
+        <img
+          src="/logo.svg"
+          alt="Happy Weddings"
+          className="h-10 md:h-12 w-auto object-contain"
+          draggable={false}
+        />
       </a>
       <nav className="hidden md:flex items-center gap-8" aria-label="Primary navigation">
         {navItems.map((item, i) => (
