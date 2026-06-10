@@ -13,13 +13,14 @@ export function PageLoader({ onComplete }) {
     const t0 = setTimeout(() => setPhase(1), 100)
     const t1 = setTimeout(() => setPhase(2), 600)
     const t2 = setTimeout(() => setPhase(3), 1500)
+    // start the exit; onComplete fires from onExitComplete below, so it can
+    // never be lost to the unmount/timer race that left the page "unloaded"
     const t3 = setTimeout(() => { setPhase(4); setVisible(false) }, 2700)
-    const t4 = setTimeout(() => onComplete?.(), 3550)
-    return () => [t0, t1, t2, t3, t4].forEach(clearTimeout)
-  }, [onComplete])
+    return () => [t0, t1, t2, t3].forEach(clearTimeout)
+  }, [])
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={() => onComplete?.()}>
       {visible && (
         <motion.div
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden"

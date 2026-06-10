@@ -309,10 +309,6 @@ function ArchFrame() {
           <stop offset="100%" stopColor="hsl(25 20% 8% / 0.55)" />
         </linearGradient>
 
-        {/* soft blur for ambient-occlusion shadow around the opening */}
-        <filter id="aoBlur" x="-25%" y="-25%" width="150%" height="150%">
-          <feGaussianBlur stdDeviation="10" />
-        </filter>
 
         <linearGradient id="columnShade" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stopColor="hsl(30 18% 22%)" />
@@ -378,8 +374,11 @@ function ArchFrame() {
       {/* hard contact shadow where the soffit meets the wall face */}
       <path fill="none" stroke="hsl(20 20% 4% / 0.5)" strokeWidth="5" d={outerArch.replace('Z', '')} style={{ mixBlendMode: 'multiply' }} />
 
-      {/* ── 2b · Ambient occlusion — the opening recedes into shadow ── */}
-      <path fill="none" stroke="hsl(22 24% 6% / 0.85)" strokeWidth="22" filter="url(#aoBlur)" d={innerArch.replace('Z', '')} />
+      {/* ── 2b · Ambient occlusion — soft layered shadow so the opening
+              recedes (stacked strokes fake a blur without a costly filter) ── */}
+      <path fill="none" stroke="hsl(22 24% 6% / 0.5)" strokeWidth="20" d={innerArch.replace('Z', '')} />
+      <path fill="none" stroke="hsl(22 24% 6% / 0.45)" strokeWidth="11" d={innerArch.replace('Z', '')} />
+      <path fill="none" stroke="hsl(22 24% 5% / 0.4)" strokeWidth="5" d={innerArch.replace('Z', '')} />
 
       {/* ── 3 · Stone block coursing on the face only ── */}
       <path fillRule="evenodd" fill="url(#blocks)" d={`M0 0 H1200 V1000 H0 Z ${outerArch}`} />
@@ -411,7 +410,8 @@ function ArchFrame() {
       {[{ x: 348 }, { x: 814 }].map(({ x }, i) => (
         <g key={i}>
           {/* cast shadow on the wall to the right of the column shaft */}
-          <rect x={x + 38} y="600" width="10" height="410" fill="hsl(22 22% 5% / 0.4)" filter="url(#aoBlur)" />
+          <rect x={x + 38} y="600" width="9" height="410" fill="hsl(22 22% 5% / 0.32)" />
+          <rect x={x + 38} y="600" width="5" height="410" fill="hsl(22 22% 5% / 0.3)" />
           <rect x={x} y="600" width="38" height="410" fill="url(#columnShade)" />
           {/* lit left edge + core shadow on the right = rounded shaft */}
           <rect x={x} y="600" width="5" height="410" fill="hsl(36 40% 64% / 0.45)" />
