@@ -18,7 +18,7 @@ export function FounderSection() {
     <section
       ref={ref}
       className="relative w-full overflow-hidden"
-      style={{ backgroundColor: 'hsl(24 12% 10%)' }}
+      style={{ backgroundColor: 'hsl(34 33% 83%)' }}
     >
       <div className="flex flex-col lg:flex-row min-h-screen">
         {/* Left — portrait */}
@@ -69,7 +69,8 @@ export function FounderSection() {
               whileInView={{ y: '0%' }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 1.1, ease: EASE }}
-              className="font-display font-light text-5xl md:text-6xl xl:text-7xl text-ivory tracking-[-0.02em] leading-[0.95]"
+              className="font-display font-light text-5xl md:text-6xl xl:text-7xl tracking-[-0.02em] leading-[0.95]"
+              style={{ color: 'hsl(24 12% 10%)' }}
             >
               A quiet conviction,
             </motion.h2>
@@ -94,9 +95,9 @@ export function FounderSection() {
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.9, delay: 0.25, ease: EASE }}
             className="border-l-2 pl-6 mb-10"
-            style={{ borderColor: 'hsl(32 31% 51% / 0.5)' }}
+            style={{ borderColor: 'hsl(32 31% 51% / 0.6)' }}
           >
-            <p className="font-display italic text-xl md:text-2xl text-ivory/75 leading-relaxed">
+            <p className="font-display italic text-xl md:text-2xl leading-relaxed" style={{ color: 'hsl(24 12% 10% / 0.8)' }}>
               &ldquo;A wedding should look like the people inside it — not like a wedding.&rdquo;
             </p>
           </motion.blockquote>
@@ -108,7 +109,7 @@ export function FounderSection() {
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.8, delay: 0.38, ease: EASE }}
             className="font-sans font-light text-base leading-relaxed mb-12 max-w-md"
-            style={{ color: 'hsl(34 30% 95% / 0.55)' }}
+            style={{ color: 'hsl(24 12% 10% / 0.65)' }}
           >
             Shruti Jain founded Happy Weddings in 2013 with one belief: that the people planning the most important day of your life should be artists first, operators second. Twelve years later, that belief has shaped over 350 celebrations across India and the world.
           </motion.p>
@@ -121,11 +122,11 @@ export function FounderSection() {
             transition={{ duration: 0.7, delay: 0.5, ease: EASE }}
           >
             <Link
-              href="/house"
+              href="/about"
               data-cursor="link"
               className="group inline-flex items-center gap-3"
             >
-              <span className="font-display italic text-2xl text-ivory/80 border-b border-gold/40 pb-0.5 group-hover:border-gold transition-colors duration-500">
+              <span className="font-display italic text-2xl border-b border-gold/50 pb-0.5 group-hover:border-gold transition-colors duration-500" style={{ color: 'hsl(24 12% 10% / 0.8)' }}>
                 The full story
               </span>
               <ArrowUpRight className="h-5 w-5 text-gold transition-all duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />

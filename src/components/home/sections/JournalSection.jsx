@@ -96,7 +96,7 @@ function JournalCard({ post, delay }) {
       transition={{ duration: 0.9, delay, ease: EASE }}
     >
       <Link
-        href={`/journal/${post.id}`}
+        href="/journal"
         data-cursor="link"
         className="group block"
         style={{ backgroundColor: 'hsl(34 30% 95%)' }}

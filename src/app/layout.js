@@ -4,6 +4,7 @@ import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvide
 import { CursorProvider } from '@/components/providers/CursorProvider'
 import { SiteNav } from '@/components/site/SiteNav'
 import { SiteFooter } from '@/components/site/SiteFooter'
+import { ScrollProgress } from '@/components/site/ScrollProgress'
 
 const display = Cormorant_Garamond({
   subsets: ['latin'],
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
       <body className="bg-background text-foreground antialiased">
         <SmoothScrollProvider>
           <CursorProvider>
+            <ScrollProgress />
             <SiteNav />
             <main className="relative">{children}</main>
             <SiteFooter />

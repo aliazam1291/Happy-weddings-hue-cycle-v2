@@ -11,10 +11,10 @@ export function InquiryCTA() {
   return (
     <section
       className="relative w-full overflow-hidden"
-      style={{ backgroundColor: 'hsl(24 12% 10%)' }}
+      style={{ backgroundColor: 'hsl(33 32% 90%)' }}
     >
       {/* Marquee strip top */}
-      <div className="py-6 border-b border-ivory/8">
+      <div className="py-6 border-b border-ink/10">
         <Marquee duration={55}>
           {['Timeless', 'Intentional', 'Emotional', 'Bespoke', 'Curated'].map((w, i) => (
             <span
@@ -22,7 +22,7 @@ export function InquiryCTA() {
               className="font-display italic px-10 select-none"
               style={{
                 fontSize: 'clamp(1.2rem, 3vw, 2.2rem)',
-                color: i % 3 === 2 ? 'hsl(13 60% 39%)' : 'hsl(34 30% 95% / 0.15)',
+                color: i % 3 === 2 ? 'hsl(13 60% 39%)' : 'hsl(24 12% 10% / 0.16)',
                 lineHeight: 1,
               }}
             >
@@ -52,8 +52,8 @@ export function InquiryCTA() {
             whileInView={{ y: '0%' }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 1.1, ease: EASE }}
-            className="font-display font-light text-ivory tracking-[-0.03em] text-balance"
-            style={{ fontSize: 'clamp(3.2rem, 9vw, 8rem)', lineHeight: 0.95 }}
+            className="font-display font-light tracking-[-0.03em] text-balance"
+            style={{ fontSize: 'clamp(3.2rem, 9vw, 8rem)', lineHeight: 0.95, color: 'hsl(24 12% 10%)' }}
           >
             Ready to tell
           </motion.h2>
@@ -81,7 +81,7 @@ export function InquiryCTA() {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
           className="font-display italic text-xl md:text-2xl mb-16 max-w-lg"
-          style={{ color: 'hsl(34 30% 95% / 0.45)' }}
+          style={{ color: 'hsl(24 12% 10% / 0.5)' }}
         >
           Every celebration begins with a conversation. We listen first.
         </motion.p>
@@ -96,7 +96,7 @@ export function InquiryCTA() {
             <Link
               href="/contact"
               data-cursor="link"
-              className="group inline-flex items-center gap-4 font-sans text-xs uppercase tracking-[0.22em] px-10 py-5 border border-ivory/30 text-ivory hover:bg-gold hover:border-gold hover:text-ivory transition-all duration-500"
+              className="group inline-flex items-center gap-4 font-sans text-xs uppercase tracking-[0.22em] px-10 py-5 border border-ink/30 text-ink hover:bg-gold hover:border-gold hover:text-ivory transition-all duration-500"
             >
               Start a conversation
               <span className="inline-block transition-transform duration-500 group-hover:translate-x-1">→</span>
@@ -120,7 +120,7 @@ export function InquiryCTA() {
             <span
               key={item}
               className="font-sans text-xs"
-              style={{ color: 'hsl(34 30% 95% / 0.35)' }}
+              style={{ color: 'hsl(24 12% 10% / 0.4)' }}
             >
               {item}
             </span>
@@ -129,13 +129,13 @@ export function InquiryCTA() {
       </div>
 
       {/* Bottom brand line */}
-      <div className="border-t border-ivory/8 py-6">
+      <div className="border-t border-ink/10 py-6">
         <Marquee duration={80} reverse>
           {['Happy Weddings', '·', 'Est. 2013', '·', 'Shruti Jain', '·', 'India & Beyond', '·'].map((w, i) => (
             <span
               key={i}
               className="font-sans text-[0.6rem] uppercase tracking-[0.3em] px-6"
-              style={{ color: 'hsl(34 30% 95% / 0.14)' }}
+              style={{ color: 'hsl(24 12% 10% / 0.2)' }}
             >
               {w}
             </span>

@@ -175,7 +175,7 @@ function ServiceRow({ service, flip, i }) {
             transition={{ duration: 0.7, delay: 0.4, ease: EASE }}
           >
             <Link
-              href="/experiences"
+              href="/services"
               data-cursor="link"
               className="group inline-flex items-center gap-3"
             >

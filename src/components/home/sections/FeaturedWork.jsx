@@ -54,30 +54,31 @@ export function FeaturedWork() {
     <section
       ref={sectionRef}
       className="relative overflow-hidden"
-      style={{ backgroundColor: 'hsl(24 12% 10%)' }}
+      style={{ backgroundColor: 'hsl(33 32% 90%)' }}
     >
       <div
         ref={trackRef}
         className="flex h-screen items-stretch will-change-transform"
       >
         {/* Intro panel */}
-        <div className="shrink-0 w-screen md:w-[50vw] flex flex-col justify-between p-10 md:p-16 xl:p-20 border-r border-ivory/10">
+        <div className="shrink-0 w-screen md:w-[50vw] flex flex-col justify-between p-10 md:p-16 xl:p-20 border-r border-ink/10">
           <div>
-            <p className="font-sans text-[0.65rem] uppercase tracking-[0.3em] mb-10" style={{ color: 'hsl(32 31% 51%)' }}>
+            <p className="font-sans text-[0.65rem] uppercase tracking-[0.3em] mb-10" style={{ color: 'hsl(32 31% 46%)' }}>
               — Selected Stories
             </p>
-            <h2 className="font-display font-light text-[10vw] md:text-[7vw] text-ivory tracking-[-0.02em] leading-[0.95]">
+            <h2 className="font-display font-light text-[10vw] md:text-[7vw] tracking-[-0.02em] leading-[0.95]" style={{ color: 'hsl(24 12% 10%)' }}>
               Weddings<br />
-              <span style={{ color: 'hsl(32 31% 51%)' }} className="italic">we&apos;ve had</span><br />
+              <span style={{ color: 'hsl(32 31% 46%)' }} className="italic">we&apos;ve had</span><br />
               the honour<br />
               of shaping.
             </h2>
           </div>
           <div className="flex items-end justify-between">
             <Link
-              href="/stories"
+              href="/projects"
               data-cursor="link"
-              className="group inline-flex items-center gap-3 font-sans text-xs uppercase tracking-wider text-ivory/70 hover:text-gold transition-colors duration-500"
+              className="group inline-flex items-center gap-3 font-sans text-xs uppercase tracking-wider transition-colors duration-500 hover:text-gold"
+              style={{ color: 'hsl(24 12% 10% / 0.7)' }}
             >
               View all stories
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />
@@ -101,9 +102,9 @@ export function FeaturedWork() {
 function StoryCard({ story, index }) {
   return (
     <Link
-      href={`/stories/${story.id}`}
+      href="/projects"
       data-cursor="media"
-      className="group relative shrink-0 w-[80vw] sm:w-[60vw] md:w-[42vw] lg:w-[36vw] border-r border-ivory/10 overflow-hidden flex flex-col"
+      className="group relative shrink-0 w-[80vw] sm:w-[60vw] md:w-[42vw] lg:w-[36vw] border-r border-ink/10 overflow-hidden flex flex-col"
     >
       {/* Dummy image background */}
       <img

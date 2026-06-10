@@ -7,13 +7,14 @@ import { ArchPortalHero } from '@/components/home/sections/ArchPortalHero'
 import { PinnedStatement } from '@/components/home/sections/PinnedStatement'
 import { FeaturedWork } from '@/components/home/sections/FeaturedWork'
 import { OffersSection } from '@/components/home/sections/OffersSection'
+import { ProjectsGallery } from '@/components/home/sections/ProjectsGallery'
 import { FounderSection } from '@/components/home/sections/FounderSection'
 import { NumbersSection } from '@/components/home/sections/NumbersSection'
 import { JournalSection } from '@/components/home/sections/JournalSection'
 import { InquiryCTA } from '@/components/home/sections/InquiryCTA'
 
 export function HomePage() {
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(true)
 
   return (
     <>
@@ -21,13 +22,15 @@ export function HomePage() {
       <FilmGrain opacity={0.038} />
 
       {/* Entry gate */}
-      <PageLoader onComplete={() => setLoaded(true)} />
+      {/* TEMP isolation: loader disabled */}
+      {false && <PageLoader onComplete={() => setLoaded(true)} />}
 
       {/* Sections */}
       <ArchPortalHero isLoaded={loaded} />
       <PinnedStatement />
       <FeaturedWork />
       <OffersSection />
+      <ProjectsGallery />
       <NumbersSection />
       <FounderSection />
       <JournalSection />

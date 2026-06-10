@@ -6,36 +6,28 @@ import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/cn'
-
-const NAV = [
-  { href: '/experiences', label: 'Experiences' },
-  { href: '/stories', label: 'Stories' },
-  { href: '/destinations', label: 'Destinations' },
-  { href: '/house', label: 'House' },
-  { href: '/journal', label: 'Journal' },
-]
+import { NAV } from '@/lib/content'
 
 export function SiteNav() {
   const pathname = usePathname()
   const isHome = pathname === '/'
-  const [scrolled, setScrolled] = useState(false)
-  const [revealed, setRevealed] = useState(false)
+  const [scrolled, setScrolled] = useState(!isHome)
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    // On the homepage the nav stays hidden through the pinned arch-portal hero
-    // (~3200px of scroll) and slides in once you've stepped through it.
-    // On every other page it behaves as a normal sticky nav.
-    const revealAt = isHome ? 3000 : 60
-    const fn = () => {
-      const y = window.scrollY
-      setRevealed(y > revealAt)
-      setScrolled(y > 60)
+    // On home page: navbar appears after arch scroll (3200px)
+    // On other pages: navbar is always visible
+    const isHome = pathname === '/'
+    if (!isHome) {
+      setScrolled(true)
+      return
     }
+    
+    const fn = () => setScrolled(window.scrollY > 3200)
     fn()
     window.addEventListener('scroll', fn, { passive: true })
     return () => window.removeEventListener('scroll', fn)
-  }, [isHome])
+  }, [pathname])
 
   // Hero artwork is light (sky) — ink type reads everywhere
   const lightMode = false
@@ -46,13 +38,10 @@ export function SiteNav() {
     <>
       <header
         className={cn(
-          'fixed inset-x-0 top-0 z-40 transition-all duration-700 ease-editorial',
-          revealed
-            ? 'translate-y-0 opacity-100'
-            : '-translate-y-full opacity-0 pointer-events-none',
+          'fixed inset-x-0 top-0 z-40 transition-all duration-500 ease-editorial',
           scrolled
-            ? 'bg-ivory/90 backdrop-blur-md border-b border-ink/5'
-            : 'bg-transparent',
+            ? 'bg-ivory/90 backdrop-blur-md border-b border-ink/5 opacity-100'
+            : 'pointer-events-none opacity-0',
         )}
       >
         <div className="container flex items-center justify-between h-20 md:h-24">
@@ -66,21 +55,30 @@ export function SiteNav() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-10">
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                data-cursor="link"
-                className={cn(
-                  'group relative font-sans text-[0.68rem] uppercase tracking-wider transition-colors duration-500',
-                  textClass,
-                  'hover:opacity-100 opacity-80',
-                )}
-              >
-                {item.label}
-                <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-gold transition-all duration-500 ease-editorial group-hover:w-full" />
-              </Link>
-            ))}
+            {NAV.map((item) => {
+              const active = pathname === item.href || pathname.startsWith(item.href + '/')
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  data-cursor="link"
+                  aria-current={active ? 'page' : undefined}
+                  className={cn(
+                    'group relative font-sans text-[0.68rem] uppercase tracking-wider transition-colors duration-500',
+                    textClass,
+                    active ? 'opacity-100' : 'hover:opacity-100 opacity-80',
+                  )}
+                >
+                  {item.label}
+                  <span
+                    className={cn(
+                      'absolute -bottom-0.5 left-0 h-px bg-gold transition-all duration-500 ease-editorial',
+                      active ? 'w-full' : 'w-0 group-hover:w-full',
+                    )}
+                  />
+                </Link>
+              )
+            })}
           </nav>
 
           <div className="flex items-center gap-4">
@@ -94,7 +92,7 @@ export function SiteNav() {
                   : 'border-ink/30 text-ink hover:bg-ink hover:text-ivory',
               )}
             >
-              Begin
+              Enquire
             </Link>
 
             <button

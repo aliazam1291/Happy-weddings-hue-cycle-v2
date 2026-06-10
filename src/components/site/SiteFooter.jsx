@@ -17,78 +17,85 @@ const SITEMAP = [
   {
     title: 'Work',
     links: [
-      { href: '/work', label: 'All weddings' },
-      { href: '/work?filter=destination', label: 'Destination' },
-      { href: '/work?filter=editorial', label: 'Editorial' },
+      { href: '/projects', label: 'All projects' },
+      { href: '/projects', label: 'Theme weddings' },
+      { href: '/projects', label: 'Destination' },
     ],
   },
   {
     title: 'Contact',
     links: [
-      { href: '/contact', label: 'Begin a conversation' },
-      { href: 'mailto:hello@happyweddings.in', label: 'hello@happyweddings.in' },
-      { href: 'tel:+910000000000', label: '+91 00000 00000' },
+      { href: '/contact', label: 'Enquire now' },
+      { href: 'mailto:happyweddingsforu@gmail.com', label: 'happyweddingsforu@gmail.com' },
+      { href: 'tel:+918827188884', label: '+91 88271-88884' },
+      { href: 'tel:+917313547763', label: '0731-3547763' },
     ],
   },
 ]
 
 const SOCIALS = [
-  { href: '#', label: 'Instagram' },
-  { href: '#', label: 'Pinterest' },
-  { href: '#', label: 'Vimeo' },
+  { href: 'https://instagram.com/happyweddingsofficial', label: 'Instagram' },
+  { href: 'https://facebook.com/happyweddingsofficial', label: 'Facebook' },
+  { href: 'https://youtube.com/@happyweddingsofficial', label: 'YouTube' },
 ]
 
 export function SiteFooter() {
   return (
     <footer className="relative bg-ink text-ivory">
       {/* Big editorial mark, marquee-style */}
-      <div className="py-16 border-b border-ivory/10 overflow-hidden">
+      <div className="py-20 md:py-32 border-b border-ivory/10 overflow-hidden">
         <Marquee duration={48}>
-          <span className="font-display italic text-[18vw] leading-none text-ivory/95 px-12">
+          <span className="font-display italic text-[12vw] md:text-[16vw] leading-none text-ivory/95 px-8 md:px-12">
             Happy Weddings
           </span>
-          <span className="font-display text-[18vw] leading-none text-gold px-12">✦</span>
-          <span className="font-display text-[18vw] leading-none text-ivory/15 px-12">
+          <span className="font-display text-[12vw] md:text-[16vw] leading-none text-gold px-8 md:px-12">✦</span>
+          <span className="font-display text-[12vw] md:text-[16vw] leading-none text-ivory/15 px-8 md:px-12">
             since 2013
           </span>
-          <span className="font-display text-[18vw] leading-none text-gold px-12">✦</span>
+          <span className="font-display text-[12vw] md:text-[16vw] leading-none text-gold px-8 md:px-12">✦</span>
         </Marquee>
       </div>
 
-      <div className="container py-20 grid grid-cols-1 md:grid-cols-12 gap-12">
+      <div className="container py-24 md:py-32 grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-20">
         {/* CTA column */}
         <div className="md:col-span-5">
-          <p className="eyebrow text-gold mb-8">— Begin</p>
+          <p className="eyebrow text-gold mb-6 md:mb-8">— Begin</p>
           <SplitTextReveal
             as="h2"
-            className="font-display text-display-md text-ivory tracking-editorial text-balance"
+            className="font-display text-3xl md:text-4xl lg:text-5xl text-ivory tracking-editorial text-balance leading-tight"
           >
-            Let&apos;s shape something timeless.
+            Let&apos;s plan a wedding that captures the imagination.
           </SplitTextReveal>
           <Link
             href="/contact"
             data-cursor="link"
-            className="mt-10 inline-flex items-center gap-3 group"
+            className="mt-12 md:mt-16 inline-flex items-center gap-3 group"
           >
-            <span className="font-display italic text-3xl text-ivory border-b border-gold/50 pb-1 group-hover:border-gold transition-colors">
-              hello@happyweddings.in
+            <span className="font-display italic text-xl md:text-2xl text-ivory border-b border-gold/50 pb-2 group-hover:border-gold transition-colors">
+              happyweddingsforu@gmail.com
             </span>
-            <ArrowUpRight className="h-6 w-6 text-gold transition-transform duration-500 ease-editorial group-hover:translate-x-1 group-hover:-translate-y-1" />
+            <ArrowUpRight className="h-5 w-5 md:h-6 md:w-6 text-gold transition-transform duration-500 ease-editorial group-hover:translate-x-1 group-hover:-translate-y-1" />
           </Link>
+          {/* Studio address */}
+          <address className="mt-12 md:mt-16 not-italic font-sans text-xs md:text-sm leading-relaxed text-ivory/55">
+            Happy Weddings — Studio<br />
+            415, Apollo Premier, Vijay Nagar<br />
+            Indore, India
+          </address>
         </div>
 
         {/* Sitemap columns */}
-        <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
+        <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-10 md:gap-12">
           {SITEMAP.map((col) => (
             <div key={col.title}>
-              <p className="eyebrow text-ivory/40 mb-5">{col.title}</p>
-              <ul className="space-y-3">
+              <p className="eyebrow text-ivory/40 mb-6 md:mb-8">{col.title}</p>
+              <ul className="space-y-4 md:space-y-5">
                 {col.links.map((l) => (
                   <li key={l.href + l.label}>
                     <Link
                       href={l.href}
                       data-cursor="link"
-                      className="font-display text-lg text-ivory/85 hover:text-gold transition-colors duration-500 ease-editorial"
+                      className="font-display text-lg md:text-xl text-ivory/85 hover:text-gold transition-colors duration-500 ease-editorial"
                     >
                       {l.label}
                     </Link>
@@ -103,25 +110,29 @@ export function SiteFooter() {
       {/* Terracotta accent rule — the 1% punctuation */}
       <div className="h-px bg-terracotta/70 mx-6" />
 
-      <div className="container py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-        <p className="font-sans text-xs text-ivory/50 tracking-wide">
-          © {new Date().getFullYear()} Happy Weddings by Shruti Jain. A named house.
-        </p>
-        <div className="flex items-center gap-8">
-          {SOCIALS.map((s) => (
-            <a
-              key={s.label}
-              href={s.href}
-              data-cursor="link"
-              className="font-sans text-xs uppercase tracking-wider text-ivory/65 hover:text-gold transition-colors"
-            >
-              {s.label}
-            </a>
-          ))}
+      <div className="container py-12 md:py-16">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8 mb-8">
+          <p className="font-sans text-xs text-ivory/50 tracking-wide leading-relaxed">
+            © {new Date().getFullYear()} Happy Weddings by Shruti Jain. A named house.
+          </p>
+          <div className="flex items-center gap-8 md:gap-12">
+            {SOCIALS.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                data-cursor="link"
+                className="font-sans text-xs uppercase tracking-wider text-ivory/65 hover:text-gold transition-colors"
+              >
+                {s.label}
+              </a>
+            ))}
+          </div>
         </div>
-        <p className="font-sans text-[0.65rem] uppercase tracking-widest text-ivory/30">
-          Hue Cycle × Happy Weddings
-        </p>
+        <div className="flex items-center justify-center md:justify-end">
+          <p className="font-sans text-[0.65rem] uppercase tracking-widest text-ivory/30">
+            Hue Cycle × Happy Weddings
+          </p>
+        </div>
       </div>
     </footer>
   )
