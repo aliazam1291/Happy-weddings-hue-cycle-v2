@@ -36,8 +36,8 @@ export function SplitTextReveal({
           return (
             <span
               key={i}
-              className="inline-block overflow-hidden align-bottom"
-              style={{ lineHeight: 1.05 }}
+              className="inline-block overflow-hidden align-baseline"
+              style={{ lineHeight: 1.16 }}
             >
               <motion.span
                 className="inline-block"

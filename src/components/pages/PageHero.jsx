@@ -2,6 +2,7 @@
 
 import { SplitTextReveal } from '@/components/motion/SplitTextReveal'
 import { ParallaxLayer } from '@/components/motion/ParallaxLayer'
+import { Rosette } from '@/components/motion/Ornament'
 import { motion } from 'framer-motion'
 import { ease } from '@/lib/motion'
 
@@ -53,6 +54,10 @@ export function PageHero({ eyebrow, title, accent, subtitle, image }) {
           </motion.p>
         )}
       </div>
+
+      <ParallaxLayer speed={0.12} className="pointer-events-none absolute right-8 top-16 hidden xl:block opacity-30">
+        <Rosette size={60} tone="gold" />
+      </ParallaxLayer>
 
       {image && (
         <div className="relative h-[42vh] md:h-[64vh] w-full overflow-hidden">
