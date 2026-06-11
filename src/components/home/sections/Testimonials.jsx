@@ -5,9 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Quote, Star, ChevronLeft, ChevronRight } from 'lucide-react'
 import { ease } from '@/lib/motion'
 import { Ornament } from '@/components/motion/Ornament'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 
-// Designed placeholders patterned on real Indian wedding-planner reviews — swap
-// for verified Google reviews once we wire the embed.
 const REVIEWS = [
   {
     name: 'Riya & Aarav Mehta',
@@ -48,20 +49,19 @@ export function Testimonials() {
 
   return (
     <section
-      className="relative w-full overflow-hidden py-20 md:py-28"
+      className="relative w-full overflow-hidden py-20 md:py-32"
       style={{ backgroundColor: 'hsl(34 30% 95%)' }}
     >
       <div className="container">
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.7, ease: ease.editorial }}
-          className="font-sans text-[0.62rem] uppercase tracking-[0.32em] text-center mb-4"
-          style={{ color: 'hsl(32 31% 46%)' }}
+          className="flex justify-center mb-4"
         >
-          — Said by families
-        </motion.p>
+          <Badge variant="gold" size="sm" shape="pill">Said by families</Badge>
+        </motion.div>
 
         <motion.h2
           initial={{ opacity: 0, y: 14 }}
@@ -76,56 +76,66 @@ export function Testimonials() {
 
         <Ornament className="my-8 md:my-10" />
 
-        {/* Quote card */}
-        <div className="max-w-3xl mx-auto relative">
-          {/* big decorative quote */}
-          <Quote
+        {/* Quote card — sits below header but a ghost echo card offsets behind */}
+        <div className="relative max-w-3xl mx-auto">
+          {/* Ghost echo card — offset behind for editorial layering */}
+          <div
             aria-hidden
-            className="absolute -top-4 -left-2 md:-top-6 md:-left-6 w-14 h-14 md:w-20 md:h-20 -z-0"
-            style={{ color: 'hsl(32 31% 51% / 0.18)' }}
-            strokeWidth={1}
+            className="absolute inset-0 translate-x-4 translate-y-4 md:translate-x-6 md:translate-y-6 border border-gold/30 rounded-sm pointer-events-none"
           />
-          <AnimatePresence mode="wait">
-            <motion.blockquote
-              key={idx}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.6, ease: ease.editorial }}
-              className="relative z-10 text-center"
-            >
-              <div className="flex items-center justify-center gap-1.5 mb-6" aria-label={`${review.stars} stars`}>
-                {Array.from({ length: review.stars }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-current" style={{ color: 'hsl(32 31% 51%)' }} strokeWidth={0} />
-                ))}
-              </div>
-              <p
-                className="font-display italic leading-[1.35] text-balance"
-                style={{ fontSize: 'clamp(1.15rem, 2.4vw, 1.7rem)', color: 'hsl(24 12% 10% / 0.82)' }}
-              >
-                &ldquo;{review.body}&rdquo;
-              </p>
-              <footer className="mt-8">
-                <p className="font-display text-lg" style={{ color: 'hsl(24 12% 10%)' }}>{review.name}</p>
-                <p className="font-sans text-[0.7rem] uppercase tracking-[0.22em] mt-1" style={{ color: 'hsl(32 31% 46%)' }}>
-                  {review.place}
-                </p>
-              </footer>
-            </motion.blockquote>
-          </AnimatePresence>
+
+          <Card variant="default" shape="soft" className="relative">
+            <Quote
+              aria-hidden
+              className="absolute -top-5 -left-3 md:-top-8 md:-left-6 w-14 h-14 md:w-20 md:h-20"
+              style={{ color: 'hsl(32 31% 51% / 0.22)' }}
+              strokeWidth={1}
+            />
+            <CardContent className="p-8 md:p-14 pt-10 md:pt-16">
+              <AnimatePresence mode="wait">
+                <motion.blockquote
+                  key={idx}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -16 }}
+                  transition={{ duration: 0.6, ease: ease.editorial }}
+                  className="relative z-10 text-center"
+                >
+                  <div className="flex items-center justify-center gap-1.5 mb-6" aria-label={`${review.stars} stars`}>
+                    {Array.from({ length: review.stars }).map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-current" style={{ color: 'hsl(32 31% 51%)' }} strokeWidth={0} />
+                    ))}
+                  </div>
+                  <p
+                    className="font-display italic leading-[1.35] text-balance"
+                    style={{ fontSize: 'clamp(1.15rem, 2.4vw, 1.7rem)', color: 'hsl(24 12% 10% / 0.82)' }}
+                  >
+                    &ldquo;{review.body}&rdquo;
+                  </p>
+                  <footer className="mt-8 flex flex-col items-center gap-3">
+                    <p className="font-display text-lg" style={{ color: 'hsl(24 12% 10%)' }}>{review.name}</p>
+                    <Badge variant="default" size="sm" shape="pill">
+                      {review.place}
+                    </Badge>
+                  </footer>
+                </motion.blockquote>
+              </AnimatePresence>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Controls */}
-        <div className="mt-12 flex items-center justify-center gap-6">
-          <button
+        <div className="mt-12 md:mt-16 flex items-center justify-center gap-6">
+          <Button
             onClick={prev}
-            data-cursor="link"
+            variant="default"
+            size="sm"
+            shape="pill"
             aria-label="Previous review"
-            className="inline-flex items-center justify-center h-11 w-11 rounded-full border transition-colors hover:bg-ink hover:text-ivory"
-            style={{ borderColor: 'hsl(24 12% 10% / 0.25)', color: 'hsl(24 12% 10% / 0.7)' }}
+            className="h-11 w-11 p-0"
           >
             <ChevronLeft className="h-4 w-4" />
-          </button>
+          </Button>
           <div className="flex items-center gap-2.5">
             {REVIEWS.map((_, i) => (
               <button
@@ -140,15 +150,16 @@ export function Testimonials() {
               />
             ))}
           </div>
-          <button
+          <Button
             onClick={next}
-            data-cursor="link"
+            variant="default"
+            size="sm"
+            shape="pill"
             aria-label="Next review"
-            className="inline-flex items-center justify-center h-11 w-11 rounded-full border transition-colors hover:bg-ink hover:text-ivory"
-            style={{ borderColor: 'hsl(24 12% 10% / 0.25)', color: 'hsl(24 12% 10% / 0.7)' }}
+            className="h-11 w-11 p-0"
           >
             <ChevronRight className="h-4 w-4" />
-          </button>
+          </Button>
         </div>
       </div>
     </section>

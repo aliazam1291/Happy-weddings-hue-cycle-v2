@@ -4,6 +4,9 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { POSTS as ALL_POSTS } from '@/lib/posts'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
 
 const EASE = [0.22, 1, 0.36, 1]
 
@@ -19,6 +22,9 @@ const POSTS = [...ALL_POSTS]
     src: p.cover,
   }))
 
+// Editorial offset rhythm — outer cards anchor, middle card lifts.
+const OFFSETS = ['md:translate-y-4', 'md:-translate-y-10', 'md:translate-y-2']
+
 export function JournalSection() {
   return (
     <section
@@ -29,16 +35,15 @@ export function JournalSection() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 md:mb-20">
           <div>
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.6 }}
               transition={{ duration: 0.8, ease: EASE }}
-              className="font-sans text-[0.65rem] uppercase tracking-[0.3em] mb-6"
-              style={{ color: 'hsl(32 31% 51%)' }}
+              className="mb-6"
             >
-              — Journal
-            </motion.p>
+              <Badge variant="gold" size="sm">Journal</Badge>
+            </motion.div>
             <div className="overflow-hidden">
               <motion.h2
                 initial={{ y: '108%' }}
@@ -64,10 +69,10 @@ export function JournalSection() {
           </Link>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: 'hsl(24 12% 10% / 0.08)' }}>
+        {/* Cards — gap-grid with per-card vertical offsets */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
           {POSTS.map((post, i) => (
-            <JournalCard key={post.slug} post={post} delay={i * 0.1} />
+            <JournalCard key={post.slug} post={post} delay={i * 0.1} offset={OFFSETS[i]} />
           ))}
         </div>
       </div>
@@ -75,62 +80,58 @@ export function JournalSection() {
   )
 }
 
-function JournalCard({ post, delay }) {
+function JournalCard({ post, delay, offset }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.9, delay, ease: EASE }}
+      className={`transform ${offset}`}
     >
-      <Link
-        href={`/blog/${post.slug}`}
-        data-cursor="link"
-        className="group block"
-        style={{ backgroundColor: 'hsl(34 30% 95%)' }}
-      >
-        {/* Image placeholder */}
-        <div
-          className="relative overflow-hidden"
-          style={{ aspectRatio: '4/3' }}
-        >
-          <img
-            src={post.src}
-            alt={post.headline}
-            data-cursor="media"
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
-            style={{ filter: 'grayscale(0.2) brightness(0.95)' }}
-          />
-        </div>
-
-        {/* Content */}
-        <div className="p-7 md:p-8">
-          <div className="flex items-center justify-between mb-4">
-            <span
-              className="font-sans text-[0.6rem] uppercase tracking-widest"
-              style={{ color: 'hsl(32 31% 51%)' }}
-            >
-              {post.category}
-            </span>
-            <span
-              className="font-sans text-[0.6rem]"
-              style={{ color: 'hsl(24 12% 10% / 0.45)' }}
-            >
-              {post.date}
-            </span>
+      <Card variant="default" shape="soft" hover="lift" className="h-full">
+        <Link href={`/blog/${post.slug}`} data-cursor="link" className="group block h-full">
+          {/* Image */}
+          <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
+            <img
+              src={post.src}
+              alt={post.headline}
+              data-cursor="media"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
+              style={{ filter: 'grayscale(0.2) brightness(0.95)' }}
+            />
+            {/* Floating category badge, offset up over the image edge */}
+            <div className="absolute top-4 left-4">
+              <Badge variant="ink" size="sm">{post.category}</Badge>
+            </div>
           </div>
-          <h3
-            className="font-display text-xl md:text-2xl tracking-[-0.01em] leading-[1.2] text-balance group-hover:text-gold transition-colors duration-500"
-            style={{ color: 'hsl(24 12% 10%)' }}
-          >
-            {post.headline}
-          </h3>
-          <div
-            className="mt-5 h-px origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-editorial"
-            style={{ backgroundColor: 'hsl(32 31% 51% / 0.5)' }}
-          />
-        </div>
-      </Link>
+
+          <CardContent className="p-7 md:p-8 pt-7 md:pt-8">
+            <div className="flex items-center justify-between mb-4">
+              <span
+                className="font-sans text-[0.6rem]"
+                style={{ color: 'hsl(24 12% 10% / 0.45)' }}
+              >
+                {post.date}
+              </span>
+              <ArrowUpRight
+                className="h-3.5 w-3.5 transition-all duration-500 ease-editorial group-hover:text-gold group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                style={{ color: 'hsl(24 12% 10% / 0.4)' }}
+              />
+            </div>
+            <h3
+              className="font-display text-xl md:text-2xl tracking-[-0.01em] leading-[1.2] text-balance group-hover:text-gold transition-colors duration-500"
+              style={{ color: 'hsl(24 12% 10%)' }}
+            >
+              {post.headline}
+            </h3>
+            <Separator
+              tone="gold"
+              className="mt-5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-editorial"
+            />
+          </CardContent>
+        </Link>
+      </Card>
     </motion.div>
   )
 }

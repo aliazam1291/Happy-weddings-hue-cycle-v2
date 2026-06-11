@@ -4,6 +4,10 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Marquee } from '@/components/motion/Marquee'
 import { MagneticButton } from '@/components/motion/MagneticButton'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Mail, Phone, MapPin } from 'lucide-react'
 
 const EASE = [0.22, 1, 0.36, 1]
 
@@ -35,16 +39,15 @@ export function InquiryCTA() {
 
       {/* Main content */}
       <div className="container py-28 md:py-40 flex flex-col items-center text-center">
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.8, ease: EASE }}
-          className="font-sans text-[0.65rem] uppercase tracking-[0.3em] mb-12"
-          style={{ color: 'hsl(32 31% 51%)' }}
+          className="mb-12"
         >
-          — Begin
-        </motion.p>
+          <Badge variant="gold" size="sm" shape="pill">Begin</Badge>
+        </motion.div>
 
         <div className="overflow-hidden mb-2">
           <motion.h2
@@ -93,37 +96,48 @@ export function InquiryCTA() {
           transition={{ duration: 0.9, delay: 0.5, ease: EASE }}
         >
           <MagneticButton strength={0.35}>
-            <Link
-              href="/contact"
-              data-cursor="link"
-              className="group inline-flex items-center gap-4 font-sans text-xs uppercase tracking-[0.22em] px-10 py-5 border border-ink/30 text-ink hover:bg-gold hover:border-gold hover:text-ivory transition-all duration-500"
-            >
-              Start a conversation
-              <span className="inline-block transition-transform duration-500 group-hover:translate-x-1">→</span>
-            </Link>
+            <Button asChild variant="ink" size="lg" shape="pill" className="gap-4">
+              <Link href="/contact" data-cursor="link" className="group">
+                Start a conversation
+                <span className="inline-block transition-transform duration-500 group-hover:translate-x-1">→</span>
+              </Link>
+            </Button>
           </MagneticButton>
         </motion.div>
 
-        {/* Info strip */}
+        {/* Info strip — three small cards with staggered negative offsets */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.8, delay: 0.8, ease: EASE }}
-          className="mt-20 flex flex-wrap items-center justify-center gap-8 md:gap-14"
+          className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-3xl"
         >
           {[
-            'hello@happyweddings.in',
-            '+91 00000 00000',
-            'New Delhi & Nationwide',
-          ].map((item) => (
-            <span
-              key={item}
-              className="font-sans text-xs"
-              style={{ color: 'hsl(24 12% 10% / 0.4)' }}
+            { icon: Mail, label: 'Write', value: 'hello@happyweddings.in', offset: 'md:-translate-y-4' },
+            { icon: Phone, label: 'Call', value: '+91 00000 00000', offset: 'md:translate-y-2' },
+            { icon: MapPin, label: 'Studio', value: 'New Delhi & Nationwide', offset: 'md:-translate-y-2' },
+          ].map(({ icon: Icon, label, value, offset }) => (
+            <Card
+              key={value}
+              variant="ghost"
+              shape="soft"
+              hover="glow"
+              className={`px-5 py-4 flex items-center gap-3 transform ${offset}`}
             >
-              {item}
-            </span>
+              <Icon className="h-4 w-4 shrink-0" style={{ color: 'hsl(32 31% 46%)' }} strokeWidth={1.5} />
+              <div className="leading-tight text-left">
+                <p
+                  className="font-sans text-[0.55rem] uppercase tracking-[0.22em] mb-0.5"
+                  style={{ color: 'hsl(24 12% 10% / 0.45)' }}
+                >
+                  {label}
+                </p>
+                <p className="font-sans text-xs" style={{ color: 'hsl(24 12% 10% / 0.75)' }}>
+                  {value}
+                </p>
+              </div>
+            </Card>
           ))}
         </motion.div>
       </div>
