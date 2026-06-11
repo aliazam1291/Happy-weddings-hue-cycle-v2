@@ -3,11 +3,11 @@
 import { useRef, useState } from 'react'
 import Link from 'next/link'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
-import { ArrowUpRight, CheckCircle2, ChevronDown } from 'lucide-react'
+import { ArrowUpRight, CheckCircle2, ChevronDown, MessageCircle, Sparkles, X } from 'lucide-react'
 import { PageHero } from '@/components/pages/PageHero'
 import { Ornament } from '@/components/motion/Ornament'
 import { ease } from '@/lib/motion'
-import { SERVICES } from '@/lib/content'
+import { SERVICES, PROJECTS, BUDGET_SAMPLE, CONTACT } from '@/lib/content'
 import { IMAGES } from '@/lib/images'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
@@ -24,6 +24,29 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from '@/components/ui/sheet'
+import { Input } from '@/components/ui/input'
+import { ProjectDialog } from '@/components/projects/ProjectDialog'
+import { SeasonStrip } from '@/components/site/SeasonStrip'
+
+/* Maps each service to a flagship project that demonstrates it.
+   Lets us cross-link from the Services page into the ProjectDialog. */
+const SERVICE_PROJECT_LINK = {
+  '01': 'theme-indore',         // Production & Entertainment → Theme wedding
+  '02': 'palace-jaipur',        // Décor & Lighting → Heritage palette
+  '03': 'lakeside-udaipur',     // Technical & Production → Destination logistics
+  '04': 'classic-bhopal',       // Food & Beverages → Classic feasts
+  '05': 'sangeet-goa',          // Choreography → Sangeet on the beach
+  '06': 'lakeside-udaipur',     // Travel & Logistics → Destination travel
+  '07': 'theme-indore',         // Special Effects → Theme reveal
+}
 
 /* Dummy enriched data layered on top of the existing SERVICES array.
    Replace with CRM data when ready. */
@@ -89,9 +112,17 @@ const PROCESS_STEPS = [
 ]
 
 export function ServicesPage() {
+  const [openProject, setOpenProject] = useState(null)
+
+  const openProjectById = (id) => {
+    const p = PROJECTS.find((x) => x.id === id)
+    if (p) setOpenProject(p)
+  }
+
   return (
     <TooltipProvider delayDuration={120}>
       <main>
+        <SeasonStrip />
         <PageHero
           eyebrow="Our Services"
           title="Everything,"
@@ -100,32 +131,359 @@ export function ServicesPage() {
           image={IMAGES.services[0]}
         />
 
+        <ServiceNavStrip />
+
         {/* Service rows */}
         <section className="w-full">
           {SERVICES.map((s, i) => (
-            <ServiceRow key={s.num} service={s} flip={i % 2 !== 0} />
+            <ServiceRow
+              key={s.num}
+              service={s}
+              flip={i % 2 !== 0}
+              onSeeInAction={openProjectById}
+            />
           ))}
         </section>
+
+        <BudgetAnatomy />
 
         <ProcessSection />
 
         <CtaBand />
+
+        {/* Sticky "Tailor my package" floating CTA */}
+        <TailorMyPackagePill />
+
+        {/* Project quick-view dialog (cross-link from service rows) */}
+        <ProjectDialog
+          project={openProject}
+          open={!!openProject}
+          onOpenChange={(v) => !v && setOpenProject(null)}
+        />
       </main>
     </TooltipProvider>
   )
 }
 
+/* ── Sticky service number strip under the hero ─────────────────── */
+function ServiceNavStrip() {
+  const onJump = (num) => {
+    const el = document.getElementById(`service-${num}`)
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 100
+      window.scrollTo({ top, behavior: 'smooth' })
+    }
+  }
+  return (
+    <section
+      className="w-full sticky top-20 md:top-24 z-30 border-b backdrop-blur-md"
+      style={{
+        backgroundColor: 'hsl(34 30% 95% / 0.88)',
+        borderColor: 'hsl(24 12% 10% / 0.06)',
+      }}
+    >
+      <div className="container py-3 md:py-4 -mx-4 md:mx-0">
+        <div className="overflow-x-auto no-scrollbar">
+          <div className="flex flex-nowrap items-center gap-5 md:gap-8 px-4 md:px-0">
+            <p
+              className="shrink-0 font-sans text-[0.58rem] uppercase tracking-[0.32em] hidden md:block"
+              style={{ color: 'hsl(32 31% 46%)' }}
+            >
+              Jump to —
+            </p>
+            {SERVICES.map((s) => (
+              <button
+                type="button"
+                key={s.num}
+                onClick={() => onJump(s.num)}
+                data-cursor="link"
+                className="group shrink-0 inline-flex items-center gap-2 py-2 transition-colors duration-300"
+                style={{ color: 'hsl(24 12% 10% / 0.7)' }}
+              >
+                <span
+                  className="font-display italic text-base"
+                  style={{ color: 'hsl(32 31% 51%)' }}
+                >
+                  {s.num}
+                </span>
+                <span className="font-sans text-[0.62rem] uppercase tracking-[0.22em] group-hover:text-gold transition-colors duration-300">
+                  {s.title.split(' ')[0]}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ── Floating "Tailor my package" pill + Sheet ─────────────────── */
+function TailorMyPackagePill() {
+  const [open, setOpen] = useState(false)
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <button
+          type="button"
+          data-cursor="link"
+          className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 px-5 py-3.5 shadow-2xl transition-all duration-500 ease-editorial hover:scale-[1.03]"
+          style={{
+            backgroundColor: 'hsl(24 12% 10%)',
+            color: 'hsl(34 30% 95%)',
+          }}
+          aria-label="Tailor my package"
+        >
+          <Sparkles className="h-4 w-4" style={{ color: 'hsl(32 35% 62%)' }} />
+          <span className="font-sans text-[0.65rem] uppercase tracking-[0.24em]">
+            Tailor my package
+          </span>
+        </button>
+      </SheetTrigger>
+      <SheetContent side="right" className="overflow-y-auto p-7 md:p-9">
+        <TailorMyPackageForm onSent={() => setOpen(false)} />
+      </SheetContent>
+    </Sheet>
+  )
+}
+
+function TailorMyPackageForm({ onSent }) {
+  const [picks, setPicks] = useState({})
+  const [phone, setPhone] = useState('')
+  const [date, setDate] = useState('')
+
+  const togglePick = (num) =>
+    setPicks((p) => ({ ...p, [num]: !p[num] }))
+
+  const selected = SERVICES.filter((s) => picks[s.num])
+  const waNumber = (CONTACT.phones[0] || '+91 88271-88884').replace(/[^\d]/g, '')
+
+  const buildLink = () => {
+    const list = selected.map((s) => `• ${s.title}`).join('\n')
+    const msg = `Hi Happy Weddings, I would like to tailor a package.\n\nServices I'm interested in:\n${list || '• (no services picked yet)'}\n\nMy contact: ${phone || '(not given)'}\nEvent date: ${date || '(flexible)'}`
+    return `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`
+  }
+
+  return (
+    <div>
+      <SheetHeader className="mb-6">
+        <SheetTitle className="font-display font-light tracking-[-0.01em]" style={{ fontSize: 'clamp(1.6rem, 2.4vw, 2rem)' }}>
+          Tailor your celebration.
+        </SheetTitle>
+        <SheetDescription
+          className="font-sans font-light text-sm"
+          style={{ color: 'hsl(24 12% 10% / 0.6)' }}
+        >
+          Pick the services you'd like to talk about. We'll WhatsApp you back with a tailored proposal — no long form, no waiting.
+        </SheetDescription>
+      </SheetHeader>
+
+      <p
+        className="font-sans text-[0.58rem] uppercase tracking-[0.32em] mb-3"
+        style={{ color: 'hsl(32 31% 46%)' }}
+      >
+        — Services
+      </p>
+      <div className="flex flex-wrap gap-2 mb-8">
+        {SERVICES.map((s) => {
+          const active = picks[s.num]
+          return (
+            <button
+              type="button"
+              key={s.num}
+              onClick={() => togglePick(s.num)}
+              data-cursor="link"
+              className="inline-flex items-center gap-1.5 px-3 py-2 font-sans text-[0.62rem] uppercase tracking-[0.22em] transition-colors duration-300"
+              style={{
+                backgroundColor: active ? 'hsl(24 12% 10%)' : 'transparent',
+                color: active ? 'hsl(34 30% 95%)' : 'hsl(24 12% 10% / 0.75)',
+                border: `1px solid ${active ? 'transparent' : 'hsl(24 12% 10% / 0.15)'}`,
+              }}
+            >
+              <span className="font-display italic" style={{ color: active ? 'hsl(32 35% 62%)' : 'hsl(32 31% 51%)' }}>
+                {s.num}
+              </span>
+              {s.title.replace(/ &.*$/, '').replace(/ \(.*$/, '')}
+            </button>
+          )
+        })}
+      </div>
+
+      <p
+        className="font-sans text-[0.58rem] uppercase tracking-[0.32em] mb-3"
+        style={{ color: 'hsl(32 31% 46%)' }}
+      >
+        — Your details
+      </p>
+      <div className="flex flex-col gap-4 mb-8">
+        <Input
+          type="tel"
+          placeholder="Your phone (with country code)"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+        <Input
+          type="text"
+          placeholder="Event date or window (e.g. Dec 2026)"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
+      </div>
+
+      <a
+        href={buildLink()}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => setTimeout(onSent, 300)}
+        data-cursor="link"
+        className="group flex items-center justify-center gap-2.5 w-full py-4 font-sans text-[0.7rem] uppercase tracking-[0.24em] transition-colors duration-500"
+        style={{ backgroundColor: 'hsl(32 31% 51%)', color: 'hsl(34 30% 95%)' }}
+      >
+        <MessageCircle className="h-4 w-4" />
+        WhatsApp my picks
+        <ArrowUpRight className="h-3.5 w-3.5" />
+      </a>
+
+      <p
+        className="mt-5 font-sans text-[0.58rem] uppercase tracking-[0.22em] text-center"
+        style={{ color: 'hsl(24 12% 10% / 0.45)' }}
+      >
+        {selected.length} {selected.length === 1 ? 'service' : 'services'} selected · We reply within 24 hours
+      </p>
+    </div>
+  )
+}
+
+/* ── Budget anatomy preview ────────────────────────────────────── */
+function BudgetAnatomy() {
+  return (
+    <section
+      className="w-full py-20 md:py-28"
+      style={{ backgroundColor: 'hsl(33 32% 90%)' }}
+    >
+      <div className="container">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 items-start">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.8, ease: ease.editorial }}
+            className="lg:col-span-5"
+          >
+            <p
+              className="font-sans text-[0.6rem] uppercase tracking-[0.32em] mb-6"
+              style={{ color: 'hsl(32 31% 46%)' }}
+            >
+              — Budget anatomy
+            </p>
+            <h2
+              className="font-display font-light tracking-[-0.02em] leading-[0.98] mb-6"
+              style={{ fontSize: 'clamp(2rem, 3.6vw, 3rem)', color: 'hsl(24 12% 10%)' }}
+            >
+              Where the{' '}
+              <span className="italic" style={{ color: 'hsl(32 31% 51%)' }}>
+                money goes.
+              </span>
+            </h2>
+            <p
+              className="font-sans font-light text-base leading-relaxed mb-6 max-w-md"
+              style={{ color: 'hsl(24 12% 10% / 0.66)' }}
+            >
+              An indicative breakdown for {BUDGET_SAMPLE.headline.toLowerCase()}. Real numbers differ by city, season and scope — this is a starting point for the conversation.
+            </p>
+            <p
+              className="font-display italic text-2xl mb-8"
+              style={{ color: 'hsl(32 31% 51%)' }}
+            >
+              {BUDGET_SAMPLE.total}
+            </p>
+            <a
+              href={`https://wa.me/${(CONTACT.phones[0] || '').replace(/[^\d]/g, '')}?text=${encodeURIComponent('Hi Happy Weddings, please share the full budget breakdown PDF.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="link"
+              className="group inline-flex items-center gap-3"
+            >
+              <span
+                className="font-sans text-xs uppercase tracking-[0.22em] transition-colors duration-500 group-hover:text-gold"
+                style={{ color: 'hsl(24 12% 10% / 0.75)' }}
+              >
+                WhatsApp us for the full PDF
+              </span>
+              <ArrowUpRight className="h-4 w-4 text-gold transition-transform duration-500 ease-editorial group-hover:translate-x-1 group-hover:-translate-y-1" />
+            </a>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.9, ease: ease.editorial, delay: 0.1 }}
+            className="lg:col-span-6 lg:col-start-7"
+          >
+            {/* Horizontal stacked bar — pure CSS */}
+            <div
+              className="flex h-12 md:h-14 w-full overflow-hidden"
+              style={{ border: '1px solid hsl(24 12% 10% / 0.1)' }}
+            >
+              {BUDGET_SAMPLE.segments.map((seg) => (
+                <Tooltip key={seg.label}>
+                  <TooltipTrigger asChild>
+                    <div
+                      style={{ width: `${seg.pct}%`, backgroundColor: seg.color }}
+                      className="transition-opacity duration-300 hover:opacity-80 cursor-help"
+                      aria-label={`${seg.label}: ${seg.pct}%`}
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {seg.label} · {seg.pct}%
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+
+            <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3">
+              {BUDGET_SAMPLE.segments.map((seg) => (
+                <div key={seg.label} className="flex items-center gap-3">
+                  <span
+                    className="inline-block h-3 w-3 shrink-0"
+                    style={{ backgroundColor: seg.color }}
+                  />
+                  <span
+                    className="font-sans text-[0.7rem]"
+                    style={{ color: 'hsl(24 12% 10% / 0.75)' }}
+                  >
+                    {seg.label}
+                  </span>
+                  <span
+                    className="ml-auto font-sans text-[0.7rem] tabular-nums"
+                    style={{ color: 'hsl(24 12% 10% / 0.5)' }}
+                  >
+                    {seg.pct}%
+                  </span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ── Service row — alternating image/text, deep editorial spacing ── */
-function ServiceRow({ service, flip }) {
+function ServiceRow({ service, flip, onSeeInAction }) {
   const rowRef = useRef(null)
   const { scrollYProgress } = useScroll({ target: rowRef, offset: ['start end', 'end start'] })
   const imgY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
   const meta = SERVICE_META[service.num]
+  const linkedProjectId = SERVICE_PROJECT_LINK[service.num]
 
   return (
     <div
       ref={rowRef}
-      className={`flex flex-col ${flip ? 'md:flex-row-reverse' : 'md:flex-row'} min-h-[70vh] md:min-h-[90vh]`}
+      id={`service-${service.num}`}
+      className={`flex flex-col ${flip ? 'md:flex-row-reverse' : 'md:flex-row'} min-h-[70vh] md:min-h-[90vh] scroll-mt-32`}
     >
       {/* Image half */}
       <div className="relative w-full md:w-1/2 overflow-hidden min-h-[50vw] md:min-h-0">
@@ -278,12 +636,13 @@ function ServiceRow({ service, flip }) {
             </motion.div>
           )}
 
-          {/* CTA */}
+          {/* CTAs */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.6, delay: 0.45, ease: ease.editorial }}
+            className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-7"
           >
             <Link href="/contact" data-cursor="link" className="group inline-flex items-center gap-3">
               <span
@@ -294,6 +653,21 @@ function ServiceRow({ service, flip }) {
               </span>
               <ArrowUpRight className="h-3.5 w-3.5 transition-all duration-500 ease-editorial group-hover:text-gold group-hover:translate-x-1 group-hover:-translate-y-1" style={{ color: 'hsl(24 12% 10% / 0.4)' }} />
             </Link>
+            {linkedProjectId && onSeeInAction && (
+              <button
+                type="button"
+                onClick={() => onSeeInAction(linkedProjectId)}
+                data-cursor="link"
+                className="group inline-flex items-center gap-3"
+              >
+                <span
+                  className="font-sans text-xs uppercase tracking-wider transition-colors duration-500 group-hover:text-gold"
+                  style={{ color: 'hsl(32 31% 51%)' }}
+                >
+                  See it in a wedding →
+                </span>
+              </button>
+            )}
           </motion.div>
         </div>
       </div>
