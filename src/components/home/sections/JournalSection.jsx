@@ -7,6 +7,7 @@ import { POSTS as ALL_POSTS } from '@/lib/posts'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
+import { TiltCard } from '@/components/motion/TiltCard'
 
 const EASE = [0.22, 1, 0.36, 1]
 
@@ -89,49 +90,63 @@ function JournalCard({ post, delay, offset }) {
       transition={{ duration: 0.9, delay, ease: EASE }}
       className={`transform ${offset}`}
     >
-      <Card variant="default" shape="soft" hover="lift" className="h-full">
-        <Link href={`/blog/${post.slug}`} data-cursor="link" className="group block h-full">
-          {/* Image */}
-          <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
-            <img
-              src={post.src}
-              alt={post.headline}
-              data-cursor="media"
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
-              style={{ filter: 'grayscale(0.2) brightness(0.95)' }}
-            />
-            {/* Floating category badge, offset up over the image edge */}
-            <div className="absolute top-4 left-4">
-              <Badge variant="ink" size="sm">{post.category}</Badge>
-            </div>
-          </div>
-
-          <CardContent className="p-7 md:p-8 pt-7 md:pt-8">
-            <div className="flex items-center justify-between mb-4">
-              <span
-                className="font-sans text-[0.6rem]"
-                style={{ color: 'hsl(24 12% 10% / 0.45)' }}
-              >
-                {post.date}
-              </span>
-              <ArrowUpRight
-                className="h-3.5 w-3.5 transition-all duration-500 ease-editorial group-hover:text-gold group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                style={{ color: 'hsl(24 12% 10% / 0.4)' }}
-              />
-            </div>
-            <h3
-              className="font-display text-xl md:text-2xl tracking-[-0.01em] leading-[1.2] text-balance group-hover:text-gold transition-colors duration-500"
-              style={{ color: 'hsl(24 12% 10%)' }}
+      <TiltCard intensity={6} glare perspective={1100} scale={1.02}>
+        <Card variant="default" shape="soft" hover="glow" className="h-full">
+          <Link href={`/blog/${post.slug}`} data-cursor="link" className="group block h-full">
+            {/* Image — sits at base depth */}
+            <div
+              className="relative overflow-hidden"
+              style={{ aspectRatio: '4/3', transformStyle: 'preserve-3d' }}
             >
-              {post.headline}
-            </h3>
-            <Separator
-              tone="gold"
-              className="mt-5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-editorial"
-            />
-          </CardContent>
-        </Link>
-      </Card>
+              <img
+                src={post.src}
+                alt={post.headline}
+                data-cursor="media"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
+                style={{ filter: 'grayscale(0.2) brightness(0.95)', transform: 'translateZ(0)' }}
+              />
+              {/* Floating category badge — lifted forward in Z */}
+              <div
+                className="absolute top-4 left-4"
+                style={{ transform: 'translateZ(40px)' }}
+              >
+                <Badge variant="ink" size="sm">{post.category}</Badge>
+              </div>
+            </div>
+
+            <CardContent
+              className="p-7 md:p-8 pt-7 md:pt-8"
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              <div
+                className="flex items-center justify-between mb-4"
+                style={{ transform: 'translateZ(20px)' }}
+              >
+                <span
+                  className="font-sans text-[0.6rem]"
+                  style={{ color: 'hsl(24 12% 10% / 0.45)' }}
+                >
+                  {post.date}
+                </span>
+                <ArrowUpRight
+                  className="h-3.5 w-3.5 transition-all duration-500 ease-editorial group-hover:text-gold group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  style={{ color: 'hsl(24 12% 10% / 0.4)' }}
+                />
+              </div>
+              <h3
+                className="font-display text-xl md:text-2xl tracking-[-0.01em] leading-[1.2] text-balance group-hover:text-gold transition-colors duration-500"
+                style={{ color: 'hsl(24 12% 10%)', transform: 'translateZ(30px)' }}
+              >
+                {post.headline}
+              </h3>
+              <Separator
+                tone="gold"
+                className="mt-5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-editorial"
+              />
+            </CardContent>
+          </Link>
+        </Card>
+      </TiltCard>
     </motion.div>
   )
 }

@@ -40,12 +40,26 @@ const REVIEWS = [
   },
 ]
 
+// Stack offsets per relative depth (0 = active, 1 = first behind, etc.)
+const STACK = [
+  { y: 0, x: 0, scale: 1, rotate: 0, opacity: 1, blur: 0 },
+  { y: 22, x: 14, scale: 0.96, rotate: 2.5, opacity: 0.85, blur: 0.3 },
+  { y: 44, x: 28, scale: 0.92, rotate: 5, opacity: 0.55, blur: 0.6 },
+  { y: 66, x: 42, scale: 0.88, rotate: 7.5, opacity: 0.0, blur: 1 },
+]
+
 export function Testimonials() {
   const [idx, setIdx] = useState(0)
-  const review = REVIEWS[idx]
+  const [direction, setDirection] = useState(1)
 
-  const next = () => setIdx((i) => (i + 1) % REVIEWS.length)
-  const prev = () => setIdx((i) => (i - 1 + REVIEWS.length) % REVIEWS.length)
+  const next = () => {
+    setDirection(1)
+    setIdx((i) => (i + 1) % REVIEWS.length)
+  }
+  const prev = () => {
+    setDirection(-1)
+    setIdx((i) => (i - 1 + REVIEWS.length) % REVIEWS.length)
+  }
 
   return (
     <section
@@ -76,56 +90,102 @@ export function Testimonials() {
 
         <Ornament className="my-8 md:my-10" />
 
-        {/* Quote card — sits below header but a ghost echo card offsets behind */}
-        <div className="relative max-w-3xl mx-auto">
-          {/* Ghost echo card — offset behind for editorial layering */}
-          <div
-            aria-hidden
-            className="absolute inset-0 translate-x-4 translate-y-4 md:translate-x-6 md:translate-y-6 border border-gold/30 rounded-sm pointer-events-none"
-          />
+        {/* Stacked card deck */}
+        <div className="relative max-w-2xl mx-auto" style={{ perspective: 1400 }}>
+          {/* Reserve height so layout doesn't jump */}
+          <div className="relative h-[430px] sm:h-[400px] md:h-[380px]">
+            {REVIEWS.map((review, i) => {
+              const depth = (i - idx + REVIEWS.length) % REVIEWS.length
+              const pos = STACK[Math.min(depth, STACK.length - 1)]
+              const isActive = depth === 0
 
-          <Card variant="default" shape="soft" className="relative">
-            <Quote
-              aria-hidden
-              className="absolute -top-5 -left-3 md:-top-8 md:-left-6 w-14 h-14 md:w-20 md:h-20"
-              style={{ color: 'hsl(32 31% 51% / 0.22)' }}
-              strokeWidth={1}
-            />
-            <CardContent className="p-8 md:p-14 pt-10 md:pt-16">
-              <AnimatePresence mode="wait">
-                <motion.blockquote
-                  key={idx}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -16 }}
-                  transition={{ duration: 0.6, ease: ease.editorial }}
-                  className="relative z-10 text-center"
+              return (
+                <motion.div
+                  key={i}
+                  className="absolute inset-0"
+                  style={{ zIndex: REVIEWS.length - depth, transformStyle: 'preserve-3d' }}
+                  initial={false}
+                  animate={{
+                    y: pos.y,
+                    x: pos.x,
+                    scale: pos.scale,
+                    rotate: pos.rotate,
+                    opacity: pos.opacity,
+                    filter: `blur(${pos.blur}px)`,
+                  }}
+                  transition={{ duration: 0.75, ease: ease.editorial }}
+                  drag={isActive ? 'x' : false}
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.2}
+                  onDragEnd={(_, info) => {
+                    if (info.offset.x < -90) next()
+                    else if (info.offset.x > 90) prev()
+                  }}
                 >
-                  <div className="flex items-center justify-center gap-1.5 mb-6" aria-label={`${review.stars} stars`}>
-                    {Array.from({ length: review.stars }).map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-current" style={{ color: 'hsl(32 31% 51%)' }} strokeWidth={0} />
-                    ))}
-                  </div>
-                  <p
-                    className="font-display italic leading-[1.35] text-balance"
-                    style={{ fontSize: 'clamp(1.15rem, 2.4vw, 1.7rem)', color: 'hsl(24 12% 10% / 0.82)' }}
+                  <Card
+                    variant="default"
+                    shape="soft"
+                    className="h-full shadow-[0_30px_80px_-40px_hsl(24_12%_10%/0.35)]"
                   >
-                    &ldquo;{review.body}&rdquo;
-                  </p>
-                  <footer className="mt-8 flex flex-col items-center gap-3">
-                    <p className="font-display text-lg" style={{ color: 'hsl(24 12% 10%)' }}>{review.name}</p>
-                    <Badge variant="default" size="sm" shape="pill">
-                      {review.place}
-                    </Badge>
-                  </footer>
-                </motion.blockquote>
-              </AnimatePresence>
-            </CardContent>
-          </Card>
+                    <Quote
+                      aria-hidden
+                      className="absolute -top-4 -left-3 md:-top-7 md:-left-6 w-12 h-12 md:w-20 md:h-20"
+                      style={{ color: 'hsl(32 31% 51% / 0.22)' }}
+                      strokeWidth={1}
+                    />
+                    <CardContent className="p-8 md:p-12 pt-10 md:pt-14 h-full flex flex-col">
+                      <AnimatePresence mode="wait" initial={false}>
+                        {isActive && (
+                          <motion.div
+                            key={`content-${i}`}
+                            initial={{ opacity: 0, y: direction * 14 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: direction * -14 }}
+                            transition={{ duration: 0.45, ease: ease.editorial }}
+                            className="flex flex-col h-full text-center"
+                          >
+                            <div className="flex items-center justify-center gap-1.5 mb-5" aria-label={`${review.stars} stars`}>
+                              {Array.from({ length: review.stars }).map((_, s) => (
+                                <Star key={s} className="h-4 w-4 fill-current" style={{ color: 'hsl(32 31% 51%)' }} strokeWidth={0} />
+                              ))}
+                            </div>
+                            <p
+                              className="font-display italic leading-[1.35] text-balance flex-1"
+                              style={{ fontSize: 'clamp(1.05rem, 2.1vw, 1.5rem)', color: 'hsl(24 12% 10% / 0.85)' }}
+                            >
+                              &ldquo;{review.body}&rdquo;
+                            </p>
+                            <footer className="mt-7 flex flex-col items-center gap-2.5">
+                              <p className="font-display text-lg" style={{ color: 'hsl(24 12% 10%)' }}>{review.name}</p>
+                              <Badge variant="default" size="sm" shape="pill">{review.place}</Badge>
+                            </footer>
+                          </motion.div>
+                        )}
+                        {!isActive && (
+                          <div
+                            key={`ghost-${i}`}
+                            className="flex flex-col h-full text-center justify-center"
+                            aria-hidden
+                          >
+                            <p
+                              className="font-display italic leading-[1.35] line-clamp-3"
+                              style={{ fontSize: 'clamp(1.05rem, 2.1vw, 1.5rem)', color: 'hsl(24 12% 10% / 0.6)' }}
+                            >
+                              &ldquo;{review.body}&rdquo;
+                            </p>
+                          </div>
+                        )}
+                      </AnimatePresence>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )
+            })}
+          </div>
         </div>
 
         {/* Controls */}
-        <div className="mt-12 md:mt-16 flex items-center justify-center gap-6">
+        <div className="mt-14 md:mt-20 flex items-center justify-center gap-6">
           <Button
             onClick={prev}
             variant="default"
@@ -140,7 +200,10 @@ export function Testimonials() {
             {REVIEWS.map((_, i) => (
               <button
                 key={i}
-                onClick={() => setIdx(i)}
+                onClick={() => {
+                  setDirection(i > idx ? 1 : -1)
+                  setIdx(i)
+                }}
                 aria-label={`Review ${i + 1}`}
                 className="h-1.5 rounded-full transition-all duration-500 ease-editorial"
                 style={{

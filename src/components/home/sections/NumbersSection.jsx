@@ -5,6 +5,7 @@ import { NumberCounter } from '@/components/motion/NumberCounter'
 import { Ornament } from '@/components/motion/Ornament'
 import { Card, CardEyebrow } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { TiltCard } from '@/components/motion/TiltCard'
 
 const EASE = [0.22, 1, 0.36, 1]
 
@@ -67,34 +68,44 @@ export function NumbersSection() {
               transition={{ duration: 0.85, delay: i * 0.09, ease: EASE }}
               className={`transform ${OFFSETS[i]}`}
             >
-              <Card
-                variant={i % 2 === 0 ? 'default' : 'cream'}
-                shape="soft"
-                hover="lift"
-                className="flex flex-col items-center justify-center py-14 md:py-20 px-6 text-center"
-              >
-                <CardEyebrow className="mb-4 hidden md:block">
-                  0{i + 1} / 0{STATS.length}
-                </CardEyebrow>
-                <p
-                  className="font-display italic leading-none mb-3"
-                  style={{ fontSize: 'clamp(3.5rem, 7vw, 6rem)', color: 'hsl(32 31% 51%)' }}
+              <TiltCard intensity={7} perspective={900} scale={1.03}>
+                <Card
+                  variant={i % 2 === 0 ? 'default' : 'cream'}
+                  shape="soft"
+                  hover="glow"
+                  className="flex flex-col items-center justify-center py-14 md:py-20 px-6 text-center"
+                  style={{ transformStyle: 'preserve-3d' }}
                 >
-                  <NumberCounter to={s.value} suffix={s.suffix} />
-                </p>
-                <p
-                  className="font-sans text-sm uppercase tracking-widest mb-1"
-                  style={{ color: 'hsl(24 12% 10%)' }}
-                >
-                  {s.label}
-                </p>
-                <p
-                  className="font-sans text-xs"
-                  style={{ color: 'hsl(24 12% 10% / 0.45)' }}
-                >
-                  {s.sub}
-                </p>
-              </Card>
+                  <CardEyebrow
+                    className="mb-4 hidden md:block"
+                    style={{ transform: 'translateZ(15px)' }}
+                  >
+                    0{i + 1} / 0{STATS.length}
+                  </CardEyebrow>
+                  <p
+                    className="font-display italic leading-none mb-3"
+                    style={{
+                      fontSize: 'clamp(3.5rem, 7vw, 6rem)',
+                      color: 'hsl(32 31% 51%)',
+                      transform: 'translateZ(50px)',
+                    }}
+                  >
+                    <NumberCounter to={s.value} suffix={s.suffix} />
+                  </p>
+                  <p
+                    className="font-sans text-sm uppercase tracking-widest mb-1"
+                    style={{ color: 'hsl(24 12% 10%)', transform: 'translateZ(25px)' }}
+                  >
+                    {s.label}
+                  </p>
+                  <p
+                    className="font-sans text-xs"
+                    style={{ color: 'hsl(24 12% 10% / 0.45)' }}
+                  >
+                    {s.sub}
+                  </p>
+                </Card>
+              </TiltCard>
             </motion.div>
           ))}
         </div>
