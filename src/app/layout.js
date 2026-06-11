@@ -5,6 +5,7 @@ import { CursorProvider } from '@/components/providers/CursorProvider'
 import { SiteNav } from '@/components/site/SiteNav'
 import { SiteFooter } from '@/components/site/SiteFooter'
 import { ScrollProgress } from '@/components/site/ScrollProgress'
+import { StickyContact } from '@/components/site/StickyContact'
 
 const display = Cormorant_Garamond({
   subsets: ['latin'],
@@ -38,6 +39,7 @@ export default function RootLayout({ children }) {
             <SiteNav />
             <main className="relative">{children}</main>
             <SiteFooter />
+            <StickyContact />
           </CursorProvider>
         </SmoothScrollProvider>
       </body>

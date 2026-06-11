@@ -3,33 +3,21 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { IMAGES } from '@/lib/images'
+import { POSTS as ALL_POSTS } from '@/lib/posts'
 
 const EASE = [0.22, 1, 0.36, 1]
 
-const POSTS = [
-  {
-    id: 1,
-    category: 'Design',
-    headline: 'The art of restraint — why less is always more for luxury weddings',
-    date: 'June 2024',
-    src: IMAGES.journal[0],
-  },
-  {
-    id: 2,
-    category: 'Destinations',
-    headline: 'A guide to hosting a palace wedding in Udaipur',
-    date: 'May 2024',
-    src: IMAGES.journal[1],
-  },
-  {
-    id: 3,
-    category: 'Planning',
-    headline: 'The eighteen-month timeline: when to decide what',
-    date: 'April 2024',
-    src: IMAGES.journal[2],
-  },
-]
+// Show the three most recent posts on the homepage teaser strip.
+const POSTS = [...ALL_POSTS]
+  .sort((a, b) => new Date(b.date) - new Date(a.date))
+  .slice(0, 3)
+  .map((p) => ({
+    slug: p.slug,
+    category: p.category,
+    headline: p.title,
+    date: new Date(p.date).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }),
+    src: p.cover,
+  }))
 
 export function JournalSection() {
   return (
@@ -66,7 +54,7 @@ export function JournalSection() {
             </div>
           </div>
           <Link
-            href="/journal"
+            href="/blog"
             data-cursor="link"
             className="group inline-flex items-center gap-2 font-sans text-xs uppercase tracking-wider transition-colors duration-500"
             style={{ color: 'hsl(24 12% 10% / 0.6)' }}
@@ -79,7 +67,7 @@ export function JournalSection() {
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px" style={{ backgroundColor: 'hsl(24 12% 10% / 0.08)' }}>
           {POSTS.map((post, i) => (
-            <JournalCard key={post.id} post={post} delay={i * 0.1} />
+            <JournalCard key={post.slug} post={post} delay={i * 0.1} />
           ))}
         </div>
       </div>
@@ -96,7 +84,7 @@ function JournalCard({ post, delay }) {
       transition={{ duration: 0.9, delay, ease: EASE }}
     >
       <Link
-        href="/journal"
+        href={`/blog/${post.slug}`}
         data-cursor="link"
         className="group block"
         style={{ backgroundColor: 'hsl(34 30% 95%)' }}

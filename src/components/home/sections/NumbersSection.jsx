@@ -2,14 +2,15 @@
 
 import { motion } from 'framer-motion'
 import { NumberCounter } from '@/components/motion/NumberCounter'
+import { Ornament } from '@/components/motion/Ornament'
 
 const EASE = [0.22, 1, 0.36, 1]
 
 const STATS = [
-  { value: 350, suffix: '+', label: 'Celebrations', sub: 'since 2013' },
-  { value: 12, suffix: ' yrs', label: 'Designing', sub: 'as a house' },
-  { value: 40, suffix: '+', label: 'Destinations', sub: 'across the world' },
-  { value: 98, suffix: '%', label: 'Referred', sub: 'by past families' },
+  { value: 11, suffix: ' yrs', label: 'A named house', sub: 'since 2013' },
+  { value: 100, suffix: '+', label: 'Weddings shaped', sub: 'India & beyond' },
+  { value: 7, suffix: '', label: 'Services', sub: 'under one roof' },
+  { value: 24, suffix: '/7', label: 'CEO involved', sub: 'every celebration' },
 ]
 
 export function NumbersSection() {
@@ -43,11 +44,12 @@ export function NumbersSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.8, ease: EASE }}
-          className="font-sans text-[0.65rem] uppercase tracking-[0.3em] mb-20 text-center"
+          className="font-sans text-[0.65rem] uppercase tracking-[0.3em] mb-4 text-center"
           style={{ color: 'hsl(32 31% 51%)' }}
         >
           — By the numbers
         </motion.p>
+        <Ornament className="mb-12 md:mb-16" />
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px" style={{ backgroundColor: 'hsl(24 12% 10% / 0.08)' }}>
           {STATS.map((s, i) => (

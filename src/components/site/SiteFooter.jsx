@@ -11,7 +11,7 @@ const SITEMAP = [
     links: [
       { href: '/about', label: 'About' },
       { href: '/services', label: 'Services' },
-      { href: '/journal', label: 'Journal' },
+      { href: '/blog', label: 'Journal' },
     ],
   },
   {
