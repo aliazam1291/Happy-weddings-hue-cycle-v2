@@ -3,11 +3,13 @@
 import { useState } from 'react'
 import { PageLoader } from '@/components/home/PageLoader'
 import { FilmGrain } from '@/components/home/FilmGrain'
+import { PetalCursor } from '@/components/home/PetalCursor'
 import { ArchPortalHero } from '@/components/home/sections/ArchPortalHero'
 import { TrustBar } from '@/components/home/sections/TrustBar'
 import { PinnedStatement } from '@/components/home/sections/PinnedStatement'
 import { FeaturedWork } from '@/components/home/sections/FeaturedWork'
 import { OffersSection } from '@/components/home/sections/OffersSection'
+import { ScrollQuote } from '@/components/home/sections/ScrollQuote'
 import { ProjectsGallery } from '@/components/home/sections/ProjectsGallery'
 import { FounderSection } from '@/components/home/sections/FounderSection'
 import { NumbersSection } from '@/components/home/sections/NumbersSection'
@@ -30,6 +32,7 @@ export function HomePage() {
   return (
     <>
       <FilmGrain opacity={0.038} />
+      <PetalCursor />
       {!loaded && <PageLoader onComplete={() => setLoaded(true)} />}
 
       <ArchPortalHero isLoaded={loaded} />
@@ -44,6 +47,7 @@ export function HomePage() {
       </div>
 
       <OffersSection />
+      <ScrollQuote />
       <ProjectsGallery />
       <VideoReel />
       <NumbersSection />

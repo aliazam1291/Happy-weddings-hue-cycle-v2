@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Mail, Phone, MapPin } from 'lucide-react'
+import { CONTACT } from '@/lib/content'
 
 const EASE = [0.22, 1, 0.36, 1]
 
@@ -114,30 +115,31 @@ export function InquiryCTA() {
           className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-3xl"
         >
           {[
-            { icon: Mail, label: 'Write', value: 'hello@happyweddings.in', offset: 'md:-translate-y-4' },
-            { icon: Phone, label: 'Call', value: '+91 00000 00000', offset: 'md:translate-y-2' },
-            { icon: MapPin, label: 'Studio', value: 'New Delhi & Nationwide', offset: 'md:-translate-y-2' },
-          ].map(({ icon: Icon, label, value, offset }) => (
-            <Card
-              key={value}
-              variant="ghost"
-              shape="soft"
-              hover="glow"
-              className={`px-5 py-4 flex items-center gap-3 transform ${offset}`}
-            >
-              <Icon className="h-4 w-4 shrink-0" style={{ color: 'hsl(32 31% 46%)' }} strokeWidth={1.5} />
-              <div className="leading-tight text-left">
-                <p
-                  className="font-sans text-[0.55rem] uppercase tracking-[0.22em] mb-0.5"
-                  style={{ color: 'hsl(24 12% 10% / 0.45)' }}
-                >
-                  {label}
-                </p>
-                <p className="font-sans text-xs" style={{ color: 'hsl(24 12% 10% / 0.75)' }}>
-                  {value}
-                </p>
-              </div>
-            </Card>
+            { icon: Mail, label: 'Write', value: CONTACT.email, href: `mailto:${CONTACT.email}`, offset: 'md:-translate-y-4' },
+            { icon: Phone, label: 'Call', value: CONTACT.phones[0], href: `tel:${CONTACT.phones[0].replace(/[^+\d]/g, '')}`, offset: 'md:translate-y-2' },
+            { icon: MapPin, label: 'Studio', value: 'Indore & Nationwide', href: '/contact', offset: 'md:-translate-y-2' },
+          ].map(({ icon: Icon, label, value, href, offset }) => (
+            <Link key={value} href={href} data-cursor="link" className={`transform ${offset}`}>
+              <Card
+                variant="ghost"
+                shape="soft"
+                hover="glow"
+                className="px-5 py-4 flex items-center gap-3 transition-colors duration-500 hover:border-gold/30"
+              >
+                <Icon className="h-4 w-4 shrink-0" style={{ color: 'hsl(32 31% 46%)' }} strokeWidth={1.5} />
+                <div className="leading-tight text-left">
+                  <p
+                    className="font-sans text-[0.55rem] uppercase tracking-[0.22em] mb-0.5"
+                    style={{ color: 'hsl(24 12% 10% / 0.45)' }}
+                  >
+                    {label}
+                  </p>
+                  <p className="font-sans text-xs" style={{ color: 'hsl(24 12% 10% / 0.75)' }}>
+                    {value}
+                  </p>
+                </div>
+              </Card>
+            </Link>
           ))}
         </motion.div>
       </div>

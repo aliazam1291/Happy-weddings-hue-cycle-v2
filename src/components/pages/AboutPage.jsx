@@ -129,7 +129,7 @@ function JourneyTimeline() {
                 className="font-display font-light tracking-[-0.02em] leading-[0.95]"
                 style={{ fontSize: 'clamp(2.2rem, 4.8vw, 4rem)', color: 'hsl(24 12% 10%)' }}
               >
-                Twelve years,{' '}
+                Thirteen years,{' '}
                 <span className="italic" style={{ color: 'hsl(32 31% 51%)' }}>
                   in chapters.
                 </span>
@@ -142,7 +142,7 @@ function JourneyTimeline() {
                 className="font-sans font-light text-base leading-relaxed"
                 style={{ color: 'hsl(24 12% 10% / 0.65)' }}
               >
-                We didn't set out to be the biggest planner in central India. We set out to be the most considered. Here are the years that shaped the studio.
+                We didn't set out to be the biggest planner in central India. We set out to be the most considered. Here are the thirteen years that shaped the studio.
               </p>
             </RevealOnView>
           </div>

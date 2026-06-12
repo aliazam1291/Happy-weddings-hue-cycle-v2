@@ -42,6 +42,7 @@ export function StickyContact() {
   const [shown, setShown] = useState(false)
   const pathname = usePathname()
   const phoneDigits = CONTACT.phones[0].replace(/[^+\d]/g, '')
+  const waNumber = CONTACT.whatsapp || phoneDigits.replace('+', '')
   const waMsg = encodeURIComponent(buildContextMessage(pathname))
 
   useEffect(() => {
@@ -63,7 +64,7 @@ export function StickyContact() {
           aria-label="Quick contact"
         >
           <a
-            href={`https://wa.me/${phoneDigits.replace('+', '')}?text=${waMsg}`}
+            href={`https://wa.me/${waNumber}?text=${waMsg}`}
             target="_blank"
             rel="noreferrer"
             data-cursor="link"

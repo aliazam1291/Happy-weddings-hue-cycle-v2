@@ -129,7 +129,7 @@ export function ProjectsGallery() {
                 ci === 2 ? 'lg:mt-8 hidden sm:flex' : '',
               ].join(' ')}
             >
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence mode="sync">
                 {col.map((item) => (
                   <motion.div
                     key={item.src}

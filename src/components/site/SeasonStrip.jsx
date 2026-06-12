@@ -41,11 +41,11 @@ export function SeasonStrip({
     <AnimatePresence initial={false}>
       {open && (
         <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: 'auto', opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          transition={{ duration: 0.45, ease: ease.editorial }}
-          className="w-full overflow-hidden border-b"
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.35, ease: ease.editorial }}
+          className="w-full border-b"
           style={{
             backgroundColor: 'hsl(24 12% 10%)',
             color: 'hsl(34 30% 95%)',

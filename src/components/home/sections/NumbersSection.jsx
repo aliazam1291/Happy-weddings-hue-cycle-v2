@@ -10,8 +10,8 @@ import { TiltCard } from '@/components/motion/TiltCard'
 const EASE = [0.22, 1, 0.36, 1]
 
 const STATS = [
-  { value: 11, suffix: ' yrs', label: 'A named house', sub: 'since 2013' },
-  { value: 100, suffix: '+', label: 'Weddings shaped', sub: 'India & beyond' },
+  { value: 13, suffix: ' yrs', label: 'A named house', sub: 'since 2013' },
+  { value: 350, suffix: '+', label: 'Weddings shaped', sub: 'India & beyond' },
   { value: 7, suffix: '', label: 'Services', sub: 'under one roof' },
   { value: 24, suffix: '/7', label: 'CEO involved', sub: 'every celebration' },
 ]

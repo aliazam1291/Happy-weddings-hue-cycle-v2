@@ -24,7 +24,6 @@ export function SmoothScrollProvider({ children }) {
 
     lenis.on('scroll', ScrollTrigger.update)
 
-    // expose for debugging / programmatic scroll (e.g. anchor jumps, tests)
     if (typeof window !== 'undefined') window.__lenis = lenis
 
     const rafCb = (time) => lenis.raf(time * 1000)

@@ -13,6 +13,7 @@ import { FloatingDust } from '@/components/home/FloatingDust'
  * Lighting: True photorealistic volumetric rendering.
  */
 export function ArchPortalHero({ isLoaded = true }) {
+  const wrapperRef = useRef(null)
   const sectionRef = useRef(null)
   const frameRef = useRef(null)
   const mandapRef = useRef(null)
@@ -22,7 +23,7 @@ export function ArchPortalHero({ isLoaded = true }) {
   const introRef = useRef(null)
   const headlineRef = useRef(null)
   const blendRef = useRef(null)
-  
+
   // Luxury Layers
   const floralContainerRef = useRef(null)
   const floralSwayRef = useRef(null)
@@ -42,6 +43,10 @@ export function ArchPortalHero({ isLoaded = true }) {
     }
 
     gsap.registerPlugin(ScrollTrigger)
+
+    const wrapper = wrapperRef.current
+    if (!wrapper) return
+    wrapper.style.height = `calc(3200px + 100vh)`
 
     const ctx = gsap.context(() => {
       gsap.set(headlineRef.current, { y: 80, opacity: 0 })
@@ -85,12 +90,10 @@ export function ArchPortalHero({ isLoaded = true }) {
       // ── 2. Scroll-Triggered Journey Animation ──
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: wrapper,
           start: 'top top',
           end: '+=3200',
           scrub: 1,
-          pin: true,
-          anticipatePin: 1,
         },
       })
 
@@ -127,9 +130,10 @@ export function ArchPortalHero({ isLoaded = true }) {
   }, [])
 
   return (
+    <div ref={wrapperRef} className="relative">
     <section
       ref={sectionRef}
-      className="relative h-[100svh] w-full overflow-hidden"
+      className="sticky top-0 h-[100svh] w-full overflow-hidden"
       style={{ backgroundColor: '#F7F4EF' }} // Base schema color
     >
       {/* ── Bright Sunlight Atmosphere ── */}
@@ -292,6 +296,7 @@ export function ArchPortalHero({ isLoaded = true }) {
 
       <div ref={blendRef} className="absolute inset-0 z-50 pointer-events-none" style={{ background: 'linear-gradient(to top, hsl(34 30% 95%) 0%, hsl(34 30% 95%) 55%, hsl(34 30% 95% / 0.85) 100%)' }} />
     </section>
+    </div>
   )
 }
 

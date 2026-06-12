@@ -4,48 +4,19 @@ import { useRef } from 'react'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { IMAGES } from '@/lib/images'
+import { SERVICES as ALL_SERVICES } from '@/lib/content'
 
 const EASE = [0.22, 1, 0.36, 1]
 
-const SERVICES = [
-  {
-    num: '01',
-    title: 'Full Planning',
-    sub: 'The complete companionship',
-    copy: 'From the first sketch to the last dance. A two-year partnership that covers every detail — venue, design, production, vendors, logistics — so you are present for what matters.',
-    tag: 'Most requested',
-    tone: 'cream',
-    src: IMAGES.services[0],
-  },
-  {
-    num: '02',
-    title: 'Destination',
-    sub: 'A house already there',
-    copy: 'Udaipur, Goa, Kerala, Italy, Greece. We arrive ahead of you, know the ground, have the conversations. Your celebration unfolds without friction.',
-    tag: 'Destinations: 40+',
-    tone: 'ivory',
-    src: IMAGES.services[1],
-  },
-  {
-    num: '03',
-    title: 'Design & Décor',
-    sub: 'One eye across everything',
-    copy: 'Sets, florals, lighting, paper, fabric. A single design language that flows from the invitation to the table to the stage — so nothing feels borrowed.',
-    tag: 'Bespoke',
-    tone: 'cream',
-    src: IMAGES.services[2],
-  },
-  {
-    num: '04',
-    title: 'Curation',
-    sub: 'The edit of the very best',
-    copy: 'Vendors, musicians, menus, attire. We have spent twelve years meeting the finest craftspeople. You meet only those who are right for your story.',
-    tag: 'Curated',
-    tone: 'ivory',
-    src: IMAGES.services[3],
-  },
-]
+// Four showcase services for the home page — indices from the full SERVICES list
+const SERVICE_TAGS = ['Most requested', 'Bespoke', 'Sangeet & more', 'Destinations: 40+']
+const HOME_SERVICE_INDICES = [0, 1, 4, 5]
+
+const SERVICES = HOME_SERVICE_INDICES.map((idx, i) => ({
+  ...ALL_SERVICES[idx],
+  tag: SERVICE_TAGS[i],
+  tone: i % 2 === 0 ? 'cream' : 'ivory',
+}))
 
 function ServiceRow({ service, flip, i }) {
   const rowRef = useRef(null)
@@ -213,8 +184,8 @@ export function OffersSection() {
             className="font-display font-light text-[10vw] md:text-[6vw] tracking-[-0.02em] leading-[0.95]"
             style={{ color: 'hsl(24 12% 10%)' }}
           >
-            Four ways<br />
-            <span style={{ color: 'hsl(32 31% 51%)' }} className="italic">we work.</span>
+            What we<br />
+            <span style={{ color: 'hsl(32 31% 51%)' }} className="italic">celebrate.</span>
           </h2>
         </div>
         <p

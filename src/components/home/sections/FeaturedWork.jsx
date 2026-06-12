@@ -18,6 +18,7 @@ const STORIES = [
 ]
 
 export function FeaturedWork() {
+  const wrapperRef = useRef(null)
   const sectionRef = useRef(null)
   const trackRef = useRef(null)
 
@@ -25,40 +26,45 @@ export function FeaturedWork() {
     if (prefersReducedMotion()) return
     gsap.registerPlugin(ScrollTrigger)
 
+    const wrapper = wrapperRef.current
+    const track = trackRef.current
+    if (!track || !wrapper) return
+
+    const getDistance = () => track.scrollWidth - window.innerWidth
+
+    const updateHeight = () => {
+      wrapper.style.height = getDistance() + window.innerHeight + 'px'
+    }
+    updateHeight()
+
     const ctx = gsap.context(() => {
-      const track = trackRef.current
-      const section = sectionRef.current
-      if (!track || !section) return
-
-      const getDistance = () => track.scrollWidth - window.innerWidth
-
       gsap.to(track, {
         x: () => -getDistance(),
         ease: 'none',
         scrollTrigger: {
-          trigger: section,
+          trigger: wrapper,
           start: 'top top',
           end: () => '+=' + getDistance(),
           scrub: 0.85,
-          pin: true,
-          anticipatePin: 1,
           invalidateOnRefresh: true,
+          onRefresh: updateHeight,
         },
       })
-    }, sectionRef)
+    })
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative overflow-hidden"
-      style={{ backgroundColor: 'hsl(33 32% 90%)' }}
-    >
+    <div ref={wrapperRef} className="relative">
+      <section
+        ref={sectionRef}
+        className="sticky top-0 overflow-hidden"
+        style={{ backgroundColor: 'hsl(33 32% 90%)', height: '100vh' }}
+      >
       <div
         ref={trackRef}
-        className="flex h-screen items-stretch will-change-transform"
+        className="flex h-full items-stretch will-change-transform"
       >
         {/* Intro panel */}
         <div className="shrink-0 w-screen md:w-[50vw] flex flex-col justify-between p-10 md:p-16 xl:p-20 border-r border-ink/10">
@@ -95,7 +101,8 @@ export function FeaturedWork() {
         {/* Trailing spacer */}
         <div className="shrink-0 w-16 md:w-24" />
       </div>
-    </section>
+      </section>
+    </div>
   )
 }
 

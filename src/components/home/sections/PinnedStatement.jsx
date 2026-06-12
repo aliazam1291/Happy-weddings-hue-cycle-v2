@@ -1,9 +1,22 @@
 'use client'
 
 import { useRef, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { prefersReducedMotion } from '@/lib/motion'
+
+// Deterministic ambient petal data — no Math.random to avoid hydration mismatch
+const AMBIENT_PETALS = Array.from({ length: 11 }, (_, i) => ({
+  id: i,
+  left: `${6 + (i * 9) % 86}%`,
+  delay: (i * 0.55) % 5.5,
+  duration: 4.2 + (i * 0.42) % 3,
+  size: 4 + (i * 3) % 6,
+  opacity: 0.07 + (i % 5) * 0.022,
+  driftX: ((i * 61) % 40) - 20,
+  startRotate: (i * 37) % 360,
+}))
 
 const STATEMENTS = [
   { line1: 'We don\'t', line2: 'plan weddings.' },
@@ -12,6 +25,7 @@ const STATEMENTS = [
 ]
 
 export function PinnedStatement() {
+  const wrapperRef = useRef(null)
   const sectionRef = useRef(null)
   const s1 = useRef(null), s2 = useRef(null), s3 = useRef(null)
   const barRef = useRef(null)
@@ -19,6 +33,9 @@ export function PinnedStatement() {
   useEffect(() => {
     if (prefersReducedMotion()) return
     gsap.registerPlugin(ScrollTrigger)
+
+    const wrapper = wrapperRef.current
+    if (!wrapper) return
 
     const ctx = gsap.context(() => {
       const [stmt1, stmt2, stmt3] = [s1.current, s2.current, s3.current]
@@ -29,12 +46,10 @@ export function PinnedStatement() {
 
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: wrapper,
           start: 'top top',
-          end: '+=280%',
+          end: 'bottom bottom',
           scrub: 0.9,
-          pin: true,
-          anticipatePin: 1,
         },
       })
 
@@ -51,24 +66,56 @@ export function PinnedStatement() {
           scaleX: 1,
           ease: 'none',
           scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: wrapper,
             start: 'top top',
-            end: '+=280%',
+            end: 'bottom bottom',
             scrub: true,
           },
         })
       }
-    }, sectionRef)
+    })
 
     return () => ctx.revert()
   }, [])
 
   return (
+    <div ref={wrapperRef} className="relative" style={{ height: '380vh' }}>
     <section
       ref={sectionRef}
-      className="relative h-screen w-full overflow-hidden flex items-center justify-center"
+      className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center"
       style={{ backgroundColor: 'hsl(34 30% 95%)' }}
     >
+      {/* Floating ambient rose petals */}
+      <div aria-hidden className="absolute inset-0 pointer-events-none overflow-hidden">
+        {AMBIENT_PETALS.map(p => (
+          <motion.span
+            key={p.id}
+            className="absolute"
+            style={{
+              left: p.left,
+              bottom: '8%',
+              width: p.size,
+              height: p.size * 1.62,
+              backgroundColor: 'hsl(32 31% 51%)',
+              borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%',
+              rotate: `${p.startRotate}deg`,
+            }}
+            animate={{
+              y: [0, -170],
+              opacity: [0, p.opacity, 0],
+              x: [0, p.driftX],
+              rotate: [`${p.startRotate}deg`, `${p.startRotate + 160}deg`],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: p.duration,
+              delay: p.delay,
+              ease: 'easeOut',
+            }}
+          />
+        ))}
+      </div>
+
       {/* Background decorative large letter */}
       <div
         aria-hidden
@@ -138,5 +185,6 @@ export function PinnedStatement() {
         />
       </div>
     </section>
+    </div>
   )
 }

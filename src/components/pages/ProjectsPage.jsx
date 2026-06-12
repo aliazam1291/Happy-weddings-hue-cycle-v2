@@ -79,7 +79,7 @@ export function ProjectsPage() {
         <div className="container">
           <LayoutGroup id="projects-grid">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 lg:gap-y-20">
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence mode="sync">
                 {filtered.map((p, i) => (
                   <motion.div
                     key={p.id}

@@ -41,8 +41,9 @@ const SITEMAP = [
     links: [
       { href: '/contact', label: 'Enquire now' },
       { href: 'mailto:happyweddingsforu@gmail.com', label: 'happyweddingsforu@gmail.com' },
+      { href: 'mailto:info@happyweddings.in', label: 'info@happyweddings.in' },
       { href: 'tel:+918827188884', label: '+91 88271-88884' },
-      { href: 'tel:+917313547763', label: '0731-3547763' },
+      { href: 'tel:07314979427', label: '0731-4979427' },
     ],
   },
 ]
