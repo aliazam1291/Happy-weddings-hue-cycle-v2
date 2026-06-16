@@ -9,8 +9,8 @@ import { SERVICES as ALL_SERVICES } from '@/lib/content'
 const EASE = [0.22, 1, 0.36, 1]
 
 // Four showcase services for the home page — indices from the full SERVICES list
-const SERVICE_TAGS = ['Most requested', 'Bespoke', 'Sangeet & more', 'Destinations: 40+']
-const HOME_SERVICE_INDICES = [0, 1, 4, 5]
+const SERVICE_TAGS = ['Most requested', 'Destinations: 40+', 'Bespoke', 'Sangeet & more']
+const HOME_SERVICE_INDICES = [0, 1, 2, 3]
 
 const SERVICES = HOME_SERVICE_INDICES.map((idx, i) => ({
   ...ALL_SERVICES[idx],

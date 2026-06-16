@@ -448,7 +448,7 @@ function AwardsAndPress() {
         </div>
 
         {/* Awards grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px mb-16 md:mb-20" style={{ backgroundColor: 'hsl(34 30% 95% / 0.08)' }}>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-px mb-16 md:mb-20" style={{ backgroundColor: 'hsl(34 30% 95% / 0.08)' }}>
           {AWARDS.map((a, i) => (
             <motion.div
               key={a.name}

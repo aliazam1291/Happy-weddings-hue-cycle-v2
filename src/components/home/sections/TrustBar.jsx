@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator'
 const SIGNALS = [
   { icon: Award, label: 'ThreeBestRated', value: 'No. 2 in Indore' },
   { icon: Star, label: 'Google Reviews', value: '5-star · Verified' },
-  { icon: CalendarDays, label: 'Since 2013', value: 'Eleven years' },
+  { icon: CalendarDays, label: 'Since 2013', value: 'Thirteen years' },
   { icon: MapPin, label: 'Based in', value: 'Indore · Pan-India' },
 ]
 
