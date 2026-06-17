@@ -1,13 +1,9 @@
-'use client'
-
-import { PageTransition } from '@/components/site/PageTransition'
-
 /**
- * template.js re-mounts on every navigation (unlike layout.js), which is what
- * lets the ink curtain replay each time you move between pages.
+ * Route transitions are handled by <RouteCurtain /> (mounted once in the root
+ * layout as a fixed overlay), not here — wrapping children in a template that
+ * re-mounts on every navigation caused React `removeChild` crashes. This
+ * template now just passes children through.
  */
 export default function Template({ children }) {
-  // TEMP: bypass PageTransition to isolate the client-nav removeChild crash
   return children
-  // return <PageTransition>{children}</PageTransition>
 }

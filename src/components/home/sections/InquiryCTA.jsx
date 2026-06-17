@@ -7,6 +7,7 @@ import { MagneticButton } from '@/components/motion/MagneticButton'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { SplitText } from '@/components/reactbits/SplitText'
 import { Mail, Phone, MapPin } from 'lucide-react'
 import { CONTACT } from '@/lib/content'
 
@@ -50,34 +51,23 @@ export function InquiryCTA() {
           <Badge variant="gold" size="sm" shape="pill">Begin</Badge>
         </motion.div>
 
-        <div className="overflow-hidden mb-2">
-          <motion.h2
-            initial={{ y: '110%' }}
-            whileInView={{ y: '0%' }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 1.1, ease: EASE }}
-            className="font-display font-light tracking-[-0.03em] text-balance"
-            style={{ fontSize: 'clamp(3.2rem, 9vw, 8rem)', lineHeight: 0.95, color: 'hsl(24 12% 10%)' }}
-          >
-            Ready to tell
-          </motion.h2>
-        </div>
-        <div className="overflow-hidden mb-10">
-          <motion.h2
-            initial={{ y: '110%' }}
-            whileInView={{ y: '0%' }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 1.1, delay: 0.1, ease: EASE }}
-            className="font-display italic tracking-[-0.03em] text-balance"
-            style={{
-              fontSize: 'clamp(3.2rem, 9vw, 8rem)',
-              lineHeight: 0.95,
-              color: 'hsl(32 31% 51%)',
-            }}
-          >
-            your story?
-          </motion.h2>
-        </div>
+        <SplitText
+          as="h2"
+          text="Ready to tell"
+          by="chars"
+          stagger={0.035}
+          className="block font-display font-light tracking-[-0.03em] text-balance mb-2"
+          style={{ fontSize: 'clamp(3.2rem, 9vw, 8rem)', lineHeight: 0.95, color: 'hsl(24 12% 10%)' }}
+        />
+        <SplitText
+          as="h2"
+          text="your story?"
+          by="chars"
+          delay={0.28}
+          stagger={0.035}
+          className="block font-display italic tracking-[-0.03em] text-balance mb-10"
+          style={{ fontSize: 'clamp(3.2rem, 9vw, 8rem)', lineHeight: 0.95, color: 'hsl(32 31% 51%)' }}
+        />
 
         <motion.p
           initial={{ opacity: 0, y: 12 }}

@@ -3,6 +3,7 @@
 import { SplitTextReveal } from '@/components/motion/SplitTextReveal'
 import { ParallaxLayer } from '@/components/motion/ParallaxLayer'
 import { Rosette } from '@/components/motion/Ornament'
+import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { motion } from 'framer-motion'
 import { ease } from '@/lib/motion'
 
@@ -15,7 +16,15 @@ import { ease } from '@/lib/motion'
 export function PageHero({ eyebrow, title, accent, subtitle, image }) {
   return (
     <header className="relative w-full overflow-hidden" style={{ backgroundColor: 'hsl(34 30% 95%)' }}>
-      <div className="container pt-36 pb-12 md:pt-48 md:pb-20">
+      <div className="container pt-28 pb-10 md:pt-32 md:pb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: ease.editorial }}
+        >
+          <Breadcrumb />
+        </motion.div>
+
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}

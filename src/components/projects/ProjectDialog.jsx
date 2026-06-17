@@ -40,7 +40,7 @@ export function ProjectDialog({ project, open, onOpenChange }) {
           className="fixed left-1/2 top-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 overflow-y-auto shadow-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0"
           style={{
             backgroundColor: 'hsl(34 30% 95%)',
-            maxWidth: 'min(1180px, 96vw)',
+            maxWidth: 'min(73.75rem, 96vw)',
             maxHeight: '92vh',
           }}
         >
@@ -122,7 +122,7 @@ export function ProjectDialog({ project, open, onOpenChange }) {
                           aria-label={`Go to image ${i + 1}`}
                           className="h-1.5 transition-all"
                           style={{
-                            width: i === imgIdx ? '20px' : '6px',
+                            width: i === imgIdx ? '1.25rem' : '0.375rem',
                             backgroundColor:
                               i === imgIdx
                                 ? 'hsl(34 30% 95%)'

@@ -1,15 +1,18 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Link from 'next/link'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowUpRight, X, Award } from 'lucide-react'
 import { PageHero } from '@/components/pages/PageHero'
 import { ParallaxLayer } from '@/components/motion/ParallaxLayer'
 import { RevealOnView } from '@/components/motion/RevealOnView'
 import { Ornament } from '@/components/motion/Ornament'
 import { TiltCard } from '@/components/motion/TiltCard'
+import { SpotlightCard } from '@/components/reactbits/SpotlightCard'
+import { SplitText } from '@/components/reactbits/SplitText'
+import { FlipCard } from '@/components/reactbits/FlipCard'
 import { Marquee } from '@/components/motion/Marquee'
 import { ease } from '@/lib/motion'
 import { ABOUT, BRAND, WEDDING_TYPES, TEAM, MILESTONES, AWARDS, PRESS } from '@/lib/content'
@@ -107,8 +110,15 @@ function Manifesto() {
   )
 }
 
-/* ── 2. Journey — vertical timeline with Accordion milestones ───── */
+/* ── 2. Journey — vertical timeline with a scroll-fill gold rail ──── */
 function JourneyTimeline() {
+  const railRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: railRef,
+    offset: ['start 70%', 'end 80%'],
+  })
+  const fillScale = useTransform(scrollYProgress, [0, 1], [0, 1])
+
   return (
     <section className="w-full" style={{ backgroundColor: 'hsl(33 32% 90%)' }}>
       <div className="container py-24 md:py-36">
@@ -120,21 +130,14 @@ function JourneyTimeline() {
             >
               — The journey
             </p>
-            <div className="overflow-hidden">
-              <motion.h2
-                initial={{ y: '108%' }}
-                whileInView={{ y: '0%' }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 1.0, ease: ease.editorial }}
-                className="font-display font-light tracking-[-0.02em] leading-[0.95]"
-                style={{ fontSize: 'clamp(2.2rem, 4.8vw, 4rem)', color: 'hsl(24 12% 10%)' }}
-              >
-                Thirteen years,{' '}
-                <span className="italic" style={{ color: 'hsl(32 31% 51%)' }}>
-                  in chapters.
-                </span>
-              </motion.h2>
-            </div>
+            <SplitText
+              as="h2"
+              by="words"
+              text="Thirteen years, in chapters."
+              accentWords={['in', 'chapters']}
+              className="block font-display font-light tracking-[-0.02em] leading-[0.95] text-[clamp(2.2rem,4.8vw,4rem)]"
+              style={{ color: 'hsl(24 12% 10%)' }}
+            />
           </div>
           <div className="lg:col-span-5 lg:col-start-8">
             <RevealOnView delay={0.1}>
@@ -148,34 +151,47 @@ function JourneyTimeline() {
           </div>
         </div>
 
-        {/* Timeline */}
-        <Accordion type="single" collapsible defaultValue="m-0" className="border-t" style={{ borderColor: 'hsl(24 12% 10% / 0.1)' }}>
-          {MILESTONES.map((m, i) => (
-            <AccordionItem key={m.year} value={`m-${i}`}>
-              <AccordionTrigger className="py-7 md:py-8">
-                <span className="flex items-baseline gap-6 md:gap-10">
-                  <span
-                    className="font-display italic shrink-0"
-                    style={{ fontSize: 'clamp(2rem, 3vw, 2.5rem)', color: 'hsl(32 31% 51%)' }}
+        {/* Timeline with a gold rail that fills as you scroll */}
+        <div ref={railRef} className="relative pl-7 md:pl-12">
+          {/* Rail track + fill */}
+          <div
+            className="pointer-events-none absolute left-0 top-0 bottom-0 w-px"
+            style={{ backgroundColor: 'hsl(24 12% 10% / 0.12)' }}
+          >
+            <motion.div
+              className="absolute left-0 top-0 w-px origin-top"
+              style={{ height: '100%', scaleY: fillScale, backgroundColor: 'hsl(32 31% 51%)' }}
+            />
+          </div>
+
+          <Accordion type="single" collapsible defaultValue="m-0" className="border-t" style={{ borderColor: 'hsl(24 12% 10% / 0.1)' }}>
+            {MILESTONES.map((m, i) => (
+              <AccordionItem key={m.year} value={`m-${i}`}>
+                <AccordionTrigger className="py-7 md:py-8">
+                  <span className="flex items-baseline gap-6 md:gap-10">
+                    <span
+                      className="font-display italic shrink-0"
+                      style={{ fontSize: 'clamp(2rem, 3vw, 2.5rem)', color: 'hsl(32 31% 51%)' }}
+                    >
+                      {m.year}
+                    </span>
+                    <span className="font-display tracking-[-0.01em]" style={{ color: 'hsl(24 12% 10%)' }}>
+                      {m.title}
+                    </span>
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent className="pl-0 md:pl-32 pr-0 md:pr-24">
+                  <p
+                    className="font-sans font-light text-base leading-relaxed max-w-2xl"
+                    style={{ color: 'hsl(24 12% 10% / 0.7)' }}
                   >
-                    {m.year}
-                  </span>
-                  <span className="font-display tracking-[-0.01em]" style={{ color: 'hsl(24 12% 10%)' }}>
-                    {m.title}
-                  </span>
-                </span>
-              </AccordionTrigger>
-              <AccordionContent className="pl-0 md:pl-32 pr-0 md:pr-24">
-                <p
-                  className="font-sans font-light text-base leading-relaxed max-w-2xl"
-                  style={{ color: 'hsl(24 12% 10% / 0.7)' }}
-                >
-                  {m.body}
-                </p>
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+                    {m.body}
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
       </div>
     </section>
   )
@@ -231,7 +247,7 @@ function FounderBlock() {
           <RevealOnView delay={0.15}>
             <div className="flex items-center gap-6 mt-4">
               <div
-                className="h-px flex-1 max-w-[100px]"
+                className="h-px flex-1 max-w-[6.25rem]"
                 style={{ backgroundColor: 'hsl(32 31% 51% / 0.5)' }}
               />
               <p
@@ -269,21 +285,14 @@ function FamilySection() {
             >
               — The family
             </p>
-            <div className="overflow-hidden">
-              <motion.h2
-                initial={{ y: '108%' }}
-                whileInView={{ y: '0%' }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 1.0, ease: ease.editorial }}
-                className="font-display font-light tracking-[-0.02em] leading-[0.95]"
-                style={{ fontSize: 'clamp(2.2rem, 4.8vw, 4rem)', color: 'hsl(24 12% 10%)' }}
-              >
-                Fewer than twenty —{' '}
-                <span className="italic" style={{ color: 'hsl(32 31% 51%)' }}>
-                  by design.
-                </span>
-              </motion.h2>
-            </div>
+            <SplitText
+              as="h2"
+              by="words"
+              text="Fewer than twenty — by design."
+              accentWords={['by', 'design']}
+              className="block font-display font-light tracking-[-0.02em] leading-[0.95] text-[clamp(2.2rem,4.8vw,4rem)]"
+              style={{ color: 'hsl(24 12% 10%)' }}
+            />
           </div>
           <div className="lg:col-span-5 lg:col-start-8">
             <RevealOnView delay={0.1}>
@@ -311,8 +320,8 @@ function FamilySection() {
               className={`text-left group ${i % 2 === 1 ? 'lg:translate-y-12' : ''}`}
             >
               <TiltCard intensity={4} glare={false} perspective={1200} scale={1.012}>
-                <div
-                  className="relative overflow-hidden mb-5"
+                <SpotlightCard
+                  className="overflow-hidden mb-5"
                   style={{ aspectRatio: '4 / 5' }}
                 >
                   <img
@@ -339,7 +348,7 @@ function FamilySection() {
                       {m.name}
                     </p>
                   </div>
-                </div>
+                </SpotlightCard>
               </TiltCard>
               <p
                 className="font-display italic text-base md:text-lg leading-snug"
@@ -522,6 +531,12 @@ function KnownFor() {
         >
           — What we are known for
         </p>
+        <p
+          className="font-sans text-[0.55rem] uppercase tracking-[0.3em] text-center mb-8"
+          style={{ color: 'hsl(24 12% 10% / 0.4)' }}
+        >
+          Hover or tap a card to turn it
+        </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
           {WEDDING_TYPES.map((t, i) => (
             <motion.div
@@ -532,35 +547,48 @@ function KnownFor() {
               transition={{ duration: 0.8, delay: i * 0.1, ease: ease.editorial }}
               className={i === 1 ? 'md:-translate-y-8' : ''}
             >
-              <TiltCard intensity={5} glare={false} perspective={1200} scale={1.015}>
-                <div
-                  className="flex flex-col items-center text-center p-10 md:p-12 h-full"
-                  style={{ backgroundColor: 'hsl(33 32% 90%)' }}
-                >
-                  <span
-                    className="font-display italic mb-5 leading-none"
-                    style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', color: 'hsl(32 31% 51% / 0.4)' }}
-                  >
-                    0{i + 1}
-                  </span>
-                  <h3
-                    className="font-display mb-4 tracking-[-0.01em]"
-                    style={{ fontSize: 'clamp(1.5rem, 2.4vw, 2rem)', color: 'hsl(24 12% 10%)' }}
-                  >
-                    {t.title}
-                  </h3>
-                  <p
-                    className="font-sans font-light text-sm leading-relaxed max-w-xs mb-6"
-                    style={{ color: 'hsl(24 12% 10% / 0.65)' }}
-                  >
-                    {t.copy}
-                  </p>
+              <FlipCard
+                height="clamp(18rem, 26vw, 22rem)"
+                front={
                   <div
-                    className="mt-auto h-px w-12"
-                    style={{ backgroundColor: 'hsl(32 31% 51%)' }}
-                  />
-                </div>
-              </TiltCard>
+                    className="flex h-full flex-col items-center justify-center text-center p-10 md:p-12"
+                    style={{ backgroundColor: 'hsl(33 32% 90%)' }}
+                  >
+                    <span
+                      className="font-display italic mb-5 leading-none"
+                      style={{ fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', color: 'hsl(32 31% 51% / 0.4)' }}
+                    >
+                      0{i + 1}
+                    </span>
+                    <h3
+                      className="font-display tracking-[-0.01em]"
+                      style={{ fontSize: 'clamp(1.5rem, 2.4vw, 2rem)', color: 'hsl(24 12% 10%)' }}
+                    >
+                      {t.title}
+                    </h3>
+                    <div className="mt-6 h-px w-12" style={{ backgroundColor: 'hsl(32 31% 51%)' }} />
+                  </div>
+                }
+                back={
+                  <div
+                    className="flex h-full flex-col items-center justify-center text-center p-10 md:p-12"
+                    style={{ backgroundColor: 'hsl(24 12% 10%)' }}
+                  >
+                    <span
+                      className="font-sans text-[0.55rem] uppercase tracking-[0.3em] mb-5"
+                      style={{ color: 'hsl(32 35% 62%)' }}
+                    >
+                      {t.title}
+                    </span>
+                    <p
+                      className="font-display italic leading-snug"
+                      style={{ fontSize: 'clamp(1.1rem, 1.6vw, 1.4rem)', color: 'hsl(34 30% 95%)' }}
+                    >
+                      {t.copy}
+                    </p>
+                  </div>
+                }
+              />
             </motion.div>
           ))}
         </div>

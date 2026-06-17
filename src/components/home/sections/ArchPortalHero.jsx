@@ -44,6 +44,29 @@ export function ArchPortalHero({ isLoaded = true }) {
 
     gsap.registerPlugin(ScrollTrigger)
 
+    // ── Mobile: clean static hero (no 3200px pinned scroll-through) ──
+    // Show the intro branding + arch in a single viewport and let the page
+    // scroll normally to the next section. The scroll-scrub choreography is
+    // desktop-only — it's janky and shows a lot of empty scroll on phones.
+    if (window.innerWidth < 1024) {
+      const ctx = gsap.context(() => {
+        gsap.set(introRef.current, { opacity: 1, y: 0 })
+        gsap.set(hintRef.current, { opacity: 1 })
+        gsap.set(headlineRef.current, { opacity: 0 })
+        gsap.set(frameRef.current, { opacity: 1, scale: 1 })
+        gsap.set(mandapImgRef.current, { yPercent: 0, scale: 1.05 })
+        gsap.set(darkenRef.current, { opacity: 0.1 })
+        gsap.set([floralContainerRef.current, floralRightContainerRef.current], { opacity: 0.4, y: 0 })
+        gsap.set(treeShadowContainerRef.current, { opacity: 0.08, y: 0 })
+        gsap.set(blendRef.current, { opacity: 0 })
+
+        // Keep the gentle ambient sway — it's cheap and adds life.
+        gsap.to(floralSwayRef.current, { rotation: 1.5, transformOrigin: 'top left', duration: 4, ease: 'sine.inOut', yoyo: true, repeat: -1 })
+        gsap.to(floralRightSwayRef.current, { rotation: -1.5, transformOrigin: 'top right', duration: 4.5, ease: 'sine.inOut', yoyo: true, repeat: -1 })
+      }, sectionRef)
+      return () => ctx.revert()
+    }
+
     const wrapper = wrapperRef.current
     if (!wrapper) return
     wrapper.style.height = `calc(3200px + 100vh)`
@@ -148,7 +171,7 @@ export function ArchPortalHero({ isLoaded = true }) {
       {/* ── Layer 1A: Clean Botanical Watermark (Left Side) ── */}
       <div
         ref={floralContainerRef}
-        className="absolute top-0 left-0 w-[clamp(180px,38vw,550px)] pointer-events-none z-10 text-[#C2A582]"
+        className="absolute top-0 left-0 w-[clamp(11.25rem,38vw,34.375rem)] pointer-events-none z-10 text-[#C2A582]"
         style={{ opacity: 0.4, mixBlendMode: 'multiply' }} // Reduced opacity to 0.40
       >
         <div ref={floralSwayRef} className="w-full h-auto will-change-transform">
@@ -159,7 +182,7 @@ export function ArchPortalHero({ isLoaded = true }) {
       {/* ── Layer 1B: Clean Botanical Watermark (Right Side - Mirrored) ── */}
       <div
         ref={floralRightContainerRef}
-        className="absolute top-0 right-0 w-[clamp(180px,38vw,550px)] pointer-events-none z-10 text-[#C2A582]"
+        className="absolute top-0 right-0 w-[clamp(11.25rem,38vw,34.375rem)] pointer-events-none z-10 text-[#C2A582]"
         style={{ opacity: 0.4, mixBlendMode: 'multiply', transform: 'scaleX(-1)' }} // Reduced opacity to 0.40
       >
         <div ref={floralRightSwayRef} className="w-full h-auto will-change-transform">
@@ -184,7 +207,7 @@ export function ArchPortalHero({ isLoaded = true }) {
           <div className="absolute bottom-0 h-[40%] w-full" style={{ background: 'linear-gradient(90deg, transparent 49.5%, rgba(255,255,255,0.4) 50%, transparent 50.5%)', clipPath: 'polygon(45% 0%, 55% 0%, 80% 100%, 20% 100%)' }} />
           
           {/* Standing Couple on the Path (Scales dynamically with perspective scroll) */}
-          <div className="absolute bottom-[28%] left-1/2 -translate-x-1/2 w-[48px] h-[80px] pointer-events-none z-10">
+          <div className="absolute bottom-[28%] left-1/2 -translate-x-1/2 w-[3rem] h-[5rem] pointer-events-none z-10">
             <svg viewBox="0 0 120 200" fill="currentColor" className="w-full h-full text-[#4A321D] opacity-[0.65]">
               {/* Groom Silhouette */}
               <path d="M45,45 C45,41 48,38 51,38 C54,38 57,41 57,45 C57,49 54,52 51,52 C48,52 45,49 45,45 Z" />
@@ -209,8 +232,8 @@ export function ArchPortalHero({ isLoaded = true }) {
       <FloatingDust className="z-10 opacity-[0.35]" />
 
       {/* ── Carved Arch Frame ── */}
-      <div ref={frameRef} className="absolute inset-0 z-20 flex items-center justify-center will-change-transform" style={{ transformOrigin: '50% 58%' }}>
-        <div className="relative w-[90vw] md:w-[70vw] lg:w-[min(52vw,760px)] aspect-[12/10]">
+      <div ref={frameRef} className="absolute inset-0 z-20 flex items-end justify-center pb-[10vh] lg:items-center lg:pb-0 will-change-transform" style={{ transformOrigin: '50% 58%' }}>
+        <div className="relative w-[82vw] sm:w-[60vw] md:w-[54vw] lg:w-[min(52vw,47.5rem)] max-h-[40vh] lg:max-h-none aspect-[12/10]">
           <ArchFrame />
         </div>
       </div>
@@ -240,32 +263,32 @@ export function ArchPortalHero({ isLoaded = true }) {
 
       {/* ── Brand Intro (Mobile Responsive Editorial Layer) ── */}
       <div className="absolute inset-0 z-40 pointer-events-none">
-        <div className="relative h-full max-w-[1600px] mx-auto px-6 lg:px-12">
+        <div className="relative h-full max-w-[100rem] mx-auto px-6 lg:px-12">
           {/* Mobile: Stacked at top. Desktop: Left aligned grid */}
-          <div className="grid h-full grid-cols-1 lg:grid-cols-[1fr_650px] items-start lg:items-center pt-[15vh] lg:pt-0">
+          <div className="grid h-full grid-cols-1 lg:grid-cols-[1fr_40.625rem] items-start lg:items-center pt-[9vh] lg:pt-0">
             
             <div
               ref={introRef}
-              className="relative flex flex-col items-center lg:items-start text-center lg:text-left pointer-events-auto mx-auto lg:mx-0 lg:ml-[8vw] max-w-[520px]"
+              className="relative flex flex-col items-center lg:items-start text-center lg:text-left pointer-events-auto mx-auto lg:mx-0 lg:ml-[8vw] max-w-[32.5rem]"
             >
               <p className="font-display italic mb-3 text-[#A88661]" style={{ fontSize: 'clamp(0.85rem, 1.3vw, 1.15rem)' }}>
                 est. 2013
               </p>
               
-              <h1 className="font-display font-light leading-[0.98] tracking-[-0.01em] text-[#1A1510]" style={{ fontSize: 'clamp(3.5rem, 10vw, 5.5rem)' }}>
+              <h1 className="font-display font-light leading-[0.98] tracking-[-0.01em] text-[#1A1510]" style={{ fontSize: 'clamp(2.75rem, 12vw, 5.5rem)' }}>
                 <span className="block">Happy</span>
                 <span className="block italic text-[#A88661]">Weddings</span>
               </h1>
               
-              <p className="mt-6 lg:mt-8 font-sans uppercase leading-[1.8] text-[#1A1510]/60" style={{ fontSize: 'clamp(0.55rem, 0.8vw, 0.7rem)', letterSpacing: '0.36em' }}>
+              <p className="mt-4 lg:mt-8 font-sans uppercase leading-[1.8] text-[#1A1510]/60" style={{ fontSize: 'clamp(0.55rem, 0.8vw, 0.7rem)', letterSpacing: '0.36em' }}>
                 Timeless • Intentional • Emotional
               </p>
-              
-              <p className="mt-3 lg:mt-4 font-display italic text-[#1A1510]/50" style={{ fontSize: 'clamp(0.85rem, 1.3vw, 1.1rem)' }}>
+
+              <p className="mt-2 lg:mt-4 font-display italic text-[#1A1510]/50" style={{ fontSize: 'clamp(0.85rem, 1.3vw, 1.1rem)' }}>
                 by Shruti Jain
               </p>
 
-              <div className="mt-8 lg:mt-12 flex items-center">
+              <div className="mt-6 lg:mt-12 flex items-center">
                 <span className="font-sans uppercase text-[#1A1510]/80 tracking-[0.25em] text-[0.65rem] border-b border-[#1A1510]/20 pb-1 hover:text-[#A88661] hover:border-[#A88661] transition-colors cursor-pointer">
                   [ Begin The Journey ]
                 </span>

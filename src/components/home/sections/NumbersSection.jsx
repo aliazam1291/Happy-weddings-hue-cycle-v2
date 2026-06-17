@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { NumberCounter } from '@/components/motion/NumberCounter'
+import { CountUp } from '@/components/reactbits/CountUp'
 import { Ornament } from '@/components/motion/Ornament'
 import { Card, CardEyebrow } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -90,7 +90,7 @@ export function NumbersSection() {
                       transform: 'translateZ(50px)',
                     }}
                   >
-                    <NumberCounter to={s.value} suffix={s.suffix} />
+                    <CountUp to={s.value} suffix={s.suffix} />
                   </p>
                   <p
                     className="font-sans text-sm uppercase tracking-widest mb-1"

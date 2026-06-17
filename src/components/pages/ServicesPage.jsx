@@ -34,6 +34,7 @@ import {
 } from '@/components/ui/sheet'
 import { Input } from '@/components/ui/input'
 import { ProjectDialog } from '@/components/projects/ProjectDialog'
+import { HoverPreviewList } from '@/components/reactbits/HoverPreviewList'
 import { SeasonStrip } from '@/components/site/SeasonStrip'
 
 /* Maps each service to a flagship project that demonstrates it.
@@ -133,6 +134,8 @@ export function ServicesPage() {
 
         <ServiceNavStrip />
 
+        <ServiceIndex />
+
         {/* Service rows */}
         <section className="w-full">
           {SERVICES.map((s, i) => (
@@ -162,6 +165,49 @@ export function ServicesPage() {
         />
       </main>
     </TooltipProvider>
+  )
+}
+
+/* ── Interactive index — hover a service to preview it ──────────── */
+function ServiceIndex() {
+  const items = SERVICES.map((s) => ({
+    id: s.num,
+    label: s.title,
+    sub: SERVICE_META[s.num]?.best_for,
+    src: s.src,
+  }))
+
+  const onSelect = (it) => {
+    const el = document.getElementById(`service-${it.id}`)
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 100
+      window.scrollTo({ top, behavior: 'smooth' })
+    }
+  }
+
+  return (
+    <section className="w-full" style={{ backgroundColor: 'hsl(34 30% 95%)' }}>
+      <div className="container py-20 md:py-28">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 md:mb-14">
+          <div>
+            <p className="font-sans text-[0.6rem] uppercase tracking-[0.32em] mb-5" style={{ color: 'hsl(32 31% 46%)' }}>
+              — The index
+            </p>
+            <h2
+              className="font-display font-light tracking-[-0.02em] leading-[0.95]"
+              style={{ fontSize: 'clamp(2rem, 4.4vw, 3.4rem)', color: 'hsl(24 12% 10%)' }}
+            >
+              Seven crafts,{' '}
+              <span className="italic" style={{ color: 'hsl(32 31% 51%)' }}>one studio.</span>
+            </h2>
+          </div>
+          <p className="font-sans text-[0.58rem] uppercase tracking-[0.24em] md:text-right" style={{ color: 'hsl(24 12% 10% / 0.45)' }}>
+            Hover to preview · click to jump
+          </p>
+        </div>
+        <HoverPreviewList items={items} onSelect={onSelect} />
+      </div>
+    </section>
   )
 }
 

@@ -23,7 +23,12 @@ export function SiteNav() {
       return
     }
     
-    const fn = () => setScrolled(window.scrollY > 3200)
+    // Desktop runs the 3200px pinned arch scroll; mobile shows a static hero
+    // (~one viewport), so reveal the nav after the hero on each.
+    const fn = () => {
+      const threshold = window.innerWidth < 1024 ? window.innerHeight * 0.85 : 3200
+      setScrolled(window.scrollY > threshold)
+    }
     fn()
     window.addEventListener('scroll', fn, { passive: true })
     return () => window.removeEventListener('scroll', fn)

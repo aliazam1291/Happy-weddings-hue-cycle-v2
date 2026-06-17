@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { prefersReducedMotion } from '@/lib/motion'
+import { prefersReducedMotion, useIsMobile } from '@/lib/motion'
 import { ArrowUpRight } from 'lucide-react'
 import { IMAGES } from '@/lib/images'
 
@@ -21,9 +21,11 @@ export function FeaturedWork() {
   const wrapperRef = useRef(null)
   const sectionRef = useRef(null)
   const trackRef = useRef(null)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
-    if (prefersReducedMotion()) return
+    // Mobile renders a vertical stack (below) — skip the horizontal pin-scrub.
+    if (isMobile || prefersReducedMotion()) return
     gsap.registerPlugin(ScrollTrigger)
 
     const wrapper = wrapperRef.current
@@ -53,7 +55,42 @@ export function FeaturedWork() {
     })
 
     return () => ctx.revert()
-  }, [])
+  }, [isMobile])
+
+  // ── Mobile: vertical stack (no horizontal pin-scrub) ──
+  if (isMobile) {
+    return (
+      <section className="w-full" style={{ backgroundColor: 'hsl(33 32% 90%)' }}>
+        <div className="px-8 py-16">
+          <p className="font-sans text-[0.65rem] uppercase tracking-[0.3em] mb-8" style={{ color: 'hsl(32 31% 46%)' }}>
+            — Selected Stories
+          </p>
+          <h2 className="font-display font-light text-[clamp(2.5rem,11vw,4rem)] tracking-[-0.02em] leading-[0.98]" style={{ color: 'hsl(24 12% 10%)' }}>
+            Weddings <span className="italic" style={{ color: 'hsl(32 31% 46%)' }}>we&apos;ve had</span> the honour of shaping.
+          </h2>
+        </div>
+
+        <div className="flex flex-col">
+          {STORIES.map((story, i) => (
+            <StoryCard key={story.id} story={story} index={i} mobile />
+          ))}
+        </div>
+
+        <div className="px-8 py-12 flex items-center justify-between">
+          <Link
+            href="/projects"
+            data-cursor="link"
+            className="group inline-flex items-center gap-3 font-sans text-xs uppercase tracking-wider transition-colors duration-500 hover:text-gold"
+            style={{ color: 'hsl(24 12% 10% / 0.7)' }}
+          >
+            View all stories
+            <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />
+          </Link>
+          <p className="font-display italic text-gold text-2xl">350+</p>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <div ref={wrapperRef} className="relative">
@@ -106,12 +143,16 @@ export function FeaturedWork() {
   )
 }
 
-function StoryCard({ story, index }) {
+function StoryCard({ story, index, mobile = false }) {
   return (
     <Link
       href="/projects"
       data-cursor="media"
-      className="group relative shrink-0 w-[80vw] sm:w-[60vw] md:w-[42vw] lg:w-[36vw] border-r border-ink/10 overflow-hidden flex flex-col"
+      className={`group relative overflow-hidden flex flex-col ${
+        mobile
+          ? 'w-full h-[68vh] border-b border-ink/10'
+          : 'shrink-0 w-[80vw] sm:w-[60vw] md:w-[42vw] lg:w-[36vw] border-r border-ink/10'
+      }`}
     >
       {/* Dummy image background */}
       <img

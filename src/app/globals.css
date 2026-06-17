@@ -194,6 +194,16 @@
               hsl(24 12% 10%);
 }
 
+/* Custom cursor — gold sparkle twinkle (wedding-ring glint) */
+@keyframes cursor-twinkle {
+  0%, 100% { opacity: 0.5; transform: rotate(0deg) scale(0.78); }
+  50% { opacity: 1; transform: rotate(45deg) scale(1.12); }
+}
+.cursor-sparkle {
+  animation: cursor-twinkle 2.4s var(--ease-soft, ease-in-out) infinite;
+  transform-origin: center;
+}
+
 /* Respect reduced motion globally */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -276,7 +276,7 @@ function EditorsLetter() {
             </p>
             <div className="mt-10 flex items-center gap-4">
               <div
-                className="h-px flex-1 max-w-[80px]"
+                className="h-px flex-1 max-w-[5rem]"
                 style={{ backgroundColor: 'hsl(32 31% 51% / 0.5)' }}
               />
               <div>

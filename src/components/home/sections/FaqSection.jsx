@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion'
 import { ease } from '@/lib/motion'
 import { Ornament } from '@/components/motion/Ornament'
+import { SplitText } from '@/components/reactbits/SplitText'
 
 const FAQS = [
   {
@@ -49,16 +50,15 @@ export function FaqSection() {
         >
           — FAQ Corner
         </motion.p>
-        <motion.h2
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.9, delay: 0.1, ease: ease.editorial }}
-          className="font-display font-light leading-[1.02] tracking-[-0.02em] text-center"
-          style={{ fontSize: 'clamp(2rem, 5vw, 3.6rem)', color: 'hsl(24 12% 10%)' }}
-        >
-          Honest <span className="italic" style={{ color: 'hsl(32 31% 46%)' }}>answers.</span>
-        </motion.h2>
+        <SplitText
+          as="h2"
+          by="words"
+          text="Honest answers."
+          accentWords={['answers']}
+          accentColor="hsl(32 31% 46%)"
+          className="block font-display font-light leading-[1.02] tracking-[-0.02em] text-center text-[clamp(2rem,5vw,3.6rem)]"
+          style={{ color: 'hsl(24 12% 10%)' }}
+        />
 
         <Ornament className="my-8 md:my-10" />
 

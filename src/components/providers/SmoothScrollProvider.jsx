@@ -15,10 +15,14 @@ export function SmoothScrollProvider({ children }) {
     if (prefersReducedMotion()) return
 
     lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      // lerp gives a more responsive, frame-rate independent glide than a fixed
+      // duration — the wheel feels connected to the page instead of floaty.
+      lerp: 0.09,
       smoothWheel: true,
-      smoothTouch: false,
+      wheelMultiplier: 1,
+      // Native momentum scrolling on touch devices is smoother than JS-driven
+      // smoothing — let mobile use the browser's own scroller.
+      syncTouch: false,
       touchMultiplier: 1.5,
     })
 

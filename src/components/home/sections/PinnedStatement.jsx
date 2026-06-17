@@ -4,7 +4,7 @@ import { useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { prefersReducedMotion } from '@/lib/motion'
+import { prefersReducedMotion, useIsMobile } from '@/lib/motion'
 
 // Deterministic ambient petal data — no Math.random to avoid hydration mismatch
 const AMBIENT_PETALS = Array.from({ length: 11 }, (_, i) => ({
@@ -29,9 +29,11 @@ export function PinnedStatement() {
   const sectionRef = useRef(null)
   const s1 = useRef(null), s2 = useRef(null), s3 = useRef(null)
   const barRef = useRef(null)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
-    if (prefersReducedMotion()) return
+    // Mobile renders a static stacked poem (below) — skip the pinned scrub.
+    if (isMobile || prefersReducedMotion()) return
     gsap.registerPlugin(ScrollTrigger)
 
     const wrapper = wrapperRef.current
@@ -76,10 +78,63 @@ export function PinnedStatement() {
     })
 
     return () => ctx.revert()
-  }, [])
+  }, [isMobile])
+
+  // ── Mobile: elegant scroll-revealed statements (no pinned scrub) ──
+  if (isMobile) {
+    return (
+      <section
+        className="relative w-full overflow-hidden py-24"
+        style={{ backgroundColor: 'hsl(34 30% 95%)' }}
+      >
+        {/* Soft radial warmth instead of a clashing letter watermark */}
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse 70% 45% at 50% 42%, hsl(32 31% 51% / 0.07), transparent 70%)' }}
+        />
+
+        <div className="relative z-10 container">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.8 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="font-sans text-[0.65rem] uppercase tracking-[0.3em] text-center mb-12"
+            style={{ color: 'hsl(32 31% 51%)' }}
+          >
+            — Our conviction
+          </motion.p>
+
+          <div className="flex flex-col items-center gap-12">
+            {STATEMENTS.map((s, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 34 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
+                className="text-center"
+              >
+                <span className="block font-display font-light text-[clamp(2.4rem,10vw,3.6rem)] tracking-[-0.02em] leading-[1.04]" style={{ color: 'hsl(24 12% 10%)' }}>
+                  {s.line1}
+                </span>
+                <span className="block font-display italic text-[clamp(2.4rem,10vw,3.6rem)] tracking-[-0.02em] leading-[1.04]" style={{ color: 'hsl(32 31% 51%)' }}>
+                  {s.line2}
+                </span>
+                {i < STATEMENTS.length - 1 && (
+                  <span aria-hidden className="mt-12 mx-auto block text-base" style={{ color: 'hsl(32 31% 51% / 0.55)' }}>✦</span>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
-    <div ref={wrapperRef} className="relative" style={{ height: '380vh' }}>
+    <div ref={wrapperRef} className="relative h-[240vh] md:h-[380vh]">
     <section
       ref={sectionRef}
       className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center"
@@ -122,8 +177,8 @@ export function PinnedStatement() {
         className="absolute inset-0 flex items-center justify-center select-none pointer-events-none overflow-hidden"
       >
         <span
-          className="font-display italic text-[40vw] leading-none"
-          style={{ color: 'hsl(32 31% 51% / 0.04)' }}
+          className="font-display italic leading-none text-[clamp(12rem,28vw,24rem)]"
+          style={{ color: 'hsl(32 31% 51% / 0.035)' }}
         >
           HW
         </span>
@@ -131,11 +186,11 @@ export function PinnedStatement() {
 
       {/* Statements — stacked, each absolute positioned over the other */}
       <div className="relative z-10 container text-center">
-        <p className="font-sans text-[0.65rem] uppercase tracking-[0.3em] mb-14" style={{ color: 'hsl(32 31% 51%)' }}>
+        <p className="font-sans text-[0.65rem] uppercase tracking-[0.3em] mb-8 md:mb-12" style={{ color: 'hsl(32 31% 51%)' }}>
           — Our conviction
         </p>
 
-        <div className="relative h-[22vw] md:h-[16vw] flex items-center justify-center">
+        <div className="relative h-[clamp(6rem,18vw,13rem)] flex items-center justify-center">
           {STATEMENTS.map((s, i) => (
             <div
               key={i}
@@ -143,13 +198,13 @@ export function PinnedStatement() {
               className="absolute inset-0 flex flex-col items-center justify-center will-change-transform"
             >
               <span
-                className="block font-display font-light text-[9vw] md:text-[7vw] lg:text-[6vw] tracking-[-0.02em] leading-[1.0]"
+                className="block font-display font-light text-[clamp(2.25rem,8vw,5.5rem)] tracking-[-0.02em] leading-[1.0]"
                 style={{ color: 'hsl(24 12% 10%)' }}
               >
                 {s.line1}
               </span>
               <span
-                className="block font-display italic text-[9vw] md:text-[7vw] lg:text-[6vw] tracking-[-0.02em] leading-[1.0]"
+                className="block font-display italic text-[clamp(2.25rem,8vw,5.5rem)] tracking-[-0.02em] leading-[1.0]"
                 style={{ color: 'hsl(32 31% 51%)' }}
               >
                 {s.line2}
@@ -159,7 +214,7 @@ export function PinnedStatement() {
         </div>
 
         {/* Scroll progress dots */}
-        <div className="mt-16 flex items-center justify-center gap-3">
+        <div className="mt-10 md:mt-14 flex items-center justify-center gap-3">
           {STATEMENTS.map((_, i) => (
             <div
               key={i}

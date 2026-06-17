@@ -19,6 +19,21 @@ export function useReducedMotion() {
   return reduced
 }
 
+// Width-based mobile check — used to swap heavy pinned/scrub scroll sections
+// for clean stacked layouts on phones/tablets. Defaults to the Tailwind `lg`
+// breakpoint (1024px).
+export function useIsMobile(maxWidth = 1023) {
+  const [mobile, setMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${maxWidth}px)`)
+    setMobile(mq.matches)
+    const onChange = (e) => setMobile(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [maxWidth])
+  return mobile
+}
+
 export function useIsTouch() {
   const [touch, setTouch] = useState(false)
   useEffect(() => {

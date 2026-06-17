@@ -8,6 +8,8 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { TiltCard } from '@/components/motion/TiltCard'
+import { SpotlightCard } from '@/components/reactbits/SpotlightCard'
+import { SplitText } from '@/components/reactbits/SplitText'
 
 const EASE = [0.22, 1, 0.36, 1]
 
@@ -45,19 +47,14 @@ export function JournalSection() {
             >
               <Badge variant="gold" size="sm">Journal</Badge>
             </motion.div>
-            <div className="overflow-hidden">
-              <motion.h2
-                initial={{ y: '108%' }}
-                whileInView={{ y: '0%' }}
-                viewport={{ once: true, amount: 0.6 }}
-                transition={{ duration: 1.0, ease: EASE }}
-                className="font-display font-light leading-[0.95] tracking-[-0.02em]"
-                style={{ fontSize: 'clamp(2.8rem, 6vw, 5rem)', color: 'hsl(24 12% 10%)' }}
-              >
-                Notes from the{' '}
-                <span className="italic" style={{ color: 'hsl(32 31% 51%)' }}>studio.</span>
-              </motion.h2>
-            </div>
+            <SplitText
+              as="h2"
+              by="words"
+              text="Notes from the studio."
+              accentWords={['studio']}
+              className="block font-display font-light leading-[0.95] tracking-[-0.02em] text-[clamp(2.8rem,6vw,5rem)]"
+              style={{ color: 'hsl(24 12% 10%)' }}
+            />
           </div>
           <Link
             href="/blog"
@@ -94,8 +91,8 @@ function JournalCard({ post, delay, offset }) {
         <Card variant="default" shape="soft" hover="glow" className="h-full">
           <Link href={`/blog/${post.slug}`} data-cursor="link" className="group block h-full">
             {/* Image — sits at base depth */}
-            <div
-              className="relative overflow-hidden"
+            <SpotlightCard
+              className="overflow-hidden"
               style={{ aspectRatio: '4/3', transformStyle: 'preserve-3d' }}
             >
               <img
@@ -112,7 +109,7 @@ function JournalCard({ post, delay, offset }) {
               >
                 <Badge variant="ink" size="sm">{post.category}</Badge>
               </div>
-            </div>
+            </SpotlightCard>
 
             <CardContent
               className="p-7 md:p-8 pt-7 md:pt-8"

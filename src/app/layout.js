@@ -6,6 +6,8 @@ import { SiteNav } from '@/components/site/SiteNav'
 import { SiteFooter } from '@/components/site/SiteFooter'
 import { ScrollProgress } from '@/components/site/ScrollProgress'
 import { StickyContact } from '@/components/site/StickyContact'
+import { RouteCurtain } from '@/components/site/RouteCurtain'
+import { Toaster } from '@/components/ui/sonner'
 import { JsonLd } from '@/components/site/JsonLd'
 
 const display = Cormorant_Garamond({
@@ -117,6 +119,8 @@ export default function RootLayout({ children }) {
             <main className="relative">{children}</main>
             <SiteFooter />
             <StickyContact />
+            <RouteCurtain />
+            <Toaster />
           </CursorProvider>
         </SmoothScrollProvider>
       </body>

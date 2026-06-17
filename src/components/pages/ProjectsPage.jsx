@@ -14,6 +14,8 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ProjectDialog } from '@/components/projects/ProjectDialog'
+import { DomeGallery } from '@/components/projects/DomeGallery'
+import { SpotlightCard } from '@/components/reactbits/SpotlightCard'
 import { SeasonStrip } from '@/components/site/SeasonStrip'
 
 export function ProjectsPage() {
@@ -28,6 +30,17 @@ export function ProjectsPage() {
   // Pull a flagship to insert as a wide editorial break
   const flagship = useMemo(() => PROJECTS.find((p) => p.featured), [])
 
+  // Flatten every project's gallery into tiles for the 3D dome
+  const domeItems = useMemo(() => {
+    const out = []
+    PROJECTS.forEach((p) => {
+      (p.gallery && p.gallery.length ? p.gallery : [p.src]).forEach((src, gi) => {
+        out.push({ key: `${p.id}-${gi}`, src, project: p })
+      })
+    })
+    return out.slice(0, 40)
+  }, [])
+
   return (
     <main>
       <SeasonStrip />
@@ -38,6 +51,50 @@ export function ProjectsPage() {
         subtitle="Theme, destination and classic Indian weddings — each one staged as its own world. A selection of recent work."
         image={IMAGES.stories[0].src}
       />
+
+      {/* ── Immersive 3D dome of every world we've built ── */}
+      <section className="relative w-full overflow-hidden" style={{ backgroundColor: 'hsl(24 14% 7%)' }}>
+        {/* warm radial glow behind the dome */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{ background: 'radial-gradient(ellipse 60% 55% at 50% 42%, hsl(32 31% 51% / 0.16), transparent 70%)' }}
+        />
+        <div className="container relative z-10 pt-16 md:pt-24 text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 0.7, ease: ease.editorial }}
+            className="font-sans text-[0.62rem] uppercase tracking-[0.34em] mb-5"
+            style={{ color: 'hsl(32 35% 64%)' }}
+          >
+            — Step inside the worlds
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 0.9, delay: 0.08, ease: ease.editorial }}
+            className="font-display font-light leading-[1.0] tracking-[-0.02em]"
+            style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', color: 'hsl(34 30% 95%)' }}
+          >
+            Drag to explore{' '}
+            <span className="italic" style={{ color: 'hsl(32 35% 64%)' }}>every celebration.</span>
+          </motion.h2>
+        </div>
+
+        <div className="relative z-10 mt-8 md:mt-14">
+          <DomeGallery items={domeItems} onSelect={(p) => p && setOpenProject(p)} />
+        </div>
+
+        <p
+          className="relative z-10 pb-14 md:pb-20 text-center font-sans text-[0.55rem] uppercase tracking-[0.3em]"
+          style={{ color: 'hsl(34 30% 95% / 0.4)' }}
+        >
+          Drag · spin · tap a frame to open the story
+        </p>
+      </section>
 
       {/* Category filter — sticky tabs */}
       <section
@@ -149,8 +206,8 @@ function ProjectTile({ project, onOpen }) {
       className="group block text-left w-full"
     >
       <TiltCard intensity={5} glare={false} perspective={1200} scale={1.015}>
-        <div
-          className="relative overflow-hidden mb-5"
+        <SpotlightCard
+          className="overflow-hidden mb-5"
           style={{ aspectRatio: '4 / 5' }}
         >
           <img
@@ -198,7 +255,7 @@ function ProjectTile({ project, onOpen }) {
               style={{ color: 'hsl(34 30% 95% / 0.7)' }}
             />
           </div>
-        </div>
+        </SpotlightCard>
       </TiltCard>
       {/* Below-image meta */}
       <div className="flex items-center justify-between">

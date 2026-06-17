@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { prefersReducedMotion } from '@/lib/motion'
 
 const COUNT = 55
 
@@ -21,6 +22,8 @@ export function FloatingDust({ className = '' }) {
   const ref = useRef(null)
 
   useEffect(() => {
+    if (prefersReducedMotion()) return
+
     const canvas = ref.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')

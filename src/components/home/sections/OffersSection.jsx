@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
+import { SplitText } from '@/components/reactbits/SplitText'
 import { SERVICES as ALL_SERVICES } from '@/lib/content'
 
 const EASE = [0.22, 1, 0.36, 1]
@@ -180,13 +181,14 @@ export function OffersSection() {
           >
             — Experiences
           </p>
-          <h2
-            className="font-display font-light text-[10vw] md:text-[6vw] tracking-[-0.02em] leading-[0.95]"
+          <SplitText
+            as="h2"
+            by="words"
+            text="What we celebrate."
+            accentWords={['celebrate']}
+            className="block font-display font-light text-[10vw] md:text-[6vw] tracking-[-0.02em] leading-[0.95]"
             style={{ color: 'hsl(24 12% 10%)' }}
-          >
-            What we<br />
-            <span style={{ color: 'hsl(32 31% 51%)' }} className="italic">celebrate.</span>
-          </h2>
+          />
         </div>
         <p
           className="font-sans font-light text-base leading-relaxed max-w-xs"

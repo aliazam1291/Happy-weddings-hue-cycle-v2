@@ -6,6 +6,7 @@ import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { ParallaxLayer } from '@/components/motion/ParallaxLayer'
 import { ImageReveal } from '@/components/motion/ImageReveal'
+import { SplitText } from '@/components/reactbits/SplitText'
 import { IMAGES, img } from '@/lib/images'
 
 const EASE = [0.22, 1, 0.36, 1]
@@ -60,19 +61,15 @@ export function ProjectsGallery() {
           >
             — Our Projects
           </motion.p>
-          <div className="overflow-hidden">
-            <motion.h2
-              initial={{ y: '108%' }}
-              whileInView={{ y: '0%' }}
-              viewport={{ once: true, amount: 0.6 }}
-              transition={{ duration: 1.0, ease: EASE }}
-              className="font-display font-light leading-[0.95] tracking-[-0.02em]"
-              style={{ fontSize: 'clamp(2.6rem, 6vw, 5rem)', color: 'hsl(24 12% 10%)' }}
-            >
-              Weddings that capture{' '}
-              <span className="italic" style={{ color: 'hsl(32 31% 46%)' }}>the imagination.</span>
-            </motion.h2>
-          </div>
+          <SplitText
+            as="h2"
+            by="words"
+            text="Weddings that capture the imagination."
+            accentWords={['the', 'imagination']}
+            accentColor="hsl(32 31% 46%)"
+            className="block font-display font-light leading-[0.95] tracking-[-0.02em] text-[clamp(2.6rem,6vw,5rem)]"
+            style={{ color: 'hsl(24 12% 10%)' }}
+          />
         </div>
         <Link
           href="/projects"

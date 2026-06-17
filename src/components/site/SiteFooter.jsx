@@ -304,7 +304,7 @@ function InstagramStrip() {
               rel="noopener noreferrer"
               data-cursor="media"
               className="block shrink-0 overflow-hidden group"
-              style={{ width: 'clamp(110px, 14vw, 180px)', aspectRatio: '1 / 1' }}
+              style={{ width: 'clamp(6.875rem, 14vw, 11.25rem)', aspectRatio: '1 / 1' }}
             >
               <img
                 src={src}

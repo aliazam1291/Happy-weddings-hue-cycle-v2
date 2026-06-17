@@ -1,12 +1,19 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { useIsTouch, prefersReducedMotion } from '@/lib/motion'
 
 /** Animated film grain — offscreen 200×200 canvas scaled up, redrawn at 12fps */
 export function FilmGrain({ opacity = 0.036 }) {
   const ref = useRef(null)
+  const isTouch = useIsTouch()
 
   useEffect(() => {
+    // A fixed, full-viewport canvas with `mix-blend-mode: overlay` forces the
+    // browser to recomposite the whole screen every paint — fine on desktop,
+    // but a major scroll-jank source on mobile. Skip it on touch / reduced motion.
+    if (isTouch || prefersReducedMotion()) return
+
     const canvas = ref.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
@@ -45,7 +52,9 @@ export function FilmGrain({ opacity = 0.036 }) {
     raf = requestAnimationFrame(tick)
     window.addEventListener('resize', resize)
     return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize) }
-  }, [])
+  }, [isTouch])
+
+  if (isTouch) return null
 
   return (
     <canvas
