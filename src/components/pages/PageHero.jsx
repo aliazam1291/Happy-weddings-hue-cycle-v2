@@ -69,20 +69,17 @@ export function PageHero({ eyebrow, title, accent, subtitle, image }) {
       </ParallaxLayer>
 
       {image && (
-        <div className="relative h-[42vh] md:h-[64vh] w-full overflow-hidden">
+        <div className="relative h-[42vh] md:h-[60vh] w-full overflow-hidden">
           <ParallaxLayer speed={0.18} className="absolute inset-[-12%]">
             <img
               src={image}
               alt=""
               data-cursor="media"
               className="h-full w-full object-cover"
-              style={{ filter: 'saturate(0.86) brightness(0.98)' }}
             />
           </ParallaxLayer>
-          {/* blend the photo into the cream ground top + bottom */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-24" style={{ background: 'linear-gradient(to bottom, hsl(34 30% 95%), transparent)' }} />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24" style={{ background: 'linear-gradient(to top, hsl(34 30% 95%), transparent)' }} />
-          <div className="pointer-events-none absolute inset-0 mix-blend-soft-light" style={{ background: 'hsl(34 40% 60% / 0.22)' }} />
+          {/* subtle bottom blend into the cream ground (crisp image, no haze) */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-14" style={{ background: 'linear-gradient(to top, hsl(34 30% 95%), transparent)' }} />
         </div>
       )}
     </header>
