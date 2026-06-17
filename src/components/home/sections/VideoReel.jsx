@@ -6,8 +6,7 @@ import { Play, X } from 'lucide-react'
 import { ease } from '@/lib/motion'
 import { Ornament } from '@/components/motion/Ornament'
 import { SplitText } from '@/components/reactbits/SplitText'
-import { IMAGES } from '@/lib/images'
-import { CONTACT, YOUTUBE } from '@/lib/content'
+import { CONTACT, YOUTUBE, ytThumb } from '@/lib/content'
 
 /**
  * Films section — plays the studio's real YouTube uploads. We embed the
@@ -19,8 +18,8 @@ import { CONTACT, YOUTUBE } from '@/lib/content'
  * Clicking the poster or any film card opens an ink lightbox with the iframe
  * (no autoplay until the user opts in).
  */
-const POSTER = IMAGES.stories[0].src
-const CARD_POSTERS = [IMAGES.stories[2].src, IMAGES.stories[1].src, IMAGES.stories[3].src]
+const FLAGSHIP = YOUTUBE.featured[0]?.id
+const POSTER = ytThumb(FLAGSHIP, 'max')
 
 const embedFor = (id) =>
   id
@@ -76,6 +75,7 @@ export function VideoReel() {
           <img
             src={POSTER}
             alt=""
+            onError={(e) => { e.currentTarget.src = ytThumb(FLAGSHIP, 'hq') }}
             className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.04]"
             style={{ filter: 'saturate(0.85) brightness(0.82)' }}
           />
@@ -122,8 +122,9 @@ export function VideoReel() {
               style={{ aspectRatio: '4 / 3' }}
             >
               <img
-                src={CARD_POSTERS[i % CARD_POSTERS.length]}
+                src={ytThumb(v.id, 'max')}
                 alt=""
+                onError={(e) => { e.currentTarget.src = ytThumb(v.id, 'hq') }}
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
                 style={{ filter: 'saturate(0.85) brightness(0.78)' }}
               />

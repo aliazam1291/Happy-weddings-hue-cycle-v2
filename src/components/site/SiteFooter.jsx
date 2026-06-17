@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ArrowUpRight, ChevronRight, Mail } from 'lucide-react'
 import { SplitTextReveal } from '@/components/motion/SplitTextReveal'
@@ -8,8 +8,7 @@ import { Marquee } from '@/components/motion/Marquee'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { IMAGES } from '@/lib/images'
-import { AWARDS, CONTACT } from '@/lib/content'
+import { AWARDS, CONTACT, YOUTUBE, ytThumb, ytWatch } from '@/lib/content'
 
 const SITEMAP = [
   {
@@ -53,18 +52,6 @@ const SOCIALS = [
   { href: 'https://facebook.com/happyweddingsofficial', label: 'Facebook' },
   { href: 'https://www.youtube.com/channel/UCLjcA6--sDfvXAe9qbX6klg', label: 'YouTube' },
   { href: 'https://twitter.com/happyweddings3', label: 'Twitter' },
-]
-
-// Instagram-tile placeholders pulled from existing image seeds
-const INSTA_TILES = [
-  IMAGES.stories[0].src,
-  IMAGES.stories[1].src,
-  IMAGES.stories[2].src,
-  IMAGES.stories[3].src,
-  IMAGES.stories[4].src,
-  IMAGES.journal[0],
-  IMAGES.journal[1],
-  IMAGES.journal[2],
 ]
 
 export function SiteFooter() {
@@ -142,6 +129,8 @@ export function SiteFooter() {
       </div>
 
       {/* Instagram tile strip */}
+      <FilmStrip />
+
       <InstagramStrip />
 
       {/* Awards row */}
@@ -274,44 +263,136 @@ function NewsletterForm() {
   )
 }
 
-/* ── Instagram tile strip — marquee of recent posts ────────────── */
-function InstagramStrip() {
+/* ── Film strip — marquee of real covers from the YouTube channel ── */
+function FilmStrip() {
+  const tiles = YOUTUBE.videos
   return (
     <div className="border-t border-b border-ivory/10 overflow-hidden">
       <div className="container py-8 md:py-10">
         <div className="flex items-end justify-between mb-6 md:mb-8">
           <p className="font-sans text-[0.58rem] uppercase tracking-[0.32em] text-ivory/55">
-            — On Instagram
+            — Watch our films
           </p>
           <a
-            href="https://instagram.com/happyweddingsofficial"
+            href={YOUTUBE.channelUrl}
             target="_blank"
             rel="noopener noreferrer"
             data-cursor="link"
             className="group inline-flex items-center gap-2 font-sans text-[0.62rem] uppercase tracking-[0.22em] text-ivory/65 hover:text-gold transition-colors"
           >
-            @happyweddingsofficial
+            See all on YouTube
             <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
         </div>
       </div>
       <Marquee duration={55}>
         <div className="flex items-center gap-3 md:gap-4 px-3">
-          {INSTA_TILES.concat(INSTA_TILES).map((src, i) => (
+          {tiles.concat(tiles).map((v, i) => (
             <a
-              key={`${src}-${i}`}
-              href="https://instagram.com/happyweddingsofficial"
+              key={`${v.id}-${i}`}
+              href={ytWatch(v.id)}
               target="_blank"
               rel="noopener noreferrer"
               data-cursor="media"
-              className="block shrink-0 overflow-hidden group"
+              data-cursor-label="Play"
+              title={v.title}
+              className="relative block shrink-0 overflow-hidden group"
+              style={{ width: 'clamp(9rem, 18vw, 14rem)', aspectRatio: '16 / 9' }}
+            >
+              <img
+                src={ytThumb(v.id, 'max')}
+                alt={v.title}
+                onError={(e) => { e.currentTarget.src = ytThumb(v.id, 'hq') }}
+                className="h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
+                style={{ filter: 'grayscale(0.25) brightness(0.82)' }}
+              />
+              <span
+                className="pointer-events-none absolute inset-0"
+                style={{ background: 'linear-gradient(180deg, transparent 45%, hsl(24 14% 6% / 0.7) 100%)' }}
+              />
+              <span className="pointer-events-none absolute bottom-2.5 left-3 right-3 font-sans text-[0.56rem] leading-snug text-ivory/85 line-clamp-2">
+                {v.title}
+              </span>
+            </a>
+          ))}
+        </div>
+      </Marquee>
+      <div className="py-6" />
+    </div>
+  )
+}
+
+/* ── Instagram strip — live posts via /api/instagram (real covers when a
+   token is configured), graceful follow-CTA otherwise ──────────────── */
+function InstagramStrip() {
+  const [posts, setPosts] = useState([])
+
+  useEffect(() => {
+    let active = true
+    fetch('/api/instagram')
+      .then((r) => (r.ok ? r.json() : { posts: [] }))
+      .then((d) => { if (active) setPosts(Array.isArray(d.posts) ? d.posts : []) })
+      .catch(() => {})
+    return () => { active = false }
+  }, [])
+
+  const handle = (
+    <a
+      href="https://instagram.com/happyweddingsofficial"
+      target="_blank"
+      rel="noopener noreferrer"
+      data-cursor="link"
+      className="group inline-flex items-center gap-2 font-sans text-[0.62rem] uppercase tracking-[0.22em] text-ivory/65 hover:text-gold transition-colors"
+    >
+      @happyweddingsofficial
+      <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+    </a>
+  )
+
+  // No token configured yet → clean follow bar instead of broken tiles.
+  if (!posts.length) {
+    return (
+      <div className="border-t border-ivory/10">
+        <div className="container py-7 md:py-9 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <p className="font-sans text-[0.58rem] uppercase tracking-[0.32em] text-ivory/55">
+            — Follow us on Instagram
+          </p>
+          {handle}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="border-t border-ivory/10 overflow-hidden">
+      <div className="container py-8 md:py-10">
+        <div className="flex items-end justify-between mb-6 md:mb-8">
+          <p className="font-sans text-[0.58rem] uppercase tracking-[0.32em] text-ivory/55">
+            — On Instagram
+          </p>
+          {handle}
+        </div>
+      </div>
+      <Marquee duration={60}>
+        <div className="flex items-center gap-3 md:gap-4 px-3">
+          {posts.concat(posts).map((p, i) => (
+            <a
+              key={`${p.id}-${i}`}
+              href={p.permalink}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="media"
+              data-cursor-label="View"
+              title={p.caption}
+              className="relative block shrink-0 overflow-hidden group"
               style={{ width: 'clamp(6.875rem, 14vw, 11.25rem)', aspectRatio: '1 / 1' }}
             >
               <img
-                src={src}
-                alt={`Instagram tile ${i + 1}`}
+                src={p.image}
+                alt={p.caption || 'Instagram post'}
+                loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
-                style={{ filter: 'grayscale(0.3) brightness(0.9)' }}
+                style={{ filter: 'grayscale(0.25) brightness(0.9)' }}
               />
             </a>
           ))}

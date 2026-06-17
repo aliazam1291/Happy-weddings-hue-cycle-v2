@@ -31,18 +31,41 @@ export const CONTACT = {
   whatsapp: "918827188884",
 }
 
-// Live YouTube channel — the uploads playlist plays the latest films without
-// needing per-video IDs (channel id "UC…" → uploads playlist "UU…").
-// To feature specific films, add their 11-char watch?v= ids to `featured`.
+// Live YouTube channel (id "UC…" → uploads playlist "UU…"). Real video ids
+// pulled from the channel's public RSS feed so covers use real thumbnails.
+// Thumbnail URL builder: 'max' is HD (1280×720, only on HD uploads — fall back
+// to 'hq' via onError); 'hq' (480×360) is always present.
+export function ytThumb(id, quality = "hq") {
+  const map = { max: "maxresdefault", sd: "sddefault", hq: "hqdefault", mq: "mqdefault" }
+  return `https://i.ytimg.com/vi/${id}/${map[quality] || "hqdefault"}.jpg`
+}
+
+export const ytWatch = (id) => `https://www.youtube.com/watch?v=${id}`
+
 export const YOUTUBE = {
   channelId: "UCLjcA6--sDfvXAe9qbX6klg",
   channelUrl: "https://www.youtube.com/channel/UCLjcA6--sDfvXAe9qbX6klg",
   uploadsPlaylist: "UULjcA6--sDfvXAe9qbX6klg",
-  // Curated reel cards. `id` empty → opens the live uploads playlist.
+  // Real uploads (newest first) — used for footer covers + film grid.
+  videos: [
+    { id: "Sv_mAdRg0tU", title: "Make your special day look like a dream" },
+    { id: "e-tEjAYTVII", title: "Rohit & Saloni's big day was grand" },
+    { id: "80JScCHYC7M", title: "Himesh Reshammiya, live at the reception" },
+    { id: "pynQBJwF62k", title: "Dream Bollywood wedding décor" },
+    { id: "8zdKkZte6J0", title: "Meet the gorgeous bride, Amrita" },
+    { id: "feXbfTYYvhc", title: "Elli AvrRam at the International Conference" },
+    { id: "lW9NEcNQtO4", title: "An 'extra' wedding, start to finish" },
+    { id: "bISfZ5T4rbU", title: "Energetic performance by Superpsychos" },
+    { id: "g2b7B4pvLsk", title: "Nathdwara Shobhayatra" },
+    { id: "1z2hNbhKNoI", title: "A birthday & welcome celebration" },
+    { id: "pkich_YV21M", title: "Stars at Casino Vegas, Nepal" },
+    { id: "9qH0f1f3kms", title: "The destination to your dream wedding" },
+  ],
+  // Curated reel cards for the homepage film grid.
   featured: [
-    { id: "", title: "Wedding Films", note: "Cinematic full-day stories" },
-    { id: "", title: "Teasers & Save-the-Dates", note: "The first look at the day" },
-    { id: "", title: "Sangeet & Highlights", note: "The nights everyone remembers" },
+    { id: "Sv_mAdRg0tU", title: "A day like a dream", note: "Cinematic wedding film" },
+    { id: "e-tEjAYTVII", title: "Rohit & Saloni", note: "The big day" },
+    { id: "80JScCHYC7M", title: "Himesh Reshammiya, live", note: "Star performances" },
   ],
 }
 
