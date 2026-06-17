@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import Link from 'next/link'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { ArrowUpRight, X, Award } from 'lucide-react'
 import { PageHero } from '@/components/pages/PageHero'
 import { ParallaxLayer } from '@/components/motion/ParallaxLayer'
@@ -12,10 +12,11 @@ import { Ornament } from '@/components/motion/Ornament'
 import { TiltCard } from '@/components/motion/TiltCard'
 import { SpotlightCard } from '@/components/reactbits/SpotlightCard'
 import { SplitText } from '@/components/reactbits/SplitText'
+import { CountUp } from '@/components/reactbits/CountUp'
 import { FlipCard } from '@/components/reactbits/FlipCard'
 import { Marquee } from '@/components/motion/Marquee'
 import { ease } from '@/lib/motion'
-import { ABOUT, BRAND, WEDDING_TYPES, TEAM, MILESTONES, AWARDS, PRESS } from '@/lib/content'
+import { ABOUT, BRAND, WEDDING_TYPES, TEAM, MILESTONES, AWARDS, PRESS, IMPACT } from '@/lib/content'
 import { IMAGES as IMG } from '@/lib/images'
 import {
   Accordion,
@@ -50,48 +51,108 @@ export function AboutPage() {
   )
 }
 
-/* ── 1. Manifesto ──────────────────────────────────────────────── */
+/* ── 1. Manifesto — interactive philosophy selector + animated stats ─ */
+const BELIEFS = [
+  { id: 'mission', label: 'Our mission', body: ABOUT.mission },
+  { id: 'vision', label: 'Our vision', body: ABOUT.vision },
+  { id: 'luxury', label: 'On luxury', body: ABOUT.differentiation },
+]
+
+const STATS = [
+  { to: IMPACT.years, suffix: '', label: 'Years of practice', sub: `Since ${BRAND.since}` },
+  { to: IMPACT.weddings, suffix: '+', label: 'Celebrations & events', sub: 'Verified to date' },
+  { to: IMPACT.cities, suffix: '+', label: 'Cities & destinations', sub: 'Across India & abroad' },
+  { to: AWARDS.length, suffix: '', label: 'Industry honours', sub: '2015 — 2025' },
+]
+
 function Manifesto() {
+  const [active, setActive] = useState(0)
+  const belief = BELIEFS[active]
+
   return (
     <section className="w-full" style={{ backgroundColor: 'hsl(34 30% 95%)' }}>
       <div className="container py-24 md:py-36">
+        <p
+          className="font-sans text-[0.6rem] uppercase tracking-[0.32em] mb-12 md:mb-16"
+          style={{ color: 'hsl(32 31% 46%)' }}
+        >
+          — Our manifesto
+        </p>
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16 items-start">
-          <RevealOnView className="lg:col-span-4 lg:pt-6">
+          {/* Left: interactive belief selector */}
+          <div className="lg:col-span-4">
             <p
-              className="font-sans text-[0.6rem] uppercase tracking-[0.32em] mb-6"
-              style={{ color: 'hsl(32 31% 46%)' }}
-            >
-              — Our manifesto
-            </p>
-            <p
-              className="font-display italic leading-snug max-w-[18ch]"
-              style={{ fontSize: 'clamp(1.4rem, 2.2vw, 1.85rem)', color: 'hsl(24 12% 10% / 0.65)' }}
+              className="font-display italic leading-snug max-w-[16ch] mb-10 md:mb-12"
+              style={{ fontSize: 'clamp(1.4rem, 2.2vw, 1.85rem)', color: 'hsl(24 12% 10% / 0.6)' }}
             >
               What we believe a wedding should feel like.
             </p>
-          </RevealOnView>
+            <ul>
+              {BELIEFS.map((b, i) => (
+                <li key={b.id}>
+                  <button
+                    type="button"
+                    data-cursor="link"
+                    aria-pressed={active === i}
+                    onClick={() => setActive(i)}
+                    onMouseEnter={() => setActive(i)}
+                    className="relative flex w-full items-baseline gap-4 py-4 pl-5 text-left"
+                  >
+                    {active === i && (
+                      <motion.span
+                        layoutId="belief-bar"
+                        className="absolute left-0 top-1 bottom-1 w-[2px]"
+                        style={{ backgroundColor: 'hsl(32 31% 51%)' }}
+                        transition={{ duration: 0.4, ease: ease.editorial }}
+                      />
+                    )}
+                    <span
+                      className="font-display italic text-sm w-7 shrink-0 transition-colors duration-300"
+                      style={{ color: active === i ? 'hsl(32 31% 51%)' : 'hsl(24 12% 10% / 0.3)' }}
+                    >
+                      0{i + 1}
+                    </span>
+                    <span
+                      className="font-display tracking-[-0.01em] transition-colors duration-300"
+                      style={{
+                        fontSize: 'clamp(1.3rem, 2vw, 1.7rem)',
+                        color: active === i ? 'hsl(24 12% 10%)' : 'hsl(24 12% 10% / 0.4)',
+                      }}
+                    >
+                      {b.label}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
 
+          {/* Right: selected belief + founder quote */}
           <div className="lg:col-span-7 lg:col-start-6">
-            <RevealOnView>
-              <p
-                className="font-display font-light tracking-[-0.01em] leading-[1.18] mb-10"
-                style={{
-                  fontSize: 'clamp(1.5rem, 2.8vw, 2.25rem)',
-                  color: 'hsl(24 12% 10%)',
-                }}
-              >
-                {ABOUT.mission}
-              </p>
-            </RevealOnView>
-            <Ornament className="my-10" />
+            <div className="min-h-[16rem] md:min-h-[18rem]">
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={belief.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.55, ease: ease.editorial }}
+                  className="font-display font-light tracking-[-0.01em] leading-[1.2]"
+                  style={{ fontSize: 'clamp(1.35rem, 2.5vw, 2.05rem)', color: 'hsl(24 12% 10%)' }}
+                >
+                  {belief.body}
+                </motion.p>
+              </AnimatePresence>
+            </div>
+
+            <Ornament className="my-12" />
+
             <RevealOnView delay={0.1}>
-              <blockquote
-                className="border-l-2 pl-6"
-                style={{ borderColor: 'hsl(32 31% 51%)' }}
-              >
+              <blockquote className="border-l-2 pl-6" style={{ borderColor: 'hsl(32 31% 51%)' }}>
                 <p
                   className="font-display italic leading-snug"
-                  style={{ fontSize: 'clamp(1.5rem, 2.6vw, 2.1rem)', color: 'hsl(32 31% 51%)' }}
+                  style={{ fontSize: 'clamp(1.4rem, 2.4vw, 1.9rem)', color: 'hsl(32 31% 51%)' }}
                 >
                   &ldquo;{ABOUT.quote}&rdquo;
                 </p>
@@ -103,6 +164,41 @@ function Manifesto() {
                 </footer>
               </blockquote>
             </RevealOnView>
+          </div>
+        </div>
+
+        {/* Animated stats strip — counts up on scroll */}
+        <div
+          className="mt-20 md:mt-28 pt-12 md:pt-16 border-t"
+          style={{ borderColor: 'hsl(24 12% 10% / 0.1)' }}
+        >
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-6">
+            {STATS.map((s, i) => (
+              <motion.div
+                key={s.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.7, delay: i * 0.1, ease: ease.editorial }}
+                className="text-center lg:text-left"
+              >
+                <CountUp
+                  to={s.to}
+                  suffix={s.suffix}
+                  className="block font-display font-light leading-none"
+                  style={{ fontSize: 'clamp(2.8rem, 6vw, 4.5rem)', color: 'hsl(32 31% 51%)' }}
+                />
+                <p
+                  className="mt-4 font-sans text-[0.6rem] uppercase tracking-[0.26em]"
+                  style={{ color: 'hsl(24 12% 10%)' }}
+                >
+                  {s.label}
+                </p>
+                <p className="mt-1 font-display italic text-sm" style={{ color: 'hsl(24 12% 10% / 0.45)' }}>
+                  {s.sub}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>

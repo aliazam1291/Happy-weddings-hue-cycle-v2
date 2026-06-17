@@ -8,7 +8,7 @@ import { ChevronRight } from 'lucide-react'
  * Auto breadcrumb derived from the current path (Home › Section › Sub),
  * themed ivory/gold/ink. Last crumb is the current page (gold, non-link).
  */
-export function Breadcrumb() {
+export function Breadcrumb({ tone = 'dark' }) {
   const pathname = usePathname() || '/'
   if (pathname === '/') return null
 
@@ -21,6 +21,11 @@ export function Breadcrumb() {
     })),
   ]
 
+  const light = tone === 'light'
+  const colors = light
+    ? { current: 'hsl(34 30% 95%)', link: 'hsl(34 30% 95% / 0.6)', chevron: 'hsl(34 30% 95% / 0.4)' }
+    : { current: 'hsl(32 31% 46%)', link: 'hsl(24 12% 10% / 0.45)', chevron: 'hsl(24 12% 10% / 0.3)' }
+
   return (
     <nav aria-label="Breadcrumb" className="mb-6">
       <ol className="flex flex-wrap items-center gap-2 font-sans text-[0.6rem] uppercase tracking-[0.22em]">
@@ -29,18 +34,18 @@ export function Breadcrumb() {
           return (
             <li key={c.href} className="flex items-center gap-2">
               {last ? (
-                <span style={{ color: 'hsl(32 31% 46%)' }} aria-current="page">{c.label}</span>
+                <span style={{ color: colors.current }} aria-current="page">{c.label}</span>
               ) : (
                 <Link
                   href={c.href}
                   data-cursor="link"
                   className="transition-colors duration-300 hover:text-gold"
-                  style={{ color: 'hsl(24 12% 10% / 0.45)' }}
+                  style={{ color: colors.link }}
                 >
                   {c.label}
                 </Link>
               )}
-              {!last && <ChevronRight className="h-3 w-3" style={{ color: 'hsl(24 12% 10% / 0.3)' }} />}
+              {!last && <ChevronRight className="h-3 w-3" style={{ color: colors.chevron }} />}
             </li>
           )
         })}

@@ -8,7 +8,6 @@ import { PageHero } from '@/components/pages/PageHero'
 import { Ornament } from '@/components/motion/Ornament'
 import { ease } from '@/lib/motion'
 import { SERVICES, PROJECTS, BUDGET_SAMPLE, CONTACT } from '@/lib/content'
-import { IMAGES } from '@/lib/images'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
@@ -47,6 +46,8 @@ const SERVICE_PROJECT_LINK = {
   '05': 'sangeet-goa',          // Choreography → Sangeet on the beach
   '06': 'lakeside-udaipur',     // Travel & Logistics → Destination travel
   '07': 'theme-indore',         // Special Effects → Theme reveal
+  '08': 'palace-jaipur',        // Digital Solutions → NRI heritage wedding
+  '09': 'garden-indore',        // Beyond Weddings → Intimate garden affair
 }
 
 /* Dummy enriched data layered on top of the existing SERVICES array.
@@ -87,6 +88,16 @@ const SERVICE_META = {
     duration: '1–2 months add-on',
     best_for: 'Any ceremony moment',
   },
+  '08': {
+    highlights: ['Bespoke wedding website', 'Digital invitations', 'RSVP & guest portal', 'Save-the-date films', 'Social media integration'],
+    duration: '2–4 months',
+    best_for: 'Modern, connected couples',
+  },
+  '09': {
+    highlights: ['Corporate events', 'Milestone celebrations', 'Intimate social gatherings', 'Luxury experiences', 'Bespoke concepts'],
+    duration: 'Flexible',
+    best_for: 'Any occasion',
+  },
 }
 
 const PROCESS_STEPS = [
@@ -125,11 +136,11 @@ export function ServicesPage() {
       <main>
         <SeasonStrip />
         <PageHero
+          tone="terracotta"
           eyebrow="Our Services"
           title="Everything,"
           accent="under one roof."
-          subtitle="From the invitation to the last special effect — we plan, design and run every part of the celebration so you are present for what matters."
-          image={IMAGES.services[0]}
+          subtitle="From the first consultation to the final farewell — we plan, design and run every part of the celebration so you are present for what matters."
         />
 
         <ServiceNavStrip />
@@ -197,7 +208,7 @@ function ServiceIndex() {
               className="font-display font-light tracking-[-0.02em] leading-[0.95]"
               style={{ fontSize: 'clamp(2rem, 4.4vw, 3.4rem)', color: 'hsl(24 12% 10%)' }}
             >
-              Seven crafts,{' '}
+              Nine crafts,{' '}
               <span className="italic" style={{ color: 'hsl(32 31% 51%)' }}>one studio.</span>
             </h2>
           </div>

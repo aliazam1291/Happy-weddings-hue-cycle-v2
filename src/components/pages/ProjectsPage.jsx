@@ -241,7 +241,7 @@ function ProjectTile({ project, onOpen }) {
                 className="font-sans text-[0.56rem] uppercase tracking-[0.22em] mb-1"
                 style={{ color: 'hsl(34 30% 95% / 0.75)' }}
               >
-                {project.place}
+                {project.couple ? `${project.couple} · ${project.place}` : project.place}
               </p>
               <p
                 className="font-display text-lg md:text-xl leading-[1.15]"
@@ -327,7 +327,7 @@ function FeatureBand({ project, onOpen }) {
               className="font-sans text-[0.6rem] uppercase tracking-[0.32em] mb-6"
               style={{ color: 'hsl(32 31% 46%)' }}
             >
-              {project.year} · {project.stats.city}
+              {project.couple ? `${project.couple} · ` : ''}{project.year} · {project.stats.city}
             </p>
             <h2
               className="font-display font-light tracking-[-0.02em] leading-[0.98] mb-6"

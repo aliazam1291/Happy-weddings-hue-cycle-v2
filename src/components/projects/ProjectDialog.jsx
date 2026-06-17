@@ -144,6 +144,14 @@ export function ProjectDialog({ project, open, onOpenChange }) {
               >
                 {project.year} · Case study
               </p>
+              {project.couple && (
+                <p
+                  className="font-display italic mb-2"
+                  style={{ fontSize: 'clamp(1.1rem, 1.8vw, 1.5rem)', color: 'hsl(32 31% 51%)' }}
+                >
+                  {project.couple}
+                </p>
+              )}
               <h2
                 className="font-display font-light tracking-[-0.02em] leading-[0.98] mb-6"
                 style={{ fontSize: 'clamp(1.9rem, 3.4vw, 2.8rem)', color: 'hsl(24 12% 10%)' }}

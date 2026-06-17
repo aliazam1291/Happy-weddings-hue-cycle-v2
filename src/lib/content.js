@@ -24,10 +24,33 @@ export const CONTACT = {
   socials: [
     { label: "Instagram", href: "https://instagram.com/happyweddingsofficial" },
     { label: "Facebook", href: "https://facebook.com/happyweddingsofficial" },
-    { label: "YouTube", href: "https://youtube.com/@happyweddingsofficial" },
+    { label: "YouTube", href: "https://www.youtube.com/channel/UCLjcA6--sDfvXAe9qbX6klg" },
+    { label: "Twitter", href: "https://twitter.com/happyweddings3" },
   ],
   booking: "We recommend booking 6-12 months in advance.",
   whatsapp: "918827188884",
+}
+
+// Live YouTube channel — the uploads playlist plays the latest films without
+// needing per-video IDs (channel id "UC…" → uploads playlist "UU…").
+// To feature specific films, add their 11-char watch?v= ids to `featured`.
+export const YOUTUBE = {
+  channelId: "UCLjcA6--sDfvXAe9qbX6klg",
+  channelUrl: "https://www.youtube.com/channel/UCLjcA6--sDfvXAe9qbX6klg",
+  uploadsPlaylist: "UULjcA6--sDfvXAe9qbX6klg",
+  // Curated reel cards. `id` empty → opens the live uploads playlist.
+  featured: [
+    { id: "", title: "Wedding Films", note: "Cinematic full-day stories" },
+    { id: "", title: "Teasers & Save-the-Dates", note: "The first look at the day" },
+    { id: "", title: "Sangeet & Highlights", note: "The nights everyone remembers" },
+  ],
+}
+
+// Verified impact numbers — signed off for the printed portfolio (June 2026).
+export const IMPACT = {
+  weddings: 350,        // confirmed total weddings & events executed
+  years: 13,            // since 2013
+  cities: 15,           // cities & destinations covered
 }
 
 // Primary navigation — mirrors the real site, mapped to our routes
@@ -43,9 +66,9 @@ export const ABOUT = {
   eyebrow: "The House",
   title: "A named house since 2013.",
   mission:
-    "Because some moments deserve more than planning — they deserve poetry. We don't just create weddings; we create the feeling of a father seeing his daughter as a bride, the quiet glance between two souls before forever begins, the laughter that echoes through generations, and the tears that arrive disguised as smiles. Not to create events. But to create the moments people carry with them for a lifetime.",
+    "We are committed to replacing spectacle with significance, and packages with people. We listen to every couple's unique story and craft wedding experiences that are deeply personal and emotionally enduring.",
   vision:
-    "We envision a world where weddings are remembered not for a day, but for generations. A world where every celebration becomes a timeless story, passed down through family conversations, treasured photographs, and cherished memories. We aspire to create experiences so meaningful that long after the flowers have faded and the music has ended, the emotions remain alive.",
+    "To be a name synonymous with editorial aesthetic and thoughtful craftsmanship — envisioning a world where luxury weddings are defined by their sincerity and not by their scale.",
   differentiation:
     "Luxury is not about excess — it's about creating moments so beautiful they feel effortless. It is in the details no one notices, yet everyone remembers. It is in the warmth of hospitality, the magic of a perfectly curated experience, and the feeling that every moment unfolded exactly as it was meant to.",
   founderBio:
@@ -60,63 +83,63 @@ export const SERVICES = [
     num: "01",
     title: "Wedding Planning & Management",
     sub: "From vision to execution",
-    copy: "End-to-end planning, budgeting, vendor management, timelines, logistics, and flawless on-ground execution. Every detail handled so you can be fully present for what matters.",
+    copy: "We take complete ownership of your wedding — from the first consultation to the final farewell. Every detail of planning, budgeting, vendor coordination, timelines, and logistics is held with care, so the day itself is nothing short of seamless.",
     src: IMAGES.services[0],
   },
   {
     num: "02",
     title: "Destination Weddings",
     sub: "We arrive ahead of you",
-    copy: "From selecting the perfect destination to managing travel, hospitality, guest experiences, and production — we take care of every detail so you arrive to wonder, not worry.",
+    copy: "The world is your venue. We build destination weddings from the ground up — selecting the perfect location, managing travel and hospitality, designing immersive guest experiences, and overseeing all production, wherever in the world your story calls for.",
     src: IMAGES.services[3],
   },
   {
     num: "03",
     title: "Design & Décor",
     sub: "Your vision, our craft",
-    copy: "Bespoke concepts, immersive themes, floral artistry, luxury styling, and thoughtfully curated spaces that bring your vision to life across every ceremony.",
+    copy: "Each space we touch begins as a blank canvas and ends as an emotion. Bespoke concepts, immersive themes, considered floral artistry, and luxury styling come together to create environments that feel entirely, unmistakably yours.",
     src: IMAGES.services[2],
   },
   {
     num: "04",
     title: "Entertainment & Artist Management",
     sub: "Moments that move",
-    copy: "Celebrity performances, live acts, DJs, cultural experiences, and interactive entertainment designed to elevate every celebration — from the Sangeet to the final farewell.",
+    copy: "We curate moments that live long after the music stops — from headline performances and live acts to cultural experiences, world-class DJs, and interactive entertainment that gives every celebration its own unmistakable energy.",
     src: img("svc-entertainment", 1400, 1600),
   },
   {
     num: "05",
     title: "Hospitality & Guest Experience",
     sub: "Every guest, cared for",
-    copy: "RSVP management, guest relations, concierge services, accommodation planning, and personalised hospitality that makes every guest feel seen, welcomed, and at ease.",
+    copy: "Every person who walks through your wedding should feel genuinely looked after. We manage RSVPs, guest relations, concierge services, accommodation, and personalised hospitality so that nobody is left to wonder what comes next.",
     src: IMAGES.services[1],
   },
   {
     num: "06",
     title: "Technical Production",
     sub: "Flawless on the day",
-    copy: "Lighting, sound, staging, LED experiences, special effects, and technical execution that ensures every moment shines — no failed mics, no surprises.",
+    copy: "The magic you see is only possible because of what happens behind the scenes. Precision lighting, immersive sound, dramatic staging, LED experiences, and special effects — all executed by a team that knows how to make every moment land exactly as imagined.",
     src: img("svc-technical", 1400, 1600),
   },
   {
     num: "07",
     title: "Travel & Logistics",
     sub: "Seamless from door to door",
-    copy: "Seamless transportation, airport assistance, guest movement, and vendor logistics managed with precision — from first arrival to final farewell.",
+    copy: "Movement, managed. From airport assistance and guest transfers to vendor logistics and on-ground coordination, every journey connected to your celebration is handled with quiet precision.",
     src: img("svc-logistics", 1400, 1600),
   },
   {
     num: "08",
     title: "Digital Wedding Solutions",
     sub: "Your story, online",
-    copy: "Wedding websites, digital invitations, guest communication systems, and social media integrations — your celebration beautifully told, before the day and long after.",
+    copy: "Your story begins well before the day itself. We build beautiful wedding websites, elegant digital invitations, and seamless guest communication systems — keeping your closest people connected, informed, and excited throughout.",
     src: img("svc-digital", 1400, 1600),
   },
   {
     num: "09",
     title: "Celebrations Beyond Weddings",
     sub: "Every occasion, crafted",
-    copy: "Corporate events, milestone celebrations, social gatherings, luxury experiences, and bespoke events — the same imagination and care we bring to weddings, for every occasion that matters.",
+    copy: "The same artistry, intention, and precision we bring to weddings extends to every event we are trusted with — corporate gatherings, milestone celebrations, intimate social events, luxury experiences, and occasions that defy categories altogether.",
     src: img("svc-corporate", 1400, 1600),
   },
 ]
@@ -136,6 +159,7 @@ export const PROJECTS = [
   {
     id: "theme-indore",
     title: "A Theme to Remember",
+    couple: "Ripu & Daman",
     place: "Indore",
     type: "Theme",
     year: 2025,
@@ -159,6 +183,7 @@ export const PROJECTS = [
   {
     id: "lakeside-udaipur",
     title: "Lakeside Vows",
+    couple: "Anand & Palak",
     place: "Udaipur",
     type: "Destination",
     year: 2025,

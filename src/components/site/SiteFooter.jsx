@@ -51,7 +51,8 @@ const SITEMAP = [
 const SOCIALS = [
   { href: 'https://instagram.com/happyweddingsofficial', label: 'Instagram' },
   { href: 'https://facebook.com/happyweddingsofficial', label: 'Facebook' },
-  { href: 'https://youtube.com/@happyweddingsofficial', label: 'YouTube' },
+  { href: 'https://www.youtube.com/channel/UCLjcA6--sDfvXAe9qbX6klg', label: 'YouTube' },
+  { href: 'https://twitter.com/happyweddings3', label: 'Twitter' },
 ]
 
 // Instagram-tile placeholders pulled from existing image seeds

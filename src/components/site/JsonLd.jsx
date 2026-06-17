@@ -38,7 +38,8 @@ export function JsonLd() {
     sameAs: [
       'https://instagram.com/happyweddingsofficial',
       'https://facebook.com/happyweddingsofficial',
-      'https://youtube.com/@happyweddingsofficial',
+      'https://www.youtube.com/channel/UCLjcA6--sDfvXAe9qbX6klg',
+      'https://twitter.com/happyweddings3',
     ],
     openingHours: 'Mo-Sa 10:00-19:00',
     priceRange: '₹₹₹',
@@ -95,6 +96,8 @@ export function JsonLd() {
     sameAs: [
       'https://instagram.com/happyweddingsofficial',
       'https://facebook.com/happyweddingsofficial',
+      'https://www.youtube.com/channel/UCLjcA6--sDfvXAe9qbX6klg',
+      'https://twitter.com/happyweddings3',
     ],
   }
 
