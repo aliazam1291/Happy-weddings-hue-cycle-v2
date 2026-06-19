@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion'
 import { ease } from '@/lib/motion'
 import { Ornament } from '@/components/motion/Ornament'
+import { Eyebrow } from '@/components/motion/Eyebrow'
 import { SplitText } from '@/components/reactbits/SplitText'
 
 const FAQS = [
@@ -40,16 +41,7 @@ export function FaqSection() {
       style={{ backgroundColor: 'hsl(34 30% 95%)' }}
     >
       <div className="container">
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.7, ease: ease.editorial }}
-          className="font-sans text-[0.62rem] uppercase tracking-[0.32em] text-center mb-4"
-          style={{ color: 'hsl(32 31% 46%)' }}
-        >
-          — FAQ Corner
-        </motion.p>
+        <Eyebrow tone="gold" className="text-center mb-4">FAQ Corner</Eyebrow>
         <SplitText
           as="h2"
           by="words"

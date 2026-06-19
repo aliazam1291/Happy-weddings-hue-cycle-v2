@@ -89,7 +89,7 @@ export function SiteFooter() {
             data-cursor="link"
             className="mt-10 md:mt-12 inline-flex items-center gap-3 group"
           >
-            <span className="font-display italic text-xl md:text-2xl text-ivory border-b border-gold/50 pb-2 group-hover:border-gold transition-colors">
+            <span className="font-display italic text-base md:text-2xl text-ivory border-b border-gold/50 pb-2 group-hover:border-gold transition-colors break-all">
               happyweddingsforu@gmail.com
             </span>
             <ArrowUpRight className="h-5 w-5 md:h-6 md:w-6 text-gold transition-transform duration-500 ease-editorial group-hover:translate-x-1 group-hover:-translate-y-1" />
@@ -150,7 +150,7 @@ export function SiteFooter() {
               Founder · still reads every brief that comes in
             </p>
           </div>
-          <div className="flex items-center gap-7 md:gap-9">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 md:gap-x-9">
             {SOCIALS.map((s) => (
               <a
                 key={s.label}

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { IMAGES } from '@/lib/images'
+import { Eyebrow } from '@/components/motion/Eyebrow'
 
 const EASE = [0.22, 1, 0.36, 1]
 
@@ -44,37 +45,21 @@ export function FounderSection() {
             <div className="w-full h-full relative" data-cursor="media">
               <img
                 src={IMAGES.founder}
-                alt="Shruti Jain, Founder"
-                className="w-full h-full object-cover"
-                style={{ filter: 'grayscale(0.35) brightness(0.85)' }}
+                alt="Shruti Jain, Founder of Happy Weddings"
+                className="absolute inset-0 w-full h-full object-cover object-top"
               />
-              <div className="absolute inset-0 bg-ink/20" />
-              <p
-                className="absolute bottom-6 right-6 font-sans text-[0.62rem] uppercase tracking-widest text-ivory/60"
-              >
+              <div className="absolute inset-0 bg-ink/15" />
+              <p className="absolute bottom-6 right-6 font-sans text-[0.62rem] uppercase tracking-widest text-ivory/60 z-10">
                 Shruti Jain · Founder
               </p>
             </div>
           </motion.div>
 
-          {/* Photo caption */}
-          <div className="absolute bottom-6 left-6 z-10">
-            <p className="font-sans text-[0.6rem] uppercase tracking-widest text-ivory/50">Portrait placeholder</p>
-          </div>
         </div>
 
         {/* Right — editorial text */}
         <div className="relative lg:w-[55%] flex flex-col justify-center px-8 py-20 md:py-28 lg:px-20 xl:px-28">
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.8, ease: EASE }}
-            className="font-sans text-[0.62rem] uppercase tracking-[0.3em] mb-10"
-            style={{ color: 'hsl(32 31% 51%)' }}
-          >
-            — The House
-          </motion.p>
+          <Eyebrow tone="gold" className="mb-10">The House</Eyebrow>
 
           {/* Headline */}
           <div className="overflow-hidden mb-2">
@@ -123,7 +108,7 @@ export function FounderSection() {
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.8, delay: 0.38, ease: EASE }}
             className="font-sans font-light text-base leading-relaxed mb-12 max-w-md"
-            style={{ color: 'hsl(24 12% 10% / 0.65)' }}
+            style={{ color: 'hsl(24 12% 10% / 0.74)' }}
           >
             Shruti Jain founded Happy Weddings in 2013 with one belief: that the people planning the most important day of your life should be artists first, operators second. Thirteen years later, that belief has shaped over 350 celebrations across India and the world.
           </motion.p>

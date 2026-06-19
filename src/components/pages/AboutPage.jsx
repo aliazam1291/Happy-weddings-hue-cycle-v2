@@ -16,6 +16,7 @@ import { CountUp } from '@/components/reactbits/CountUp'
 import { FlipCard } from '@/components/reactbits/FlipCard'
 import { Marquee } from '@/components/motion/Marquee'
 import { ease } from '@/lib/motion'
+import { PlaceholderCover } from '@/components/motion/PlaceholderCover'
 import { ABOUT, BRAND, WEDDING_TYPES, TEAM, MILESTONES, AWARDS, PRESS, IMPACT } from '@/lib/content'
 import { IMAGES as IMG } from '@/lib/images'
 import {
@@ -300,13 +301,7 @@ function FounderBlock() {
       <div className="flex flex-col lg:flex-row min-h-screen">
         <div className="relative lg:w-[45%] overflow-hidden min-h-[55vh] lg:min-h-0">
           <ParallaxLayer speed={0.16} className="absolute inset-[-12%]">
-            <img
-              src={IMG.founder}
-              alt={`${BRAND.founder}, ${BRAND.founderRole}`}
-              data-cursor="media"
-              className="h-full w-full object-cover"
-              style={{ filter: 'saturate(0.9) brightness(0.95)' }}
-            />
+            <PlaceholderCover seed="shruti-jain" label="Shruti Jain" />
           </ParallaxLayer>
           <p
             className="absolute bottom-6 left-6 font-sans text-[0.6rem] uppercase tracking-widest"
@@ -420,11 +415,10 @@ function FamilySection() {
                   className="overflow-hidden mb-5"
                   style={{ aspectRatio: '4 / 5' }}
                 >
-                  <img
-                    src={m.src}
-                    alt={m.name}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
-                    style={{ filter: 'saturate(0.86) brightness(0.95)' }}
+                  <PlaceholderCover
+                    seed={m.id}
+                    label={m.name}
+                    className="transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
                   />
                   <div
                     className="absolute inset-0 pointer-events-none mix-blend-multiply"
@@ -486,12 +480,7 @@ function TeamDialog({ member, open, onOpenChange }) {
           <DialogPrimitive.Title className="sr-only">{member.name}</DialogPrimitive.Title>
           <div className="grid grid-cols-1 md:grid-cols-5">
             <div className="md:col-span-2 relative" style={{ aspectRatio: '4 / 5', minHeight: '40vh' }}>
-              <img
-                src={member.src}
-                alt={member.name}
-                className="absolute inset-0 h-full w-full object-cover"
-                style={{ filter: 'saturate(0.88) brightness(0.95)' }}
-              />
+              <PlaceholderCover seed={member.id} label={member.name} />
             </div>
             <div className="md:col-span-3 p-8 md:p-10">
               <p

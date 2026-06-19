@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Play, X } from 'lucide-react'
 import { ease } from '@/lib/motion'
 import { Ornament } from '@/components/motion/Ornament'
+import { Eyebrow } from '@/components/motion/Eyebrow'
 import { SplitText } from '@/components/reactbits/SplitText'
 import { CONTACT, YOUTUBE, ytThumb } from '@/lib/content'
 
@@ -37,16 +38,7 @@ export function VideoReel() {
       style={{ backgroundColor: 'hsl(34 30% 95%)' }}
     >
       <div className="container">
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.7, ease: ease.editorial }}
-          className="font-sans text-[0.62rem] uppercase tracking-[0.32em] text-center mb-4"
-          style={{ color: 'hsl(32 31% 46%)' }}
-        >
-          — Films from our channel
-        </motion.p>
+        <Eyebrow tone="gold" className="text-center mb-4">Films from our channel</Eyebrow>
         <SplitText
           as="h2"
           by="words"

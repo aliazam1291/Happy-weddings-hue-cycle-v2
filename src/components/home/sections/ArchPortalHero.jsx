@@ -24,6 +24,16 @@ export function ArchPortalHero({ isLoaded = true }) {
   const headlineRef = useRef(null)
   const blendRef = useRef(null)
 
+  // "Begin the journey" — glide through the arch using Lenis when present
+  // (desktop), falling back to native smooth scroll (mobile / reduced motion).
+  const handleBegin = () => {
+    if (typeof window === 'undefined') return
+    const target = window.innerWidth < 1024 ? window.innerHeight * 0.92 : 3300
+    const l = window.__lenis
+    if (l && typeof l.scrollTo === 'function') l.scrollTo(target, { duration: 1.8 })
+    else window.scrollTo({ top: target, behavior: 'smooth' })
+  }
+
   // Luxury Layers
   const floralContainerRef = useRef(null)
   const floralSwayRef = useRef(null)
@@ -193,37 +203,149 @@ export function ArchPortalHero({ isLoaded = true }) {
       {/* ── Narrative Scene Behind the Arch ── */}
       <div ref={mandapRef} className="absolute inset-0 will-change-transform z-0">
         <div ref={mandapImgRef} className="absolute inset-0 flex items-center justify-center will-change-transform bg-[#F0EBE1]">
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, #E6D8C3 0%, #FDF8EF 45%, #EFE5D1 100%)' }} />
-          <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 50% 55%, #FFFFFF 0%, rgba(255, 235, 200, 0.6) 25%, transparent 60%)', mixBlendMode: 'screen' }} />
-          
-          {/* Glowing Distant Horizon */}
-          <div className="absolute top-[46%] flex flex-col items-center opacity-90 scale-100">
-            <div className="w-48 h-24 bg-[#FFF5E5] blur-3xl rounded-full" />
-            <div className="w-20 h-10 bg-white blur-xl rounded-full absolute" />
-          </div>
+          {/* Sky gradient — warm golden hour atmosphere */}
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(180deg, #D4C4A8 0%, #F5EDD9 35%, #FDF8EF 58%, #EFE5D1 100%)' }}
+          />
+          {/* Upper sun glow */}
+          <div
+            className="absolute inset-0"
+            style={{ background: 'radial-gradient(ellipse 100% 55% at 50% 0%, rgba(255,240,195,0.55), transparent 62%)' }}
+          />
 
-          {/* Golden Perspective Journey Path */}
-          <div className="absolute bottom-0 h-[40%] w-full opacity-80" style={{ background: 'linear-gradient(180deg, transparent 0%, #D8C6AD 20%, #BEA68A 100%)', clipPath: 'polygon(45% 0%, 55% 0%, 80% 100%, 20% 100%)' }} />
-          <div className="absolute bottom-0 h-[40%] w-full" style={{ background: 'linear-gradient(90deg, transparent 49.5%, rgba(255,255,255,0.4) 50%, transparent 50.5%)', clipPath: 'polygon(45% 0%, 55% 0%, 80% 100%, 20% 100%)' }} />
-          
-          {/* Standing Couple on the Path (Scales dynamically with perspective scroll) */}
-          <div className="absolute bottom-[28%] left-1/2 -translate-x-1/2 w-[3rem] h-[5rem] pointer-events-none z-10">
-            <svg viewBox="0 0 120 200" fill="currentColor" className="w-full h-full text-[#4A321D] opacity-[0.65]">
-              {/* Groom Silhouette */}
-              <path d="M45,45 C45,41 48,38 51,38 C54,38 57,41 57,45 C57,49 54,52 51,52 C48,52 45,49 45,45 Z" />
-              <path d="M41,56 C45,55 57,55 61,56 C64,57 65,60 65,65 L62,105 L64,160 L58,160 L57,115 L52,115 L50,160 L44,160 L47,105 L43,65 C43,60 40,57 41,56 Z" />
-              
-              {/* Bride Silhouette */}
-              <path d="M63,50 C63,46 66,43 69,43 C72,43 75,46 75,50 C75,54 72,57 69,57 C66,57 63,54 63,50 Z" />
-              <path d="M62,60 C64,59 72,59 75,60 C78,61 80,65 79,72 L72,115 C75,130 82,145 92,155 C95,158 98,160 102,162 L100,165 C92,165 80,160 72,145 C68,155 62,162 55,165 L54,162 C58,158 62,145 64,120 L61,72 C61,65 61,61 62,60 Z" />
-              
-              {/* Soft grounding shadow */}
-              <ellipse cx="65" cy="165" rx="25" ry="4" fill="currentColor" opacity="0.15" />
+          {/* Glowing distant horizon — warm golden band */}
+          <div
+            className="absolute w-full pointer-events-none"
+            style={{
+              bottom: '40%',
+              height: '80px',
+              background: 'linear-gradient(0deg, transparent 0%, rgba(240,205,130,0.32) 50%, transparent 100%)',
+            }}
+          />
+          <div
+            className="absolute w-full pointer-events-none"
+            style={{
+              bottom: '40%',
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent 8%, rgba(210,175,100,0.45) 25%, rgba(252,218,138,0.7) 50%, rgba(210,175,100,0.45) 75%, transparent 92%)',
+            }}
+          />
+
+          {/* Golden perspective courtyard floor */}
+          <div
+            className="absolute bottom-0 left-0 right-0"
+            style={{
+              height: '40%',
+              background: 'linear-gradient(180deg, rgba(220,190,140,0.1) 0%, rgba(198,165,112,0.38) 58%, rgba(170,138,88,0.55) 100%)',
+            }}
+          />
+
+          {/* Perspective tile lines receding to horizon */}
+          <div className="absolute bottom-0 left-0 right-0" style={{ height: '40%' }}>
+            <svg viewBox="0 0 1000 400" preserveAspectRatio="none" className="absolute inset-0 w-full h-full" aria-hidden>
+              <g stroke="rgba(155,120,68,0.16)" strokeWidth="1" fill="none">
+                <line x1="500" y1="0" x2="0" y2="400" />
+                <line x1="500" y1="0" x2="200" y2="400" />
+                <line x1="500" y1="0" x2="400" y2="400" />
+                <line x1="500" y1="0" x2="600" y2="400" />
+                <line x1="500" y1="0" x2="800" y2="400" />
+                <line x1="500" y1="0" x2="1000" y2="400" />
+                <line x1="0" y1="140" x2="1000" y2="140" />
+                <line x1="0" y1="260" x2="1000" y2="260" />
+                <line x1="0" y1="360" x2="1000" y2="360" />
+              </g>
             </svg>
           </div>
 
-          <div className="absolute bottom-0 left-0 w-1/3 h-[40%] bg-gradient-to-tr from-[#A69680] to-transparent opacity-40 blur-2xl" />
-          <div className="absolute bottom-0 right-0 w-1/3 h-[40%] bg-gradient-to-tl from-[#A69680] to-transparent opacity-40 blur-2xl" />
+          {/* Backlit golden halo — the couple steps into the light */}
+          <div
+            className="absolute left-1/2 -translate-x-1/2 pointer-events-none"
+            style={{
+              bottom: '34%',
+              width: 'clamp(11rem, 24vw, 21rem)',
+              height: 'clamp(11rem, 24vw, 21rem)',
+              background: 'radial-gradient(circle at 50% 64%, rgba(255,238,188,0.8), rgba(250,222,150,0.3) 34%, transparent 62%)',
+            }}
+          />
+
+          {/* Indian wedding couple — high-contrast backlit silhouette at the horizon */}
+          <div
+            className="absolute left-1/2 -translate-x-1/2 pointer-events-none"
+            style={{ bottom: '39%', width: 'clamp(4rem, 8.5vw, 7.5rem)' }}
+          >
+            <svg viewBox="0 0 200 210" fill="none" className="w-full h-auto" aria-hidden>
+              {/* Ground shadow */}
+              <ellipse cx="100" cy="206" rx="62" ry="6.5" fill="rgba(70,46,12,0.30)" />
+
+              {/* Bridal veil — dupatta flowing behind, drawn first so the body sits over it */}
+              <path d="M150 58 Q167 106 173 158 Q177 184 181 202 L152 202 Q150 150 147 104 Q150 82 146 62 Z" fill="hsl(24 16% 7% / 0.82)" />
+
+              {/* ════════ GROOM (left) ════════ */}
+              {/* Neck */}
+              <path d="M63 73 L62 82 L72 82 L71 73 Z" fill="hsl(24 16% 7%)" />
+              {/* Sherwani — single flowing silhouette, shoulders to mid-calf flare */}
+              <path d="M57 79 C50 81 47 95 46 118 C45 145 46 166 48 184 L86 184 C88 166 89 145 88 118 C87 95 84 81 77 79 Z" fill="hsl(24 16% 7%)" />
+              {/* Collar V */}
+              <path d="M61 79 L67 98 L73 79 Z" fill="hsl(24 14% 3%)" />
+              {/* Center button seam */}
+              <line x1="67" y1="98" x2="67" y2="182" stroke="hsl(34 30% 92% / 0.14)" strokeWidth="1" />
+              {/* Churidar — ankles below the sherwani */}
+              <path d="M58 184 L56 202" stroke="hsl(24 16% 7%)" strokeWidth="9" strokeLinecap="round" />
+              <path d="M76 184 L78 202" stroke="hsl(24 16% 7%)" strokeWidth="9" strokeLinecap="round" />
+              {/* Far arm — relaxed at side */}
+              <path d="M49 89 Q42 110 41 132" stroke="hsl(24 16% 7%)" strokeWidth="8" strokeLinecap="round" />
+              {/* Near arm — reaching toward the bride */}
+              <path d="M83 89 Q93 108 99 126" stroke="hsl(24 16% 7%)" strokeWidth="8" strokeLinecap="round" />
+              {/* Head */}
+              <circle cx="67" cy="66" r="10" fill="hsl(24 16% 7%)" />
+              {/* Turban — sleek dome with a front fold */}
+              <path d="M51 59 Q47 33 67 30 Q87 33 83 59 Q78 51 71 52 Q68 44 64 46 Q59 47 56 53 Q53 56 51 59 Z" fill="hsl(24 16% 7%)" />
+              {/* Turban band */}
+              <path d="M51 58 Q67 65 83 58 Q83 62 82 63 Q67 70 52 63 Q51 61 51 58 Z" fill="hsl(24 14% 2% / 0.6)" />
+              {/* Kalgi plume — gold */}
+              <path d="M81 51 Q90 40 85 28" stroke="hsl(32 46% 56%)" strokeWidth="2.4" strokeLinecap="round" fill="none" />
+              <circle cx="85" cy="27" r="3.2" fill="hsl(32 46% 56%)" />
+              {/* Rim light — gold edge facing the light */}
+              <path d="M88 92 C89 118 88 150 85 183" stroke="hsl(38 60% 70% / 0.5)" strokeWidth="1.3" fill="none" strokeLinecap="round" />
+
+              {/* ════════ BRIDE (right) ════════ */}
+              {/* Neck */}
+              <path d="M130 73 L129 82 L139 82 L138 73 Z" fill="hsl(24 16% 7%)" />
+              {/* Lehenga — smooth A-line skirt */}
+              <path d="M120 102 C110 123 103 162 101 202 L177 202 C173 162 158 123 148 102 Z" fill="hsl(24 16% 7%)" />
+              {/* Lehenga hem shimmer — gold */}
+              <path d="M101 201 Q139 191 177 201" stroke="hsl(32 46% 56% / 0.4)" strokeWidth="1.6" fill="none" />
+              {/* Choli / fitted blouse */}
+              <path d="M124 80 L120 103 L150 103 L146 80 Z" fill="hsl(24 16% 7%)" />
+              {/* Near arm — reaching toward the groom */}
+              <path d="M123 90 Q111 108 101 126" stroke="hsl(24 16% 7%)" strokeWidth="7.5" strokeLinecap="round" />
+              {/* Far arm */}
+              <path d="M146 90 Q158 108 164 130" stroke="hsl(24 16% 7%)" strokeWidth="7.5" strokeLinecap="round" />
+              {/* Head */}
+              <circle cx="134" cy="66" r="9.5" fill="hsl(24 16% 7%)" />
+              {/* Ghoonghat — sheer veil draped over the crown */}
+              <path d="M123 62 Q121 38 134 36 Q149 39 148 63 Q141 76 134 76 Q127 76 123 62 Z" fill="hsl(24 16% 7% / 0.78)" />
+              {/* Maang tikka — gold dot at the forehead */}
+              <circle cx="134" cy="56" r="2.3" fill="hsl(32 46% 56%)" />
+              {/* Rim light — gold edge facing the light */}
+              <path d="M120 90 C113 120 108 160 106 200" stroke="hsl(38 60% 70% / 0.5)" strokeWidth="1.3" fill="none" strokeLinecap="round" />
+
+              {/* Union — joined hands with a soft gold glow */}
+              <circle cx="100" cy="126" r="11" fill="hsl(38 60% 64% / 0.28)" />
+              <ellipse cx="100" cy="126" rx="6.5" ry="5" fill="hsl(24 16% 7%)" />
+            </svg>
+          </div>
+
+          {/* Corner atmospheric warmth */}
+          <div
+            className="absolute bottom-0 left-0 w-2/5 h-3/5 pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse at bottom left, rgba(188,148,88,0.22), transparent 58%)' }}
+          />
+          <div
+            className="absolute bottom-0 right-0 w-2/5 h-3/5 pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse at bottom right, rgba(188,148,88,0.22), transparent 58%)' }}
+          />
         </div>
       </div>
 
@@ -289,9 +411,14 @@ export function ArchPortalHero({ isLoaded = true }) {
               </p>
 
               <div className="mt-6 lg:mt-12 flex items-center">
-                <span className="font-sans uppercase text-[#1A1510]/80 tracking-[0.25em] text-[0.65rem] border-b border-[#1A1510]/20 pb-1 hover:text-[#A88661] hover:border-[#A88661] transition-colors cursor-pointer">
+                <button
+                  type="button"
+                  onClick={handleBegin}
+                  data-cursor="link"
+                  className="font-sans uppercase text-[#1A1510]/80 tracking-[0.25em] text-[0.65rem] border-b border-[#1A1510]/20 pb-1 hover:text-[#A88661] hover:border-[#A88661] transition-colors cursor-pointer"
+                >
                   [ Begin The Journey ]
-                </span>
+                </button>
               </div>
             </div>
 
@@ -301,10 +428,54 @@ export function ArchPortalHero({ isLoaded = true }) {
         </div>
       </div>
 
-      {/* Scroll Hint (Bottom Center) */}
-      <div ref={hintRef} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-3 pointer-events-none">
-        <span className="font-sans uppercase" style={{ fontSize: '0.55rem', letterSpacing: '0.34em', color: 'hsl(24 12% 10% / 0.5)' }}>Scroll to step through</span>
-        <span className="block h-9 w-px" style={{ background: 'linear-gradient(to bottom, hsl(24 12% 10% / 0.4), transparent)' }} />
+      {/* Scroll Hint (Bottom Center) — realistic animated mouse indicator */}
+      <div ref={hintRef} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-3.5 pointer-events-none">
+        <span className="font-sans uppercase" style={{ fontSize: '0.55rem', letterSpacing: '0.34em', color: 'hsl(24 12% 10% / 0.55)' }}>Scroll to step through</span>
+        {/* Mouse body */}
+        <span
+          className="relative block"
+          style={{
+            width: '1.45rem',
+            height: '2.35rem',
+            borderRadius: '0.9rem',
+            border: '1.5px solid hsl(24 12% 10% / 0.38)',
+            boxShadow: 'inset 0 0 8px hsl(34 30% 95% / 0.4), 0 2px 10px hsl(24 12% 10% / 0.08)',
+            background: 'linear-gradient(180deg, hsl(34 30% 96% / 0.45), transparent)',
+          }}
+        >
+          {/* Scrolling wheel dot */}
+          <span
+            className="absolute left-1/2 block"
+            style={{
+              top: '0.45rem',
+              marginLeft: '-0.1rem',
+              width: '0.2rem',
+              height: '0.45rem',
+              borderRadius: '0.1rem',
+              backgroundColor: 'hsl(32 31% 46%)',
+              animation: 'hwScrollWheel 1.7s cubic-bezier(0.65,0,0.35,1) infinite',
+            }}
+          />
+        </span>
+        {/* Animated chevrons */}
+        <span className="relative block" style={{ width: '0.85rem', height: '0.9rem' }}>
+          <svg viewBox="0 0 24 28" className="w-full h-full" fill="none" aria-hidden>
+            <path d="M4 4 L12 11 L20 4" stroke="hsl(24 12% 10% / 0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'hwChevron 1.7s ease-in-out infinite' }} />
+            <path d="M4 13 L12 20 L20 13" stroke="hsl(24 12% 10% / 0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'hwChevron 1.7s ease-in-out 0.2s infinite' }} />
+          </svg>
+        </span>
+        <style>{`
+          @keyframes hwScrollWheel {
+            0%   { opacity: 0; transform: translateY(0); }
+            25%  { opacity: 1; }
+            55%  { opacity: 1; transform: translateY(0.7rem); }
+            100% { opacity: 0; transform: translateY(0.85rem); }
+          }
+          @keyframes hwChevron {
+            0%, 100% { opacity: 0.25; }
+            50%      { opacity: 0.85; }
+          }
+        `}</style>
       </div>
 
       {/* ── Emerged headline (Post-Arch Journey) ── */}

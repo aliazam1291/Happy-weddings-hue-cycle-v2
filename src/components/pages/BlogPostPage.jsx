@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation'
 import { motion, useScroll, useSpring } from 'framer-motion'
 import { ArrowLeft, ArrowRight, ArrowUpRight, Download, Mail, Share2 } from 'lucide-react'
 import { Ornament } from '@/components/motion/Ornament'
+import { PlaceholderCover } from '@/components/motion/PlaceholderCover'
 import { ParallaxLayer } from '@/components/motion/ParallaxLayer'
 import { ease } from '@/lib/motion'
 import { getPost, getRelated } from '@/lib/posts'
@@ -68,16 +69,10 @@ export function BlogPostPage({ slug }) {
           </motion.div>
         </div>
 
-        {/* Cover image with parallax */}
+        {/* Cover — editorial placeholder until real photography lands */}
         <div className="relative h-[44vh] md:h-[68vh] w-full overflow-hidden">
           <ParallaxLayer speed={0.18} className="absolute inset-[-12%]">
-            <img
-              src={post.cover}
-              alt=""
-              data-cursor="media"
-              className="h-full w-full object-cover"
-              style={{ filter: 'saturate(0.88) brightness(0.95)' }}
-            />
+            <PlaceholderCover seed={post.slug} label={post.title} />
           </ParallaxLayer>
           <div className="pointer-events-none absolute inset-x-0 top-0 h-24" style={{ background: 'linear-gradient(to bottom, hsl(34 30% 95%), transparent)' }} />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24" style={{ background: 'linear-gradient(to top, hsl(34 30% 95%), transparent)' }} />
@@ -94,11 +89,7 @@ export function BlogPostPage({ slug }) {
               className="relative w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden ring-1"
               style={{ borderColor: 'hsl(32 31% 51% / 0.4)' }}
             >
-              <img
-                src="https://picsum.photos/seed/hw-founder-portrait/240/240"
-                alt={`${BRAND.founder}, ${BRAND.founderRole}`}
-                className="absolute inset-0 h-full w-full object-cover"
-              />
+              <PlaceholderCover seed="shruti-jain" label="Shruti Jain" />
             </div>
           </div>
           <div className="md:col-span-9 text-center md:text-left">
@@ -130,7 +121,7 @@ export function BlogPostPage({ slug }) {
               {related.map((p) => (
                 <Link key={p.slug} href={`/blog/${p.slug}`} data-cursor="link" className="group block">
                   <div className="relative overflow-hidden mb-5" style={{ aspectRatio: '4/3' }}>
-                    <img src={p.cover} alt={p.title} className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]" style={{ filter: 'saturate(0.88) brightness(0.96)' }} />
+                    <PlaceholderCover seed={p.slug} label={p.title} className="transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]" />
                   </div>
                   <p className="font-sans text-[0.58rem] uppercase tracking-widest mb-2" style={{ color: 'hsl(32 31% 46%)' }}>
                     {p.category} · {p.readingTime} min
@@ -309,7 +300,7 @@ function CaptionedImage({ src, caption, alt = '' }) {
       className="my-14 md:my-16 -mx-4 md:-mx-12 lg:-mx-20"
     >
       <div className="relative overflow-hidden" style={{ aspectRatio: '16 / 10' }}>
-        <img src={src} alt={alt} className="absolute inset-0 h-full w-full object-cover" style={{ filter: 'saturate(0.88) brightness(0.95)' }} />
+        <PlaceholderCover seed={alt || caption || ''} label={caption || alt || ''} />
       </div>
       {caption && (
         <figcaption

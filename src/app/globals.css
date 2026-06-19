@@ -115,7 +115,7 @@
   .eyebrow {
     @apply font-sans uppercase text-eyebrow;
     font-weight: 400;
-    color: hsl(var(--ink) / 0.55);
+    color: hsl(var(--ink) / 0.62);
   }
 
   .eyebrow-gold {
@@ -192,6 +192,12 @@
   background: radial-gradient(ellipse 80% 70% at 30% 60%, hsl(32 31% 51% / 0.12) 0%, transparent 60%),
               radial-gradient(ellipse 60% 50% at 75% 30%, hsl(34 33% 83% / 0.08) 0%, transparent 55%),
               hsl(24 12% 10%);
+}
+
+/* Marquee — used by Marquee.jsx via inline style (JIT won't inject this) */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 /* Custom cursor — gold sparkle twinkle (wedding-ring glint) */

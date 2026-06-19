@@ -9,20 +9,23 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { TiltCard } from '@/components/motion/TiltCard'
 import { SpotlightCard } from '@/components/reactbits/SpotlightCard'
+import { IMAGES } from '@/lib/images'
 import { SplitText } from '@/components/reactbits/SplitText'
 
 const EASE = [0.22, 1, 0.36, 1]
 
 // Show the three most recent posts on the homepage teaser strip.
+// Fall back to IMAGES.journal if the post cover is a picsum placeholder.
+const JOURNAL_COVERS = IMAGES.journal
 const POSTS = [...ALL_POSTS]
   .sort((a, b) => new Date(b.date) - new Date(a.date))
   .slice(0, 3)
-  .map((p) => ({
+  .map((p, i) => ({
     slug: p.slug,
     category: p.category,
     headline: p.title,
     date: new Date(p.date).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }),
-    src: p.cover,
+    src: JOURNAL_COVERS[i] || p.cover,
   }))
 
 // Editorial offset rhythm — outer cards anchor, middle card lifts.
@@ -92,16 +95,15 @@ function JournalCard({ post, delay, offset }) {
           <Link href={`/blog/${post.slug}`} data-cursor="link" className="group block h-full">
             {/* Image — sits at base depth */}
             <SpotlightCard
-              className="overflow-hidden"
+              className="overflow-hidden relative"
               style={{ aspectRatio: '4/3', transformStyle: 'preserve-3d' }}
             >
               <img
                 src={post.src}
                 alt={post.headline}
-                data-cursor="media"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
-                style={{ filter: 'grayscale(0.2) brightness(0.95)', transform: 'translateZ(0)' }}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/30 to-transparent" />
               {/* Floating category badge — lifted forward in Z */}
               <div
                 className="absolute top-4 left-4"

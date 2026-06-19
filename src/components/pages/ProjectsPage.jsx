@@ -7,6 +7,7 @@ import { ArrowUpRight, MapPin, Users } from 'lucide-react'
 import { PageHero } from '@/components/pages/PageHero'
 import { Ornament } from '@/components/motion/Ornament'
 import { TiltCard } from '@/components/motion/TiltCard'
+import { PlaceholderCover } from '@/components/motion/PlaceholderCover'
 import { ease } from '@/lib/motion'
 import { PROJECTS, PROJECT_CATEGORIES } from '@/lib/content'
 import { IMAGES } from '@/lib/images'
@@ -210,11 +211,10 @@ function ProjectTile({ project, onOpen }) {
           className="overflow-hidden mb-5"
           style={{ aspectRatio: '4 / 5' }}
         >
-          <img
-            src={project.src}
-            alt={`${project.title} — ${project.place}`}
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
-            style={{ filter: 'saturate(0.88) brightness(0.96)' }}
+          <PlaceholderCover
+            seed={project.id}
+            label={project.title}
+            className="transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
           />
           <div
             className="absolute inset-0 pointer-events-none mix-blend-multiply"
@@ -298,14 +298,13 @@ function FeatureBand({ project, onOpen }) {
               type="button"
               onClick={onOpen}
               data-cursor="media"
-              className="group block w-full overflow-hidden"
+              className="group relative block w-full overflow-hidden"
               style={{ aspectRatio: '5 / 4' }}
             >
-              <img
-                src={project.gallery?.[0] || project.src}
-                alt={project.title}
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.04]"
-                style={{ filter: 'saturate(0.88) brightness(0.95)' }}
+              <PlaceholderCover
+                seed={project.id}
+                label={project.title}
+                className="transition-transform duration-1000 ease-editorial group-hover:scale-[1.04]"
               />
               <span
                 className="absolute top-5 left-5 inline-flex items-center font-sans text-[0.58rem] uppercase tracking-[0.28em] px-3 py-1.5"

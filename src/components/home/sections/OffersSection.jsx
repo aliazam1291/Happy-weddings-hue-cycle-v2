@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { SplitText } from '@/components/reactbits/SplitText'
+import { Eyebrow } from '@/components/motion/Eyebrow'
 import { SERVICES as ALL_SERVICES } from '@/lib/content'
 
 const EASE = [0.22, 1, 0.36, 1]
@@ -175,12 +176,7 @@ export function OffersSection() {
         style={{ backgroundColor: 'hsl(34 30% 95%)' }}
       >
         <div>
-          <p
-            className="font-sans text-[0.65rem] uppercase tracking-[0.3em] mb-6"
-            style={{ color: 'hsl(32 31% 51%)' }}
-          >
-            — Experiences
-          </p>
+          <Eyebrow tone="gold" className="mb-6">Experiences</Eyebrow>
           <SplitText
             as="h2"
             by="words"

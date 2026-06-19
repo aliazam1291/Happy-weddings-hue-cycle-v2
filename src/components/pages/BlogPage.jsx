@@ -7,6 +7,7 @@ import { ArrowUpRight, Download, Mail, Quote, BookOpen, Clock } from 'lucide-rea
 import { PageHero } from '@/components/pages/PageHero'
 import { Ornament } from '@/components/motion/Ornament'
 import { TiltCard } from '@/components/motion/TiltCard'
+import { PlaceholderCover } from '@/components/motion/PlaceholderCover'
 import { ease } from '@/lib/motion'
 import { POSTS, CATEGORIES } from '@/lib/posts'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -319,11 +320,10 @@ function FeatureWithTopics({ post }) {
           className="group relative block md:col-span-12 overflow-hidden"
           style={{ aspectRatio: '4 / 3' }}
         >
-          <img
-            src={post.cover}
-            alt={post.title}
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.04]"
-            style={{ filter: 'saturate(0.86) brightness(0.95)' }}
+          <PlaceholderCover
+            seed={post.slug}
+            label={post.title}
+            className="transition-transform duration-1000 ease-editorial group-hover:scale-[1.04]"
           />
           <span
             className="absolute top-5 left-5 inline-flex items-center font-sans text-[0.58rem] uppercase tracking-[0.28em] px-3 py-1.5"
@@ -429,12 +429,10 @@ function PostCard({ post }) {
           className="relative overflow-hidden mb-6"
           style={{ aspectRatio: '4/5' }}
         >
-          <img
-            src={post.cover}
-            alt={post.title}
-            data-cursor="media"
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
-            style={{ filter: 'saturate(0.88) brightness(0.96)' }}
+          <PlaceholderCover
+            seed={post.slug}
+            label={post.title}
+            className="transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
           />
           <span
             className="absolute bottom-4 left-4 inline-flex items-center font-sans text-[0.55rem] uppercase tracking-[0.28em] px-2.5 py-1"

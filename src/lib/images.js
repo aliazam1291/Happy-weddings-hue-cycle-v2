@@ -1,35 +1,50 @@
 /**
- * Dummy imagery — swap these URLs for real photography later.
- * Using picsum.photos with fixed seeds so layouts stay stable between reloads.
- * A warm grayscale + slight blur keeps them feeling editorial against the palette.
+ * Photography — served locally from /public/images so nothing depends on a
+ * third-party CDN, hotlink policy, or referrer header. Files are licensed
+ * Pexels stock placeholders; swap with real studio photography before launch.
  */
-const base = 'https://picsum.photos/seed'
 
+const base = '/images'
+
+/** Local picsum-style fallback kept for API compatibility (content.js / posts.js). */
 export function img(seed, w = 1200, h = 1500) {
-  return `${base}/hw-${seed}/${w}/${h}`
+  return `${base}/ceremony.jpg`
 }
 
-// Curated seeds per section
 export const IMAGES = {
-  hero: img('hero-veil', 2000, 1300),
-  statement: img('statement', 1400, 1400),
-  founder: img('founder-portrait', 1200, 1600),
+  // Hero — grand Indian wedding ceremony
+  hero: `${base}/ceremony.jpg`,
+
+  // Brand statement panel
+  statement: `${base}/ceremony.jpg`,
+
+  // Founder portrait — warm editorial portrait
+  founder: `${base}/founder.jpg`,
+
+  // Featured work — five Indian destination weddings
   stories: [
-    { seed: 'udaipur', src: img('udaipur', 1100, 1400) },
-    { seed: 'goa', src: img('goa', 1100, 1400) },
-    { seed: 'jaipur', src: img('jaipur', 1100, 1400) },
-    { seed: 'kerala', src: img('kerala', 1100, 1400) },
-    { seed: 'delhi', src: img('delhi', 1100, 1400) },
+    { seed: 'udaipur', src: `${base}/udaipur.jpg` },   // Udaipur / Rajasthan
+    { seed: 'goa',     src: `${base}/goa.jpg` },        // Goa coastal
+    { seed: 'jaipur',  src: `${base}/jaipur.jpg` },     // Jaipur heritage
+    { seed: 'kerala',  src: `${base}/kerala.jpg` },     // Kerala tropical
+    { seed: 'delhi',   src: `${base}/delhi.jpg` },      // Delhi grand
   ],
+
+  // Service section photography (index-matched to SERVICES in content.js)
   services: [
-    img('full-planning', 1400, 1600),
-    img('destination', 1400, 1600),
-    img('design-decor', 1400, 1600),
-    img('curation', 1400, 1600),
+    `${base}/lights.jpg`,    // [0] Full Planning — string lights grand venue
+    `${base}/ceremony.jpg`,  // [1] Destination — Indian ceremony
+    `${base}/flowers.jpg`,   // [2] Design & Décor — flowers
+    `${base}/dining.jpg`,    // [3] Hospitality — elegant dining
+    `${base}/stage.jpg`,     // [4] Entertainment — celebration stage
+    `${base}/venue.jpg`,     // [5] Technical — venue setup
+    `${base}/delhi.jpg`,     // [6] Travel & Logistics — India destination
   ],
+
+  // Journal / blog post covers
   journal: [
-    img('journal-restraint', 1200, 900),
-    img('journal-udaipur', 1200, 900),
-    img('journal-timeline', 1200, 900),
+    `${base}/ceremony.jpg`,
+    `${base}/udaipur.jpg`,
+    `${base}/lights.jpg`,
   ],
 }

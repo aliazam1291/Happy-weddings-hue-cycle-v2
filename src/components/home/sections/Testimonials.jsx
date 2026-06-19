@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { CardSwap } from '@/components/reactbits/CardSwap'
 import { SplitText } from '@/components/reactbits/SplitText'
+import { IMAGES } from '@/lib/images'
 
 const REVIEWS = [
   {
@@ -80,7 +81,21 @@ export function Testimonials() {
       className="relative w-full overflow-hidden py-20 md:py-32"
       style={{ backgroundColor: 'hsl(34 30% 95%)' }}
     >
-      <div className="container">
+      {/* Faint photographic warmth — barely visible, adds depth not distraction */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <img
+          src={IMAGES.stories[0].src}
+          alt=""
+          className="w-full h-full object-cover"
+          style={{ opacity: 0.06, filter: 'brightness(0.7) saturate(0.5)' }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 50%, transparent 20%, hsl(34 30% 95% / 0.9) 70%)' }}
+        />
+      </div>
+
+      <div className="container relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}

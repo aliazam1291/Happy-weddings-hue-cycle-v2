@@ -7,6 +7,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { prefersReducedMotion, useIsMobile } from '@/lib/motion'
 import { ArrowUpRight } from 'lucide-react'
+import { Eyebrow } from '@/components/motion/Eyebrow'
 import { IMAGES } from '@/lib/images'
 
 const STORIES = [
@@ -62,9 +63,7 @@ export function FeaturedWork() {
     return (
       <section className="w-full" style={{ backgroundColor: 'hsl(33 32% 90%)' }}>
         <div className="px-8 py-16">
-          <p className="font-sans text-[0.65rem] uppercase tracking-[0.3em] mb-8" style={{ color: 'hsl(32 31% 46%)' }}>
-            — Selected Stories
-          </p>
+          <Eyebrow tone="gold" className="mb-8">Selected Stories</Eyebrow>
           <h2 className="font-display font-light text-[clamp(2.5rem,11vw,4rem)] tracking-[-0.02em] leading-[0.98]" style={{ color: 'hsl(24 12% 10%)' }}>
             Weddings <span className="italic" style={{ color: 'hsl(32 31% 46%)' }}>we&apos;ve had</span> the honour of shaping.
           </h2>
@@ -154,12 +153,10 @@ function StoryCard({ story, index, mobile = false }) {
           : 'shrink-0 w-[80vw] sm:w-[60vw] md:w-[42vw] lg:w-[36vw] border-r border-ink/10'
       }`}
     >
-      {/* Dummy image background */}
       <img
         src={story.src}
         alt={story.title}
-        className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
-        style={{ filter: 'grayscale(0.25) brightness(0.85)' }}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-editorial group-hover:scale-[1.06]"
       />
 
       {/* Decorative numeral */}

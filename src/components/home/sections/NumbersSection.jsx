@@ -3,42 +3,45 @@
 import { motion } from 'framer-motion'
 import { CountUp } from '@/components/reactbits/CountUp'
 import { Ornament } from '@/components/motion/Ornament'
-import { Card, CardEyebrow } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { TiltCard } from '@/components/motion/TiltCard'
+import { IMAGES } from '@/lib/images'
 
 const EASE = [0.22, 1, 0.36, 1]
 
 const STATS = [
-  { value: 13, suffix: ' yrs', label: 'A named house', sub: 'since 2013' },
-  { value: 350, suffix: '+', label: 'Weddings shaped', sub: 'India & beyond' },
-  { value: 9, suffix: '', label: 'Services', sub: 'under one roof' },
-  { value: 24, suffix: '/7', label: 'CEO involved', sub: 'every celebration' },
+  { value: 13,  suffix: '',    label: 'Years',             sub: 'in craft since 2013' },
+  { value: 350, suffix: '+',   label: 'Weddings shaped',   sub: 'India & beyond' },
+  { value: 9,   suffix: '',    label: 'Services',          sub: 'under one roof' },
+  { value: 24,  suffix: '/7',  label: 'CEO involvement',   sub: 'every celebration' },
 ]
-
-// Negative vertical offsets per index — odd cards drop, even cards lift,
-// creating a staggered editorial dance instead of a flat grid.
-const OFFSETS = ['md:-translate-y-6', 'md:translate-y-6', 'md:-translate-y-2', 'md:translate-y-8']
 
 export function NumbersSection() {
   return (
     <section
-      className="relative w-full py-24 md:py-32 overflow-hidden"
-      style={{ backgroundColor: 'hsl(33 32% 90%)' }}
+      className="relative w-full py-28 md:py-40 overflow-hidden"
+      style={{ backgroundColor: 'hsl(24 12% 10%)' }}
     >
-      {/* Large decorative background text */}
+      {/* Background photography at low opacity */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
+        <img
+          src={IMAGES.stories[2].src}
+          alt=""
+          className="w-full h-full object-cover"
+          style={{ opacity: 0.12, filter: 'brightness(0.5) saturate(0.6)' }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 50%, transparent 30%, hsl(24 12% 10% / 0.7) 100%)' }}
+        />
+      </div>
+
+      {/* Large decorative watermark */}
       <div
         aria-hidden
         className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none select-none"
       >
         <span
           className="font-display font-light whitespace-nowrap"
-          style={{
-            fontSize: '28vw',
-            color: 'hsl(24 12% 10% / 0.035)',
-            lineHeight: 1,
-            letterSpacing: '-0.02em',
-          }}
+          style={{ fontSize: '28vw', color: 'hsl(34 30% 95% / 0.025)', lineHeight: 1, letterSpacing: '-0.02em' }}
         >
           Since 2013
         </span>
@@ -52,60 +55,58 @@ export function NumbersSection() {
           transition={{ duration: 0.8, ease: EASE }}
           className="flex justify-center mb-4"
         >
-          <Badge variant="gold" size="sm" shape="pill">
+          <span
+            className="inline-flex items-center font-sans uppercase tracking-[0.28em] h-6 px-3.5 text-[0.62rem] rounded-full border"
+            style={{ borderColor: 'hsl(32 31% 51% / 0.45)', color: 'hsl(33 34% 62%)' }}
+          >
             By the numbers
-          </Badge>
+          </span>
         </motion.div>
-        <Ornament className="mb-12 md:mb-16" />
+        <Ornament tone="ivory" className="mb-16 md:mb-20" />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        {/* Stats grid — alternating vertical offsets for editorial rhythm */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-ivory/10">
           {STATS.map((s, i) => (
             <motion.div
               key={s.label}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.85, delay: i * 0.09, ease: EASE }}
-              className={`transform ${OFFSETS[i]}`}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.9, delay: i * 0.1, ease: EASE }}
+              className="flex flex-col items-center justify-center py-16 md:py-20 px-6 text-center"
+              style={{ backgroundColor: 'hsl(24 12% 10%)' }}
             >
-              <TiltCard intensity={7} perspective={900} scale={1.03}>
-                <Card
-                  variant={i % 2 === 0 ? 'default' : 'cream'}
-                  shape="soft"
-                  hover="glow"
-                  className="flex flex-col items-center justify-center py-14 md:py-20 px-6 text-center"
-                  style={{ transformStyle: 'preserve-3d' }}
-                >
-                  <CardEyebrow
-                    className="mb-4 hidden md:block"
-                    style={{ transform: 'translateZ(15px)' }}
-                  >
-                    0{i + 1} / 0{STATS.length}
-                  </CardEyebrow>
-                  <p
-                    className="font-display italic leading-none mb-3"
-                    style={{
-                      fontSize: 'clamp(3.5rem, 7vw, 6rem)',
-                      color: 'hsl(32 31% 51%)',
-                      transform: 'translateZ(50px)',
-                    }}
-                  >
-                    <CountUp to={s.value} suffix={s.suffix} />
-                  </p>
-                  <p
-                    className="font-sans text-sm uppercase tracking-widest mb-1"
-                    style={{ color: 'hsl(24 12% 10%)', transform: 'translateZ(25px)' }}
-                  >
-                    {s.label}
-                  </p>
-                  <p
-                    className="font-sans text-xs"
-                    style={{ color: 'hsl(24 12% 10% / 0.45)' }}
-                  >
-                    {s.sub}
-                  </p>
-                </Card>
-              </TiltCard>
+              {/* Eyebrow numeral */}
+              <p
+                className="font-sans uppercase tracking-[0.28em] mb-5"
+                style={{ fontSize: '0.6rem', color: 'hsl(34 30% 95% / 0.45)' }}
+              >
+                0{i + 1} / 0{STATS.length}
+              </p>
+
+              {/* Large gold count */}
+              <p
+                className="font-display italic leading-none mb-4"
+                style={{ fontSize: 'clamp(3.5rem, 7vw, 6rem)', color: 'hsl(32 31% 51%)' }}
+              >
+                <CountUp to={s.value} suffix={s.suffix} />
+              </p>
+
+              {/* Label */}
+              <p
+                className="font-sans uppercase tracking-widest mb-1"
+                style={{ fontSize: '0.65rem', color: 'hsl(34 30% 95% / 0.85)' }}
+              >
+                {s.label}
+              </p>
+
+              {/* Sub */}
+              <p
+                className="font-sans"
+                style={{ fontSize: '0.65rem', color: 'hsl(34 30% 95% / 0.55)' }}
+              >
+                {s.sub}
+              </p>
             </motion.div>
           ))}
         </div>

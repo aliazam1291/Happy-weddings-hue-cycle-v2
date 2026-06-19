@@ -6,6 +6,7 @@ import { Rosette } from '@/components/motion/Ornament'
 import { Breadcrumb } from '@/components/ui/breadcrumb'
 import { motion } from 'framer-motion'
 import { ease } from '@/lib/motion'
+import { PlaceholderCover } from '@/components/motion/PlaceholderCover'
 
 /**
  * Shared subpage hero — light theme, editorial. A parallax image band sits
@@ -112,14 +113,8 @@ export function PageHero({ eyebrow, title, accent, subtitle, image, tone = 'ivor
       {showImage && (
         <div className="relative h-[42vh] md:h-[60vh] w-full overflow-hidden">
           <ParallaxLayer speed={0.18} className="absolute inset-[-12%]">
-            <img
-              src={image}
-              alt=""
-              data-cursor="media"
-              className="h-full w-full object-cover"
-            />
+            <PlaceholderCover seed={eyebrow || 'hero'} label={title || ''} />
           </ParallaxLayer>
-          {/* subtle bottom blend into the cream ground (crisp image, no haze) */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-14" style={{ background: `linear-gradient(to top, ${c.blend}, transparent)` }} />
         </div>
       )}

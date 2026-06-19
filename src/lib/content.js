@@ -128,7 +128,7 @@ export const SERVICES = [
     title: "Entertainment & Artist Management",
     sub: "Moments that move",
     copy: "We curate moments that live long after the music stops — from headline performances and live acts to cultural experiences, world-class DJs, and interactive entertainment that gives every celebration its own unmistakable energy.",
-    src: img("svc-entertainment", 1400, 1600),
+    src: IMAGES.services[4],
   },
   {
     num: "05",
@@ -142,28 +142,28 @@ export const SERVICES = [
     title: "Technical Production",
     sub: "Flawless on the day",
     copy: "The magic you see is only possible because of what happens behind the scenes. Precision lighting, immersive sound, dramatic staging, LED experiences, and special effects — all executed by a team that knows how to make every moment land exactly as imagined.",
-    src: img("svc-technical", 1400, 1600),
+    src: IMAGES.services[5],
   },
   {
     num: "07",
     title: "Travel & Logistics",
     sub: "Seamless from door to door",
     copy: "Movement, managed. From airport assistance and guest transfers to vendor logistics and on-ground coordination, every journey connected to your celebration is handled with quiet precision.",
-    src: img("svc-logistics", 1400, 1600),
+    src: IMAGES.services[6],
   },
   {
     num: "08",
     title: "Digital Wedding Solutions",
     sub: "Your story, online",
     copy: "Your story begins well before the day itself. We build beautiful wedding websites, elegant digital invitations, and seamless guest communication systems — keeping your closest people connected, informed, and excited throughout.",
-    src: img("svc-digital", 1400, 1600),
+    src: IMAGES.services[0],
   },
   {
     num: "09",
     title: "Celebrations Beyond Weddings",
     sub: "Every occasion, crafted",
     copy: "The same artistry, intention, and precision we bring to weddings extends to every event we are trusted with — corporate gatherings, milestone celebrations, intimate social events, luxury experiences, and occasions that defy categories altogether.",
-    src: img("svc-corporate", 1400, 1600),
+    src: IMAGES.services[2],
   },
 ]
 

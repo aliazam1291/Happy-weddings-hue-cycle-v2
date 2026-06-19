@@ -7,7 +7,8 @@ import { ArrowUpRight } from 'lucide-react'
 import { ParallaxLayer } from '@/components/motion/ParallaxLayer'
 import { ImageReveal } from '@/components/motion/ImageReveal'
 import { SplitText } from '@/components/reactbits/SplitText'
-import { IMAGES, img } from '@/lib/images'
+import { Eyebrow } from '@/components/motion/Eyebrow'
+import { IMAGES } from '@/lib/images'
 
 const EASE = [0.22, 1, 0.36, 1]
 
@@ -18,15 +19,15 @@ const EASE = [0.22, 1, 0.36, 1]
  * list into the columns and animate the re-layout. Single column on mobile.
  */
 const ITEMS = [
-  { src: img('proj-theme-1', 900, 1200), label: 'Theme Wedding', place: 'Indore', type: 'Theme' },
-  { src: IMAGES.stories[0].src, label: 'Destination', place: 'Udaipur', type: 'Destination' },
-  { src: img('proj-classic-1', 900, 1100), label: 'Classic Indian', place: 'Indore', type: 'Classic' },
-  { src: IMAGES.services[1], label: 'Sangeet Night', place: 'Goa', type: 'Sangeet' },
-  { src: img('proj-theme-2', 900, 1300), label: 'Theme Wedding', place: 'Jaipur', type: 'Theme' },
-  { src: IMAGES.journal[1], label: 'Varmala', place: 'Indore', type: 'Classic' },
-  { src: img('proj-dest-2', 900, 1150), label: 'Destination', place: 'Kerala', type: 'Destination' },
-  { src: IMAGES.services[2], label: 'Décor & Lighting', place: 'Indore', type: 'Sangeet' },
-  { src: img('proj-classic-2', 900, 1250), label: 'Ring Ceremony', place: 'Bhopal', type: 'Classic' },
+  { src: IMAGES.stories[1].src,  label: 'Theme Wedding',    place: 'Indore',  type: 'Theme' },
+  { src: IMAGES.stories[0].src,  label: 'Destination',      place: 'Udaipur', type: 'Destination' },
+  { src: IMAGES.stories[4].src,  label: 'Classic Indian',   place: 'Indore',  type: 'Classic' },
+  { src: IMAGES.services[1],     label: 'Sangeet Night',    place: 'Goa',     type: 'Sangeet' },
+  { src: IMAGES.stories[2].src,  label: 'Theme Wedding',    place: 'Jaipur',  type: 'Theme' },
+  { src: IMAGES.journal[1],      label: 'Varmala',          place: 'Indore',  type: 'Classic' },
+  { src: IMAGES.stories[3].src,  label: 'Destination',      place: 'Kerala',  type: 'Destination' },
+  { src: IMAGES.services[2],     label: 'Décor & Lighting', place: 'Indore',  type: 'Sangeet' },
+  { src: IMAGES.services[3],     label: 'Ring Ceremony',    place: 'Bhopal',  type: 'Classic' },
 ]
 
 const FILTERS = ['All', 'Theme', 'Destination', 'Classic', 'Sangeet']
@@ -51,16 +52,7 @@ export function ProjectsGallery() {
       {/* Header */}
       <div className="container mb-10 md:mb-14 flex flex-col md:flex-row md:items-end justify-between gap-8">
         <div>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.8, ease: EASE }}
-            className="font-sans text-[0.65rem] uppercase tracking-[0.3em] mb-6"
-            style={{ color: 'hsl(32 31% 46%)' }}
-          >
-            — Our Projects
-          </motion.p>
+          <Eyebrow tone="gold" className="mb-6">Our Projects</Eyebrow>
           <SplitText
             as="h2"
             by="words"
